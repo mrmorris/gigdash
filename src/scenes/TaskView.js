@@ -51,13 +51,13 @@ export default class extends Phaser.Scene {
 
     const customerName = this.add.text(
       100,
-      120,
+      140,
       `${task.customerName} would like...`
     );
     redrawRefs.push(customerName);
 
     task.items.forEach((taskName, index) => {
-      let taskItemRef = this.add.text(100, 140 + 20 * index, `${taskName} ${inventory[taskName] > 0 ? '✔️' : ''}️`);
+      let taskItemRef = this.add.text(100, 180 + 20 * index, `${taskName} ${inventory[taskName] > 0 ? '✔️' : ''}️`);
       redrawRefs.push(taskItemRef);
     });
   }
