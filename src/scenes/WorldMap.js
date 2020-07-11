@@ -80,7 +80,9 @@ export default class extends Phaser.Scene {
   }
 
   viewTaskList() {
-    this.scene.switch(taskListSceneKey);
+    if (!isTraveling) {
+      this.scene.switch(taskListSceneKey);
+    }
   }
 
   travelTo(location) {
