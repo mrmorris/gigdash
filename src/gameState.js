@@ -1,10 +1,5 @@
 const tasks = [];
-const inventory = {
-  apple: 0,
-  vodka: 0,
-  milk: 0,
-  wrench: 0,
-};
+const inventory = {};
 const maxInventory = 10;
 const reviews = [];
 let currentLocation = { name: 'nowhere' };
