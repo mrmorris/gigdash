@@ -29,11 +29,13 @@ game.scene.add('taskListScene', taskListScene);
 game.scene.add('shopViewScene', shopViewScene);
 game.scene.add('taskViewScene', taskViewScene);
 
-game.scene.start('titleScene');
+game.scene.start('worldMapScene');
 
-addTask(new Task(1, 'Buy me an apple', 'John', ['apple']));
-addTask(new Task(2, 'I am hungry', 'Jane', ['pliers', 'milk']));
-addTask(new Task(3, 'So lonely 😃', 'Smirny', ['vodka']));
-addTask(new Task(4, 'Buy me another apple', 'Cricket', ['apple']));
+addTask(new Task(1, 'Buy me an apple', 'John', 'Fox Point', ['apple']));
+addTask(new Task(2, 'I am hungry', 'Jane', 'Fox Point', ['pliers', 'milk']));
+addTask(new Task(3, 'So lonely 😃', 'Smirny', 'Olneyville', ['vodka']));
+addTask(
+  new Task(4, 'Buy me another apple', 'Cricket', 'Federal Hill', ['apple'])
+);
 
 addInventoryItem('apple');
