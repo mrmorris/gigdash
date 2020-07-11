@@ -56,7 +56,6 @@ export default class extends Phaser.Scene {
       let itemRef = this.add.text(400, 140 + 20 * index, `${item}: ${count}`);
       index++;
       redrawRefs.push(itemRef);
-      console.dir(itemRef);
     }
   }
 
