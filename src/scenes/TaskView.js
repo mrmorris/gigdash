@@ -34,11 +34,15 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     const task = getCurrentTask();
+    const location = getCurrentLocation();
     const inventory = getInventory();
 
-    let canCompleteTask = task.items.every((item) => {
-      return inventory[item] > 0;
-    });
+    let canCompleteTask =
+      location &&
+      task.destination === location.name &&
+      task.items.every((item) => {
+        return inventory[item] > 0;
+      });
 
     // if a user can complete the task...
     if (canCompleteTask) {
@@ -92,6 +96,7 @@ export default class extends Phaser.Scene {
     // remove task
     // @todo - completion will give a positive review
     completeTask(task);
+    this.scene.switch(taskListSceneKey);
   }
 
   backToTaskList() {
