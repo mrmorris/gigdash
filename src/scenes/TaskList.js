@@ -35,7 +35,11 @@ export default class extends Phaser.Scene {
     tasks
       .filter((task) => !task.isComplete)
       .forEach((task, index) => {
-        let taskRef = this.add.text(100, 140 + 20 * index, task.name);
+        let taskRef = this.add.text(
+          100,
+          140 + 20 * index,
+          `${task.destination} - ${task.customerName}`
+        );
 
         taskRef.setInteractive({ useHandCursor: true });
         taskRef.on('pointerdown', () => this.viewTask(task));

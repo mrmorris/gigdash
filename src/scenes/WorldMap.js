@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import worldMapImg from '../assets/worldMap.jpg';
 import playerImg from '../assets/player.png';
-import { setCurrentLocation } from '../gameState';
+import { getCurrentLocation, setCurrentLocation } from '../gameState';
 import Shop from '../entities/Shop';
 import Neighborhood from '../entities/Neighborhood';
 
@@ -50,7 +50,7 @@ export default class extends Phaser.Scene {
     );
     const store2 = new Shop(
       'Hardware Store',
-      ['wrench'],
+      ['pliers'],
       this.add.text(50, 100, 'Hardware'),
       () => this.travelTo(store2)
     );
@@ -63,18 +63,18 @@ export default class extends Phaser.Scene {
 
     // add some hoods
     const hood1 = new Neighborhood(
-      'Upper Crust',
-      this.add.text(300, -50, 'Upper Crust'),
+      'Fox Point',
+      this.add.text(400, 20, 'Fox Point'),
       () => this.travelTo(hood1)
     );
     const hood2 = new Neighborhood(
-      'Hippy Town',
-      this.add.text(50, -100, 'Hippy Town'),
+      'Olneyville',
+      this.add.text(400, 100, 'Olneyville'),
       () => this.travelTo(hood2)
     );
     const hood3 = new Neighborhood(
-      'East Dogmouth',
-      this.add.text(100, -200, 'East Dogmouth'),
+      'Federal Hill',
+      this.add.text(400, 200, 'Federal Hill'),
       () => this.travelTo(hood3)
     );
   }
@@ -84,23 +84,37 @@ export default class extends Phaser.Scene {
   }
 
   travelTo(location) {
+    const currentLocation = getCurrentLocation();
+
     if (!isTraveling) {
       isTraveling = true;
 
-      const tween = this.tweens.add({
-        targets: this.player,
-        x: location.ref.x,
-        y: location.ref.y,
-        duration: 2000, // @todo travel time...
-        ease: 'Power2',
-      });
+      if (currentLocation && location.name === currentLocation.name) {
+        console.log('already there');
+        this.switchToLocationScene();
+      } else {
+        const tween = this.tweens.add({
+          targets: this.player,
+          x: location.ref.x,
+          y: location.ref.y,
+          duration: 2000, // @todo travel time...
+          ease: 'Power2',
+        });
 
-      tween.on('complete', () => {
-        isTraveling = false;
-        setCurrentLocation(location);
-        console.log('Switch to', shopViewSceneKey);
-        this.scene.switch(shopViewSceneKey);
-      });
+        tween.on('complete', () => this.switchToLocationScene(location));
+      }
+    }
+  }
+
+  switchToLocationScene(location) {
+    isTraveling = false;
+    setCurrentLocation(location);
+    if (location instanceof Shop) {
+      console.log('Switch to', shopViewSceneKey);
+      this.scene.switch(shopViewSceneKey);
+    } else {
+      console.log('Switch to', taskListSceneKey);
+      this.scene.switch(taskListSceneKey);
     }
   }
 }

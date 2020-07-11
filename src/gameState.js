@@ -6,7 +6,7 @@ const inventory = {
   wrench: 0,
 };
 
-let currentLocation;
+let currentLocation = { name: 'nowhere' };
 let currentTask;
 
 export const addTask = (task) => {
