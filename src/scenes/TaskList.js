@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { getTasks, setCurrentTask } from '../gameState';
+import { getIncompleteTasks, setCurrentTask } from '../gameState';
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -24,7 +24,7 @@ export default class extends Phaser.Scene {
   }
 
   renderTaskList() {
-    const tasks = getTasks();
+    const tasks = getIncompleteTasks();
 
     taskRefs.forEach((taskRef) => {
       taskRef.destroy();
@@ -32,20 +32,27 @@ export default class extends Phaser.Scene {
 
     taskRefs = [];
 
-    tasks
-      .filter((task) => !task.isComplete)
-      .forEach((task, index) => {
-        let taskRef = this.add.text(
-          100,
-          140 + 20 * index,
-          `${task.destination} - ${task.customerName}`
-        );
+    tasks.slice(0, 15).forEach((task, index) => {
+      let taskRef = this.add.text(
+        100,
+        140 + 20 * index,
+        `${task.destination} - ${task.customerName}`
+      );
 
-        taskRef.setInteractive({ useHandCursor: true });
-        taskRef.on('pointerdown', () => this.viewTask(task));
+      taskRef.setInteractive({ useHandCursor: true });
+      taskRef.on('pointerdown', () => this.viewTask(task));
 
-        taskRefs.push(taskRef);
-      });
+      taskRefs.push(taskRef);
+    });
+    const divider = this.add.text(100, 440, `----`);
+    const moreTasksTest = this.add.text(
+      100,
+      460,
+      `...There are ${tasks.length - 15} More Tasks to Complete`
+    );
+
+    taskRefs.push(divider);
+    taskRefs.push(moreTasksTest);
   }
 
   backToMap() {

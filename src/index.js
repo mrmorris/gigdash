@@ -4,6 +4,7 @@ import WorldMapScene from './scenes/WorldMap';
 import TaskListScene from './scenes/TaskList';
 import ShopViewScene from './scenes/ShopView';
 import TaskViewScene from './scenes/TaskView';
+import ReviewListScene from './scenes/ReviewList';
 
 import * as C from 'constants.js'
 import TASKS from 'tasks.js'
@@ -16,6 +17,7 @@ const worldMapScene = new WorldMapScene();
 const taskListScene = new TaskListScene();
 const shopViewScene = new ShopViewScene();
 const taskViewScene = new TaskViewScene();
+const reviewListScene = new ReviewListScene();
 
 const config = {
   type: Phaser.AUTO,
@@ -31,9 +33,29 @@ game.scene.add('worldMapScene', worldMapScene);
 game.scene.add('taskListScene', taskListScene);
 game.scene.add('shopViewScene', shopViewScene);
 game.scene.add('taskViewScene', taskViewScene);
+game.scene.add('reviewListScene', reviewListScene);
 
 game.scene.start('worldMapScene');
 
+// Repeatedly add tasks from the task list to create overwhelming number of tasks
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
+TASKS.forEach(task => addTask(task))
 TASKS.forEach(task => addTask(task))
 
 addInventoryItem(C.ITEM_BANANA);

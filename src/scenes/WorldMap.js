@@ -11,6 +11,7 @@ import * as C from '../constants.js'
 const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
 const shopViewSceneKey = 'shopViewScene';
+const reviewListSceneKey = 'reviewListScene';
 
 let isTraveling = false;
 
@@ -39,11 +40,14 @@ export default class extends Phaser.Scene {
     this.player = this.add.image(centerX, centerY, 'player');
 
     // a task list link
-    const taskListLink = this.add.text(500, 50, 'Task List');
+    const taskListLink = this.add.text(550, 100, 'My Tasks');
     taskListLink.setInteractive({ useHandCursor: true });
     taskListLink.on('pointerdown', () => this.viewTaskList());
 
-
+    // a reviews link
+    const reviewsLink = this.add.text(550, 120, 'My Reviews');
+    reviewsLink.setInteractive({ useHandCursor: true });
+    reviewsLink.on('pointerdown', () => this.viewReviewListLink());
 
     // add some "stores"
     const store1 = new Shop(
@@ -117,7 +121,9 @@ export default class extends Phaser.Scene {
   }
 
   viewTaskList() {
-    this.scene.switch(taskListSceneKey);
+    if (!isTraveling) {
+      this.scene.switch(taskListSceneKey);
+    }
   }
 
   travelTo(location) {
@@ -153,5 +159,9 @@ export default class extends Phaser.Scene {
       console.log('Switch to', taskListSceneKey);
       this.scene.switch(taskListSceneKey);
     }
+  }
+
+  viewReviewListLink() {
+    this.scene.switch(reviewListSceneKey);
   }
 }

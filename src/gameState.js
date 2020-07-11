@@ -6,7 +6,7 @@ const inventory = {
   wrench: 0,
 };
 const maxInventory = 10;
-
+const reviews = [];
 let currentLocation = { name: 'nowhere' };
 let currentTask;
 
@@ -16,6 +16,10 @@ export const addTask = (task) => {
 
 export const getTasks = () => {
   return tasks;
+};
+
+export const getIncompleteTasks = () => {
+  return tasks.filter((task) => !task.isComplete);
 };
 
 export const completeTask = (task) => {
@@ -53,4 +57,12 @@ export const getCurrentTask = () => {
 
 export const setCurrentTask = (task) => {
   currentTask = task;
+};
+
+export const getReviews = () => {
+  return reviews;
+};
+
+export const addReview = (review) => {
+  reviews.push(review);
 };
