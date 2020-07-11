@@ -2,8 +2,9 @@ import Phaser from 'phaser';
 import {
   getCurrentLocation,
   addInventoryItem,
-  getInventory,
+  getInventory, removeInventoryItem,
 } from '../gameState';
+import {SETTING_INVENTORY_LIMIT} from '../constants';
 
 const key = 'shopViewScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -49,12 +50,24 @@ export default class extends Phaser.Scene {
     });
 
     const inventory = getInventory();
-    let myInventoryTitle = this.add.text(500, 160, 'Your Inventory');
+    let myInventoryTitle = this.add.text(500, 160, `Your Inventory (Max ${SETTING_INVENTORY_LIMIT})`);
     redrawRefs.push(myInventoryTitle);
     let index = 0;
     for (const [item, count] of Object.entries(inventory)) {
-      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count}`);
+      if (count <= 0) {
+        return;
+      }
+
+      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count} ${count > 0 ? 'x' : ''}`);
       index++;
+
+      itemRef.setInteractive({ useHandCursor: true });
+      itemRef.on('pointerdown', () => {
+        removeInventoryItem(item);
+        // @todo - avoid redrawing the whole thing
+        this.renderShop();
+      });
+
       redrawRefs.push(itemRef);
     }
   }

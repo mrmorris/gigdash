@@ -41,11 +41,19 @@ export default class extends Phaser.Scene {
     const location = getCurrentLocation();
     const inventory = getInventory();
 
+    const itemsRequired = {};
+    task.items.forEach(item => {
+      if (!itemsRequired[item]) {
+        itemsRequired[item] = 0;
+      }
+      itemsRequired[item]++;
+    });
+
     let canCompleteTask =
       location &&
       task.destination === location.name &&
-      task.items.every((item) => {
-        return inventory[item] > 0;
+      Object.entries(itemsRequired).every(([item, count]) => {
+        return inventory[item] >= count;
       });
 
     // if a user can complete the task...
@@ -94,7 +102,7 @@ export default class extends Phaser.Scene {
 
   completeTask(task) {
     // deplete inventory
-    task.items.every((item) => {
+    task.items.forEach(item => {
       removeInventoryItem(item);
     });
 
