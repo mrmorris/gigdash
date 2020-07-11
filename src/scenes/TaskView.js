@@ -22,7 +22,6 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(100, 80, 'Task View');
     const backButton = this.add.text(100, 540, 'Back to List');
 
     backButton.setInteractive({ useHandCursor: true });
@@ -58,26 +57,27 @@ export default class extends Phaser.Scene {
       completeTaskButton.on('pointerdown', () => this.completeTask(task));
     }
 
-    const destinationName = this.add.text(
-      100,
-      120,
-      `@ ${task.destination}`
-    );
-    redrawRefs.push(destinationName);
-
     const customerName = this.add.text(
       100,
       140,
-      `${task.customerName} has a request:`
+      `Deliver to: ${task.customerName}`
     );
     redrawRefs.push(customerName);
 
+    const destinationName = this.add.text(
+      100,
+      120,
+      `Located at: ${task.destination}`
+    );
+    redrawRefs.push(destinationName);
+
     const description = this.add.text(
       100,
-      160,
+      180,
       task.name,
       {
-        fill: '#FFFF00'
+        fill: '#FFFF00',
+        wordWrap: { width: 600 }
       }
     );
     redrawRefs.push(description);
@@ -85,8 +85,8 @@ export default class extends Phaser.Scene {
     task.items.forEach((taskName, index) => {
       let taskItemRef = this.add.text(
         100,
-        200 + 20 * index,
-        `${taskName} ${inventory[taskName] > 0 ? 'x️' : ''}️`
+        200 + description.height + 20 * index,
+        `* ${taskName} ${inventory[taskName] > 0 ? 'x️' : ''}️`
       );
       redrawRefs.push(taskItemRef);
     });

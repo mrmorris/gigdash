@@ -34,11 +34,11 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     const location = getCurrentLocation();
-    const title = this.add.text(100, 100, `Shop: ${location.name}`);
+    const title = this.add.text(100, 100, `Welcome to ${location.name}!`);
     redrawRefs.push(title);
 
     location.inventory.forEach((item, index) => {
-      let itemRef = this.add.text(100, 140 + 20 * index, item);
+      let itemRef = this.add.text(100, 160 + 20 * index, item);
       itemRef.setInteractive({ useHandCursor: true });
       itemRef.on('pointerdown', () => {
         addInventoryItem(item);
@@ -49,11 +49,11 @@ export default class extends Phaser.Scene {
     });
 
     const inventory = getInventory();
-    let myInventoryTitle = this.add.text(400, 120, 'Your Current Inventory');
+    let myInventoryTitle = this.add.text(500, 160, 'Your Inventory');
     redrawRefs.push(myInventoryTitle);
     let index = 0;
     for (const [item, count] of Object.entries(inventory)) {
-      let itemRef = this.add.text(400, 140 + 20 * index, `${item}: ${count}`);
+      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count}`);
       index++;
       redrawRefs.push(itemRef);
     }
