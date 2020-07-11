@@ -38,3 +38,5 @@ export const NEIGHBORHOOD_OLNEYVILLE = 'Olneyville';
 export const SHOP_GROCERY = 'Ultra Mega Foodtown';
 export const SHOP_HARDWARE = 'Do It Best Hardware';
 export const SHOP_LIQUOR = "Lucius Sunday's 24-hour\nLiquor Emporium";
+
+export const SETTING_INITIAL_ASSIGNMENT_DELAY = 5000

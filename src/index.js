@@ -11,7 +11,6 @@ import ReviewListScene from './scenes/ReviewList';
 import * as C from './constants';
 import TASKS from './tasks';
 
-import { addInventoryItem, addTask } from './gameState';
 import Task from './entities/Task';
 
 const titleScene = new TitleScene();
@@ -45,26 +44,3 @@ game.scene.add('taskViewScene', taskViewScene);
 game.scene.add('reviewListScene', reviewListScene);
 
 game.scene.start('worldMapScene');
-
-// Repeatedly add tasks from the task list to create overwhelming number of tasks
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-TASKS.forEach((task) => addTask(task));
-
-addInventoryItem(C.ITEM_BANANA);
