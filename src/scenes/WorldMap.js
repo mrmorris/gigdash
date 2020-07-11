@@ -2,7 +2,13 @@ import Phaser from 'phaser';
 
 import worldMapImg from '../assets/worldMap.jpg';
 import playerImg from '../assets/player.png';
-import { addTask, getCurrentLocation, setCurrentLocation, getTasks } from '../gameState';
+import {
+  addTask,
+  getCurrentLocation,
+  setCurrentLocation,
+  getTasks,
+  addReview,
+} from '../gameState';
 import Shop from '../entities/Shop';
 import Neighborhood from '../entities/Neighborhood';
 import {
@@ -127,7 +133,7 @@ export default class extends Phaser.Scene {
     );
 
     // Kick off the task queuer
-    this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY)
+    this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
   }
 
   viewTaskList() {
@@ -143,7 +149,6 @@ export default class extends Phaser.Scene {
       isTraveling = true;
 
       if (currentLocation && location.name === currentLocation.name) {
-        console.log('already there');
         this.switchToLocationScene();
       } else {
         const tween = this.tweens.add({
@@ -163,10 +168,8 @@ export default class extends Phaser.Scene {
     isTraveling = false;
     setCurrentLocation(location);
     if (location instanceof Shop) {
-      console.log('Switch to', shopViewSceneKey);
       this.scene.switch(shopViewSceneKey);
     } else {
-      console.log('Switch to', taskListSceneKey);
       this.scene.switch(taskListSceneKey);
     }
   }
@@ -176,22 +179,38 @@ export default class extends Phaser.Scene {
   }
 
   assignNewTask() {
-    const assignedTaskIds = getTasks().map((t) => t.id)
-    const unassignedTasks = TASKS.filter((t) => !assignedTaskIds.includes(t.id))
+    const assignedTaskIds = getTasks().map((t) => t.id);
+    const unassignedTasks = TASKS.filter(
+      (t) => !assignedTaskIds.includes(t.id)
+    );
     // If there are no more unassigned tasks, do nothing for now
-    if (!unassignedTasks.length) return
-    const selectedTask = unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)]
-    addTask(selectedTask)
+    if (!unassignedTasks.length) {
+      return;
+    }
+    const selectedTask =
+      unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)];
+    addTask(selectedTask);
+    addNotification('You got a new task');
+
+    // tasks will automatically fail if they aren't completed in... 1 minute
+    setTimeout(() => {
+      if (!selectedTask.isComplete) {
+        selectedTask.isFailed = true;
+        selectedTask.isComplete = true;
+        addNotification('You just got a negative review!', 'red');
+        addReview(selectedTask.negativeReview);
+      }
+    }, 1000 * 60 * 1); // 1 minutes
   }
 
   queueNextAssignment(timeout) {
-    this.assignNewTask()
-    const nextAssignmentTimeout = timeout * 0.9
+    this.assignNewTask();
+    const nextAssignmentTimeout = timeout * 0.9;
     this.time.addEvent({
       delay: nextAssignmentTimeout,
       callback: this.queueNextAssignment,
       args: [nextAssignmentTimeout],
-      callbackScope: this
-    })
+      callbackScope: this,
+    });
   }
 }

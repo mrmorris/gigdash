@@ -68,7 +68,6 @@ export const addNotification = (text, color = 'black', scene = mainScene) => {
   notifications.push(alert);
 
   fade.on('complete', () => {
-    console.log('done fading');
     // as fades complete, we'll remove the oldest alert from our list and animate the rest "back down"
     notifications.shift();
 

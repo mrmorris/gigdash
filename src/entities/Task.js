@@ -5,6 +5,7 @@ export default class {
     this.customerName = customerName;
     this.items = items;
     this.isComplete = false;
+    this.isFailed = false;
     this.destination = destination;
     this.positiveReview = positiveReview;
     this.negativeReview = negativeReview;

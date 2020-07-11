@@ -44,15 +44,17 @@ export default class extends Phaser.Scene {
 
       taskRefs.push(taskRef);
     });
-    const divider = this.add.text(100, 440, `----`);
-    const moreTasksTest = this.add.text(
-      100,
-      460,
-      `...There are ${tasks.length - 15} More Tasks to Complete`
-    );
+    if (tasks.length > 15) {
+      const divider = this.add.text(100, 440, `----`);
+      const moreTasksTest = this.add.text(
+        100,
+        460,
+        `...There are ${tasks.length - 15} More Tasks to Complete`
+      );
 
-    taskRefs.push(divider);
-    taskRefs.push(moreTasksTest);
+      taskRefs.push(divider);
+      taskRefs.push(moreTasksTest);
+    }
   }
 
   backToMap() {
