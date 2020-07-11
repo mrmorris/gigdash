@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 import TitleScene from './scenes/Title';
 import WorldMapScene from './scenes/WorldMap';
 
@@ -7,7 +7,7 @@ const worldMapScene = new WorldMapScene();
 
 const config = {
   type: Phaser.AUTO,
-  parent: "phaser-example",
+  parent: 'phaser-example',
   width: 800,
   height: 600,
 };
