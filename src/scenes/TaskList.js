@@ -14,7 +14,7 @@ export default class extends Phaser.Scene {
 
   create() {
     const title = this.add.text(100, 100, 'Task List');
-    const backButton = this.add.text(100, 200, 'Back to Map');
+    const backButton = this.add.text(100, 540, 'Back to Map');
 
     backButton.setInteractive({ useHandCursor: true });
     backButton.on('pointerdown', () => this.backToMap());
@@ -35,7 +35,7 @@ export default class extends Phaser.Scene {
     tasks
       .filter((task) => !task.isComplete)
       .forEach((task, index) => {
-        let taskRef = this.add.text(0, 20 * index, task.name);
+        let taskRef = this.add.text(100, 120 + (20 * index), task.name);
 
         taskRef.setInteractive({ useHandCursor: true });
         taskRef.on('pointerdown', () => this.viewTask(task));
