@@ -38,7 +38,7 @@ export default class extends Phaser.Scene {
     redrawRefs.push(title);
 
     location.inventory.forEach((item, index) => {
-      let itemRef = this.add.text(100, 120 + 20 * index, item);
+      let itemRef = this.add.text(100, 140 + 20 * index, item);
       itemRef.setInteractive({ useHandCursor: true });
       itemRef.on('pointerdown', () => {
         addInventoryItem(item);
