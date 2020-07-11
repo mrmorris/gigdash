@@ -32,11 +32,11 @@ export const ITEM_RED_CUPS = 'Red Cups';
 export const ITEM_VISION_DROPS = 'Speed Vision Drops';
 
 export const NEIGHBORHOOD_FOX_POINT = 'Fox Point';
-export const NEIGHBORHOOD_FEDERAL_HILL = 'Federal Hall';
+export const NEIGHBORHOOD_FEDERAL_HILL = 'Federal Hill';
 export const NEIGHBORHOOD_OLNEYVILLE = 'Olneyville';
 
 export const SHOP_GROCERY = 'Ultra Mega Foodtown';
 export const SHOP_HARDWARE = 'Do It Best Hardware';
-export const SHOP_LIQUOR = "Lucius Sunday's 24-hour Liquor Emporium";
+export const SHOP_LIQUOR = "Lucius Sunday's 24-hour\nLiquor Emporium";
 
 export const SETTING_INITIAL_ASSIGNMENT_DELAY = 5000

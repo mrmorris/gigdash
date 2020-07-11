@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import FadePlugin from 'phaser3-rex-plugins/plugins/fade-plugin.js';
+
 import TitleScene from './scenes/Title';
 import WorldMapScene from './scenes/WorldMap';
 import TaskListScene from './scenes/TaskList';
@@ -23,6 +25,13 @@ const config = {
   parent: 'phaser-example',
   width: 800,
   height: 600,
+  plugins: {
+    global: [{
+      key: 'rexFade',
+      plugin: FadePlugin,
+      start: true
+    }]
+  }
 };
 
 const game = new Phaser.Game(config);

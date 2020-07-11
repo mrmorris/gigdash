@@ -5,6 +5,10 @@ import playerImg from '../assets/player.png';
 import { addTask, getCurrentLocation, setCurrentLocation, getTasks } from '../gameState';
 import Shop from '../entities/Shop';
 import Neighborhood from '../entities/Neighborhood';
+import {
+  setMainScene as setMainSceneForNotifications,
+  addNotification,
+} from '../lib/Notifications';
 
 import * as C from '../constants';
 import TASKS from '../tasks';
@@ -49,6 +53,8 @@ export default class extends Phaser.Scene {
     const reviewsLink = this.add.text(550, 120, 'My Reviews');
     reviewsLink.setInteractive({ useHandCursor: true });
     reviewsLink.on('pointerdown', () => this.viewReviewListLink());
+
+    setMainSceneForNotifications(this);
 
     // add some "stores"
     const store1 = new Shop(
