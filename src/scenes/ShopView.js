@@ -42,10 +42,22 @@ export default class extends Phaser.Scene {
       itemRef.setInteractive({ useHandCursor: true });
       itemRef.on('pointerdown', () => {
         addInventoryItem(item);
-        console.log('Your inventory is now', getInventory());
+        // @todo - avoid redrawing the whole thing
+        this.renderShop();
       });
       redrawRefs.push(itemRef);
     });
+
+    const inventory = getInventory();
+    let myInventoryTitle = this.add.text(400, 120, 'Your Current Inventory');
+    redrawRefs.push(myInventoryTitle);
+    let index = 0;
+    for (const [item, count] of Object.entries(inventory)) {
+      let itemRef = this.add.text(400, 140 + 20 * index, `${item}: ${count}`);
+      index++;
+      redrawRefs.push(itemRef);
+      console.dir(itemRef);
+    }
   }
 
   backToMap() {

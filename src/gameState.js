@@ -5,6 +5,7 @@ const inventory = {
   milk: 0,
   wrench: 0,
 };
+const maxInventory = 10;
 
 let currentLocation = { name: 'nowhere' };
 let currentTask;
@@ -27,7 +28,10 @@ export const getInventory = () => {
 };
 
 export const addInventoryItem = (item) => {
-  inventory[item] = inventory[item] ? inventory[item] + 1 : 1;
+  let itemCount = Object.values(inventory).reduce((acc, curr) => acc + curr, 0);
+  if (itemCount < maxInventory) {
+    inventory[item] = inventory[item] ? inventory[item] + 1 : 1;
+  }
 };
 
 // @todo - prevent going below 0?
