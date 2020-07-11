@@ -1,12 +1,38 @@
+/**
+ * notifications start to the far left
+ * @type {number}
+ */
 const startingPositionX = 0;
+
+/**
+ * notifications start at the bottom of our scene
+ * could improve this by using the scene's height
+ * @type {number}
+ */
 const startingPositionY = 570;
 
-let currentPositionY = startingPositionY;
-const yIncrement = 35;
+/**
+ * height increment with which to position new notifications
+ * @type {number}
+ */
+const notificationHeight = 35;
 
+/**
+ * timeout for fading out notifications
+ * @type {number}
+ */
 const fadeDelay = 10000;
 const notifications = [];
 
+/**
+ * keep track of where in the 'stack' of notifications the latest notification should be
+ * @type {number}
+ */
+let currentPositionY = startingPositionY;
+
+/**
+ * keep track of our main Scene to render notifications into
+ */
 let mainScene;
 
 /**
@@ -33,7 +59,7 @@ export const addNotification = (text, color = 'black', scene = mainScene) => {
     scene.tweens.add({
       targets: el,
       x: el.x,
-      y: currentPositionY + yIncrement * i,
+      y: currentPositionY + notificationHeight * i,
       duration: 100,
       ease: 'Power2',
     });
@@ -47,9 +73,9 @@ export const addNotification = (text, color = 'black', scene = mainScene) => {
     notifications.shift();
 
     // move us "down" in the scene
-    currentPositionY += yIncrement;
+    currentPositionY += notificationHeight;
   });
 
   // move is "up" in the scene
-  currentPositionY -= yIncrement;
+  currentPositionY -= notificationHeight;
 };
