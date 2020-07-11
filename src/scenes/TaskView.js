@@ -5,7 +5,9 @@ import {
   removeInventoryItem,
   getCurrentLocation,
   completeTask,
+  addReview,
 } from '../gameState';
+import Review from '../entities/Review';
 
 const key = 'taskViewScene';
 const taskListSceneKey = 'taskListScene';
@@ -95,8 +97,15 @@ export default class extends Phaser.Scene {
     });
 
     // remove task
-    // @todo - completion will give a positive review
     completeTask(task);
+
+    console.log(task);
+    // review
+    addReview(new Review(
+      task.positiveReview,
+      task.customerName,
+      5
+    ));
     this.scene.switch(taskListSceneKey);
   }
 
