@@ -7,6 +7,7 @@ import {
   getCurrentLocation,
   completeTask,
   addReview,
+  incrementPoints,
 } from '../gameState';
 import Review from '../entities/Review';
 import { addNotification } from '../lib/Notifications';
@@ -71,15 +72,10 @@ export default class extends Phaser.Scene {
     );
     redrawRefs.push(destinationName);
 
-    const description = this.add.text(
-      100,
-      180,
-      task.name,
-      {
-        fill: '#FFFF00',
-        wordWrap: { width: 600 }
-      }
-    );
+    const description = this.add.text(100, 180, task.name, {
+      fill: '#FFFF00',
+      wordWrap: { width: 600 },
+    });
     redrawRefs.push(description);
 
     task.items.forEach((taskName, index) => {
@@ -102,11 +98,8 @@ export default class extends Phaser.Scene {
     completeTask(task);
 
     // review
-    addReview(new Review(
-      task.positiveReview,
-      task.customerName,
-      5
-    ));
+    addReview(new Review(task.positiveReview, task.customerName, 5));
+    incrementPoints();
     addNotification('You got a new review!', 'green');
     this.scene.switch(taskListSceneKey);
   }

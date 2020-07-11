@@ -2,11 +2,14 @@ import Phaser from 'phaser';
 
 import worldMapImg from '../assets/worldMap.jpg';
 import playerImg from '../assets/player.png';
+import starImg from '../assets/star.png';
 import {
   addTask,
   getCurrentLocation,
   setCurrentLocation,
+  decrementPoints,
   getTasks,
+  getStars,
   addReview,
 } from '../gameState';
 import Shop from '../entities/Shop';
@@ -35,11 +38,13 @@ export default class extends Phaser.Scene {
   preload() {
     this.load.image('worldMap', worldMapImg);
     this.load.image('player', playerImg);
+    this.load.image('star', starImg);
   }
 
   create() {
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
+    this.stars = [];
 
     const map = this.add.image(centerX, centerY, 'worldMap');
     // center and scale the map
@@ -50,6 +55,11 @@ export default class extends Phaser.Scene {
 
     // add the player
     this.player = this.add.image(centerX, centerY, 'player');
+
+    // add stars
+    [...Array(getStars()).keys()].forEach((idx) => {
+      this.stars.push(this.add.image(300 + 30 * idx, 500, 'star'));
+    });
 
     // a task list link
     const taskListLink = this.add.text(550, 100, 'My Tasks');
@@ -202,6 +212,7 @@ export default class extends Phaser.Scene {
         addReview(
           new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
         );
+        decrementPoints();
       }
     }, 1000 * 60 * 1); // 1 minutes
   }

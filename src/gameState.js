@@ -2,6 +2,7 @@ const tasks = [];
 const inventory = {};
 const maxInventory = 10;
 const reviews = [];
+let points = 100;
 let currentLocation = { name: 'nowhere' };
 let currentTask;
 
@@ -60,4 +61,16 @@ export const getReviews = () => {
 
 export const addReview = (review) => {
   reviews.push(review);
+};
+
+export const getStars = () => {
+  return points / 20;
+};
+
+export const incrementPoints = () => {
+  points++;
+};
+
+export const decrementPoints = () => {
+  points--;
 };
