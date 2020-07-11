@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import { getTasks, setCurrentTask } from '../gameState';
-import TaskViewScene from '../scenes/TaskView';
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -12,8 +11,6 @@ export default class extends Phaser.Scene {
   constructor() {
     super({ key });
   }
-
-  preload() {}
 
   create() {
     const title = this.add.text(100, 100, 'Task List');
@@ -29,7 +26,7 @@ export default class extends Phaser.Scene {
   renderTaskList() {
     const tasks = getTasks();
 
-    taskRefs.forEach(taskRef => {
+    taskRefs.forEach((taskRef) => {
       taskRef.destroy();
     });
 
@@ -53,11 +50,6 @@ export default class extends Phaser.Scene {
 
   viewTask(task) {
     setCurrentTask(task);
-
-    // @todo - we could ditch destroying the scene in favor of re-rendering on "wake"
-    this.scene.remove('taskViewScene');
-    const taskViewScene = new TaskViewScene();
-    this.scene.add('taskViewScene', taskViewScene);
     this.scene.switch(taskViewSceneKey);
   }
 }
