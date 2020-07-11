@@ -1,6 +1,7 @@
+import {SETTING_INVENTORY_LIMIT} from './constants';
+
 const tasks = [];
 const inventory = {};
-const maxInventory = 10;
 const reviews = [];
 let currentLocation = { name: 'nowhere' };
 let currentTask;
@@ -28,7 +29,7 @@ export const getInventory = () => {
 
 export const addInventoryItem = (item) => {
   let itemCount = Object.values(inventory).reduce((acc, curr) => acc + curr, 0);
-  if (itemCount < maxInventory) {
+  if (itemCount < SETTING_INVENTORY_LIMIT) {
     inventory[item] = inventory[item] ? inventory[item] + 1 : 1;
   }
 };
