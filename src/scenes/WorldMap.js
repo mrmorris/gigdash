@@ -6,7 +6,7 @@ import { getCurrentLocation, setCurrentLocation } from '../gameState';
 import Shop from '../entities/Shop';
 import Neighborhood from '../entities/Neighborhood';
 
-import * as C from '../constants.js'
+import * as C from '../constants';
 
 const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
@@ -51,7 +51,7 @@ export default class extends Phaser.Scene {
 
     // add some "stores"
     const store1 = new Shop(
-      C.STORE_GROCERY,
+      C.SHOP_GROCERY,
       [
         C.ITEM_CITRUS_FRUIT,
         C.ITEM_ENERGY_DRINK,
@@ -62,13 +62,13 @@ export default class extends Phaser.Scene {
         C.ITEM_GMO_GREEN_LEAVES,
         C.ITEM_MEDICINE,
         C.ITEM_GRANOLA,
-        C.ITEM_ICE_CREAM
+        C.ITEM_ICE_CREAM,
       ],
-      this.add.text(300, 50, C.STORE_GROCERY),
+      this.add.text(300, 50, C.SHOP_GROCERY),
       () => this.travelTo(store1)
     );
     const store2 = new Shop(
-      C.STORE_HARDWARE,
+      C.SHOP_HARDWARE,
       [
         C.ITEM_DUCT_TAPE,
         C.ITEM_NAILS,
@@ -79,13 +79,13 @@ export default class extends Phaser.Scene {
         C.ITEM_CABLE,
         C.ITEM_FAN,
         C.ITEM_CARBONIZED_WOOD,
-        C.ITEM_STERILIZED_CLEANING_FLUID
+        C.ITEM_STERILIZED_CLEANING_FLUID,
       ],
-      this.add.text(50, 100, C.STORE_HARDWARE),
+      this.add.text(50, 100, C.SHOP_HARDWARE),
       () => this.travelTo(store2)
     );
     const store3 = new Shop(
-      C.STORE_LIQUOR,
+      C.SHOP_LIQUOR,
       [
         C.ITEM_VODKA,
         C.ITEM_WHISKEY,
@@ -96,26 +96,26 @@ export default class extends Phaser.Scene {
         C.ITEM_GLOW_STICKS,
         C.ITEM_DRINK_MIX,
         C.ITEM_RED_CUPS,
-        C.ITEM_VISION_DROPS
+        C.ITEM_VISION_DROPS,
       ],
-      this.add.text(100, 200, C.STORE_LIQUOR),
+      this.add.text(100, 400, C.SHOP_LIQUOR),
       () => this.travelTo(store3)
     );
 
     // add some hoods
     const hood1 = new Neighborhood(
-      NEIHBORHOOD_FOX_POINT,
-      this.add.text(400, 20, NEIGHBORHOOD_FOX_POINT),
+      C.NEIGHBORHOOD_FOX_POINT,
+      this.add.text(400, 20, C.NEIGHBORHOOD_FOX_POINT),
       () => this.travelTo(hood1)
     );
     const hood2 = new Neighborhood(
-      NEIGHBORHOOD_OLNEYVILLE,
-      this.add.text(400, 100, NEIGHBORHOOD_OLNEYVILLE),
+      C.NEIGHBORHOOD_OLNEYVILLE,
+      this.add.text(400, 100, C.NEIGHBORHOOD_OLNEYVILLE),
       () => this.travelTo(hood2)
     );
     const hood3 = new Neighborhood(
-      NEIGHBORHOOD_FEDERALL_HILL,
-      this.add.text(400, 200, NEIGHBORHOOD_FEDERAL_HILL),
+      C.NEIGHBORHOOD_FEDERAL_HILL,
+      this.add.text(400, 200, C.NEIGHBORHOOD_FEDERAL_HILL),
       () => this.travelTo(hood3)
     );
   }
