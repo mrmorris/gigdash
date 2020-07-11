@@ -6,6 +6,8 @@ import { getCurrentLocation, setCurrentLocation } from '../gameState';
 import Shop from '../entities/Shop';
 import Neighborhood from '../entities/Neighborhood';
 
+import * as C from '../constants.js'
+
 const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
 const shopViewSceneKey = 'shopViewScene';
@@ -41,40 +43,75 @@ export default class extends Phaser.Scene {
     taskListLink.setInteractive({ useHandCursor: true });
     taskListLink.on('pointerdown', () => this.viewTaskList());
 
+
+
     // add some "stores"
     const store1 = new Shop(
-      'Grocery Store',
-      ['apple', 'milk'],
-      this.add.text(300, 50, 'Grocery'),
+      C.STORE_GROCERY,
+      [
+        C.ITEM_CITRUS_FRUIT,
+        C.ITEM_ENERGY_DRINK,
+        C.ITEM_TOOTHPASTE,
+        C.ITEM_INFINITY_MEAT,
+        C.ITEM_FROZEN_PIZZA,
+        C.ITEM_BANANA,
+        C.ITEM_GMO_GREEN_LEAVES,
+        C.ITEM_MEDICINE,
+        C.ITEM_GRANOLA,
+        C.ITEM_ICE_CREAM
+      ],
+      this.add.text(300, 50, C.STORE_GROCERY),
       () => this.travelTo(store1)
     );
     const store2 = new Shop(
-      'Hardware Store',
-      ['pliers'],
-      this.add.text(50, 100, 'Hardware'),
+      C.STORE_HARDWARE,
+      [
+        C.ITEM_DUCT_TAPE,
+        C.ITEM_NAILS,
+        C.ITEM_SHOVEL,
+        C.ITEM_FISHING_POLE,
+        C.ITEM_HAMMER,
+        C.ITEM_CROWBAR,
+        C.ITEM_CABLE,
+        C.ITEM_FAN,
+        C.ITEM_CARBONIZED_WOOD,
+        C.ITEM_STERILIZED_CLEANING_FLUID
+      ],
+      this.add.text(50, 100, C.STORE_HARDWARE),
       () => this.travelTo(store2)
     );
     const store3 = new Shop(
-      'Liquor Store',
-      ['vodka'],
-      this.add.text(100, 200, 'Liquor'),
+      C.STORE_LIQUOR,
+      [
+        C.ITEM_VODKA,
+        C.ITEM_WHISKEY,
+        C.ITEM_TEQUILA,
+        C.ITEM_DOWN_TOWNERS,
+        C.ITEM_BEER,
+        C.ITEM_WINE,
+        C.ITEM_GLOW_STICKS,
+        C.ITEM_DRINK_MIX,
+        C.ITEM_RED_CUPS,
+        C.ITEM_VISION_DROPS
+      ],
+      this.add.text(100, 200, C.STORE_LIQUOR),
       () => this.travelTo(store3)
     );
 
     // add some hoods
     const hood1 = new Neighborhood(
-      'Fox Point',
-      this.add.text(400, 20, 'Fox Point'),
+      NEIHBORHOOD_FOX_POINT,
+      this.add.text(400, 20, NEIGHBORHOOD_FOX_POINT),
       () => this.travelTo(hood1)
     );
     const hood2 = new Neighborhood(
-      'Olneyville',
-      this.add.text(400, 100, 'Olneyville'),
+      NEIGHBORHOOD_OLNEYVILLE,
+      this.add.text(400, 100, NEIGHBORHOOD_OLNEYVILLE),
       () => this.travelTo(hood2)
     );
     const hood3 = new Neighborhood(
-      'Federal Hill',
-      this.add.text(400, 200, 'Federal Hill'),
+      NEIGHBORHOOD_FEDERALL_HILL,
+      this.add.text(400, 200, NEIGHBORHOOD_FEDERAL_HILL),
       () => this.travelTo(hood3)
     );
   }

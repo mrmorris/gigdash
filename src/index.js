@@ -5,6 +5,9 @@ import TaskListScene from './scenes/TaskList';
 import ShopViewScene from './scenes/ShopView';
 import TaskViewScene from './scenes/TaskView';
 
+import * as C from 'constants.js'
+import TASKS from 'tasks.js'
+
 import { addInventoryItem, addTask } from './gameState';
 import Task from './entities/Task';
 
@@ -31,11 +34,6 @@ game.scene.add('taskViewScene', taskViewScene);
 
 game.scene.start('worldMapScene');
 
-addTask(new Task(1, 'Buy me an apple', 'John', 'Fox Point', ['apple']));
-addTask(new Task(2, 'I am hungry', 'Jane', 'Fox Point', ['pliers', 'milk']));
-addTask(new Task(3, 'So lonely 😃', 'Smirny', 'Olneyville', ['vodka']));
-addTask(
-  new Task(4, 'Buy me another apple', 'Cricket', 'Federal Hill', ['apple'])
-);
+TASKS.forEach(task => addTask(task))
 
-addInventoryItem('apple');
+addInventoryItem(C.ITEM_BANANA);
