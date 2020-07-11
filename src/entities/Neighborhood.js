@@ -1,7 +1,6 @@
 export default class {
-  constructor(name, inventory = [], ref, clickHandler) {
+  constructor(name, ref, clickHandler) {
     this.name = name;
-    this.inventory = inventory;
     this.ref = ref;
 
     this.ref.setInteractive({ useHandCursor: true });

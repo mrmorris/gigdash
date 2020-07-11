@@ -4,12 +4,12 @@ import worldMapImg from '../assets/worldMap.jpg';
 import playerImg from '../assets/player.png';
 import { setCurrentLocation } from '../gameState';
 import Shop from '../entities/Shop';
+import Neighborhood from '../entities/Neighborhood';
 
 const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
 
 let isTraveling = false;
-
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -40,8 +40,7 @@ export default class extends Phaser.Scene {
     taskListLink.setInteractive({ useHandCursor: true });
     taskListLink.on('pointerdown', () => this.viewTaskList());
 
-    // add some "stores" and "neighborhoods"
-
+    // add some "stores"
     const store1 = new Shop(
       'Grocery Store',
       [],
@@ -59,6 +58,23 @@ export default class extends Phaser.Scene {
       [],
       this.add.text(100, 200, 'Liquor'),
       () => this.travelTo(store3)
+    );
+
+    // add some hoods
+    const hood1 = new Neighborhood(
+      'Upper Crust',
+      this.add.text(300, -50, 'Upper Crust'),
+      () => this.travelTo(hood1)
+    );
+    const hood2 = new Neighborhood(
+      'Hippy Town',
+      this.add.text(50, -100, 'Hippy Town'),
+      () => this.travelTo(hood2)
+    );
+    const hood3 = new Neighborhood(
+      'East Dogmouth',
+      this.add.text(100, -200, 'East Dogmouth'),
+      () => this.travelTo(hood3)
     );
   }
 
