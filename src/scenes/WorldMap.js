@@ -10,6 +10,7 @@ import {
   addReview,
 } from '../gameState';
 import Shop from '../entities/Shop';
+import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
 import {
   setMainScene as setMainSceneForNotifications,
@@ -198,7 +199,9 @@ export default class extends Phaser.Scene {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
         addNotification('You just got a negative review!', 'red');
-        addReview(selectedTask.negativeReview);
+        addReview(
+          new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
+        );
       }
     }, 1000 * 60 * 1); // 1 minutes
   }
