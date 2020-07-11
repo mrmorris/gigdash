@@ -3,6 +3,7 @@ import {
   getCurrentTask,
   getInventory,
   removeInventoryItem,
+  getCurrentLocation,
   completeTask,
 } from '../gameState';
 
