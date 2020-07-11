@@ -1,9 +1,11 @@
 import Phaser from 'phaser';
 import TitleScene from './scenes/Title';
 import WorldMapScene from './scenes/WorldMap';
+import TaskListScene from './scenes/TaskList';
 
 const titleScene = new TitleScene();
 const worldMapScene = new WorldMapScene();
+const taskListScene = new TaskListScene();
 
 const config = {
   type: Phaser.AUTO,
@@ -14,10 +16,8 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-// Add both scenes (it does not start them)
 game.scene.add('titleScene', titleScene);
 game.scene.add('worldMapScene', worldMapScene);
-
-//game.scene.add("game", gameScene);
+game.scene.add('taskListScene', taskListScene);
 
 game.scene.start('titleScene');
