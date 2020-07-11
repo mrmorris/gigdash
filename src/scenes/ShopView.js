@@ -18,7 +18,7 @@ export default class extends Phaser.Scene {
   preload() {}
 
   create() {
-    const backButton = this.add.text(100, 200, 'Back to Map');
+    const backButton = this.add.text(100, 550, 'Back to Map');
 
     backButton.setInteractive({ useHandCursor: true });
     backButton.on('pointerdown', () => this.backToMap());

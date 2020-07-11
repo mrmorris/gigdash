@@ -6,6 +6,9 @@ import ShopViewScene from './scenes/ShopView';
 import TaskViewScene from './scenes/TaskView';
 import ReviewListScene from './scenes/ReviewList';
 
+import * as C from './constants';
+import TASKS from './tasks';
+
 import { addInventoryItem, addTask } from './gameState';
 import Task from './entities/Task';
 
@@ -34,14 +37,25 @@ game.scene.add('reviewListScene', reviewListScene);
 
 game.scene.start('worldMapScene');
 
-addTask(new Task(1, 'Buy me an apple', 'John', 'Fox Point', ['apple'], 'Love it', 'Hate it'));
-addTask(new Task(2, 'I am hungry', 'Jane', 'Fox Point', ['pliers', 'milk'], 'Thanks!', 'You suck'));
-addTask(new Task(3, 'So lonely 😃', 'Smirny', 'Olneyville', ['vodka'], 'So so...', 'Meh'));
-addTask(
-  new Task(4, 'Buy me another apple', 'Cricket', 'Federal Hill', ['apple'], 'Marry me!', 'Can you help me?')
-);
+// Repeatedly add tasks from the task list to create overwhelming number of tasks
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
+TASKS.forEach((task) => addTask(task));
 
-[...Array(50).keys()].forEach(() => {
-  addTask(new Task(1, 'Buy me an apple', 'John', 'Fox Point', ['apple']));
-});
-addInventoryItem('apple');
+addInventoryItem(C.ITEM_BANANA);
