@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+
 import {
   getCurrentTask,
   getInventory,
@@ -8,6 +9,7 @@ import {
   addReview,
 } from '../gameState';
 import Review from '../entities/Review';
+import { addNotification } from '../lib/Notifications';
 
 const key = 'taskViewScene';
 const taskListSceneKey = 'taskListScene';
@@ -99,13 +101,13 @@ export default class extends Phaser.Scene {
     // remove task
     completeTask(task);
 
-    console.log(task);
     // review
     addReview(new Review(
       task.positiveReview,
       task.customerName,
       5
     ));
+    addNotification('You got a new review!', 'green');
     this.scene.switch(taskListSceneKey);
   }
 
