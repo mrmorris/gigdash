@@ -8,6 +8,7 @@ import Neighborhood from '../entities/Neighborhood';
 
 const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
+const shopViewSceneKey = 'shopViewScene';
 
 let isTraveling = false;
 
@@ -43,19 +44,19 @@ export default class extends Phaser.Scene {
     // add some "stores"
     const store1 = new Shop(
       'Grocery Store',
-      [],
+      ['apple', 'milk'],
       this.add.text(300, 50, 'Grocery'),
       () => this.travelTo(store1)
     );
     const store2 = new Shop(
       'Hardware Store',
-      [],
+      ['wrench'],
       this.add.text(50, 100, 'Hardware'),
       () => this.travelTo(store2)
     );
     const store3 = new Shop(
       'Liquor Store',
-      [],
+      ['vodka'],
       this.add.text(100, 200, 'Liquor'),
       () => this.travelTo(store3)
     );
@@ -95,10 +96,10 @@ export default class extends Phaser.Scene {
       });
 
       tween.on('complete', () => {
-        console.log('Done travelin 2');
         isTraveling = false;
-
         setCurrentLocation(location);
+        console.log('Switch to', shopViewSceneKey);
+        this.scene.switch(shopViewSceneKey);
       });
     }
   }

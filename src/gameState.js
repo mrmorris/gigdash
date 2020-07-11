@@ -1,8 +1,9 @@
 const tasks = [];
 const inventory = {
-  'apple': 0,
-  'vodka': 0,
-  'milk': 0,
+  apple: 0,
+  vodka: 0,
+  milk: 0,
+  wrench: 0,
 };
 
 let currentLocation;
@@ -26,7 +27,7 @@ export const getInventory = () => {
 };
 
 export const addInventoryItem = (item) => {
-  inventory[item]++;
+  inventory[item] = inventory[item] ? inventory[item] + 1 : 1;
 };
 
 // @todo - prevent going below 0?
@@ -41,7 +42,6 @@ export const getCurrentLocation = () => {
 export const setCurrentLocation = (location) => {
   currentLocation = location;
 };
-
 
 export const getCurrentTask = () => {
   return currentTask;
