@@ -107,7 +107,7 @@ export default class extends Phaser.Scene {
       task.customerName,
       5
     ));
-    addNotification('You got a new review!');
+    addNotification('You got a new review!', 'green');
     this.scene.switch(taskListSceneKey);
   }
 
