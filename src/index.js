@@ -38,4 +38,7 @@ addTask(
   new Task(4, 'Buy me another apple', 'Cricket', 'Federal Hill', ['apple'])
 );
 
+[...Array(50).keys()].forEach(() => {
+  addTask(new Task(1, 'Buy me an apple', 'John', 'Fox Point', ['apple']));
+});
 addInventoryItem('apple');

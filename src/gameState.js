@@ -18,6 +18,10 @@ export const getTasks = () => {
   return tasks;
 };
 
+export const getIncompleteTasks = () => {
+  return tasks.filter((task) => !task.isComplete);
+};
+
 export const completeTask = (task) => {
   // find the task in our tasks array
   task.isComplete = true;
