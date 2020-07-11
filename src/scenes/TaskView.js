@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 import {
-  getCurrentLocation,
   getCurrentTask,
   getInventory,
   removeInventoryItem,
@@ -18,7 +17,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(100, 100, 'Task View');
+    const title = this.add.text(100, 80, 'Task View');
     const backButton = this.add.text(100, 540, 'Back to List');
 
     backButton.setInteractive({ useHandCursor: true });
@@ -35,15 +34,11 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     const task = getCurrentTask();
-    const location = getCurrentLocation();
     const inventory = getInventory();
 
-    let canCompleteTask =
-      location &&
-      task.destination === location.name &&
-      task.items.every((item) => {
-        return inventory[item] > 0;
-      });
+    let canCompleteTask = task.items.every((item) => {
+      return inventory[item] > 0;
+    });
 
     // if a user can complete the task...
     if (canCompleteTask) {
@@ -54,19 +49,35 @@ export default class extends Phaser.Scene {
       completeTaskButton.on('pointerdown', () => this.completeTask(task));
     }
 
+    const destinationName = this.add.text(
+      100,
+      120,
+      `@ ${task.destination}`
+    );
+    redrawRefs.push(destinationName);
+
     const customerName = this.add.text(
       100,
       140,
-      `${task.customerName} would like...`
+      `${task.customerName} has a request:`
     );
     redrawRefs.push(customerName);
 
+    const description = this.add.text(
+      100,
+      160,
+      task.name,
+      {
+        fill: '#FFFF00'
+      }
+    );
+    redrawRefs.push(description);
+
     task.items.forEach((taskName, index) => {
-      let hasItem = inventory[taskName] > 0 ? 'ok' : '';
       let taskItemRef = this.add.text(
         100,
-        180 + 20 * index,
-        `${taskName} ${hasItem}️`
+        200 + 20 * index,
+        `${taskName} ${inventory[taskName] > 0 ? 'x️' : ''}️`
       );
       redrawRefs.push(taskItemRef);
     });
@@ -78,18 +89,12 @@ export default class extends Phaser.Scene {
       removeInventoryItem(item);
     });
 
-    console.log('Your current inventory', getInventory());
-
     // remove task
     // @todo - completion will give a positive review
     completeTask(task);
-    this.scene.switch(taskListSceneKey);
   }
 
   backToTaskList() {
     this.scene.switch(taskListSceneKey);
   }
-
-  // @todo doesn't need to redraw on every tick
-  update() {}
 }
