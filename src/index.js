@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import TitleScene from './scenes/Title';
 import WorldMapScene from './scenes/WorldMap';
 import TaskListScene from './scenes/TaskList';
-import TaskViewScene from './scenes/TaskView';
+import ShopViewScene from './scenes/ShopView';
 
 import {addInventoryItem, addTask} from './gameState';
 import Task from './entities/Task';
@@ -10,6 +10,7 @@ import Task from './entities/Task';
 const titleScene = new TitleScene();
 const worldMapScene = new WorldMapScene();
 const taskListScene = new TaskListScene();
+const shopViewScene = new ShopViewScene();
 
 const config = {
   type: Phaser.AUTO,
@@ -23,6 +24,7 @@ const game = new Phaser.Game(config);
 game.scene.add('titleScene', titleScene);
 game.scene.add('worldMapScene', worldMapScene);
 game.scene.add('taskListScene', taskListScene);
+game.scene.add('shopViewScene', shopViewScene);
 
 game.scene.start('titleScene');
 
