@@ -2,11 +2,12 @@ import Phaser from 'phaser';
 
 import worldMapImg from '../assets/worldMap.jpg';
 import playerImg from '../assets/player.png';
-import { getCurrentLocation, setCurrentLocation } from '../gameState';
+import { addTask, getCurrentLocation, setCurrentLocation, getTasks } from '../gameState';
 import Shop from '../entities/Shop';
 import Neighborhood from '../entities/Neighborhood';
 
 import * as C from '../constants';
+import TASKS from '../tasks';
 
 const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
@@ -118,6 +119,9 @@ export default class extends Phaser.Scene {
       this.add.text(400, 200, C.NEIGHBORHOOD_FEDERAL_HILL),
       () => this.travelTo(hood3)
     );
+
+    // Kick off the task queuer
+    this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY)
   }
 
   viewTaskList() {
@@ -163,5 +167,25 @@ export default class extends Phaser.Scene {
 
   viewReviewListLink() {
     this.scene.switch(reviewListSceneKey);
+  }
+
+  assignNewTask() {
+    const assignedTaskIds = getTasks().map((t) => t.id)
+    const unassignedTasks = TASKS.filter((t) => !assignedTaskIds.includes(t.id))
+    // If there are no more unassigned tasks, do nothing for now
+    if (!unassignedTasks.length) return
+    const selectedTask = unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)]
+    addTask(selectedTask)
+  }
+
+  queueNextAssignment(timeout) {
+    this.assignNewTask()
+    const nextAssignmentTimeout = timeout * 0.9
+    this.time.addEvent({
+      delay: nextAssignmentTimeout,
+      callback: this.queueNextAssignment,
+      args: [nextAssignmentTimeout],
+      callbackScope: this
+    })
   }
 }
