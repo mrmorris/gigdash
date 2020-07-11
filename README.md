@@ -53,3 +53,9 @@ After you run the `npm run build` command, your code will be built into a single
 
 If you put the contents of the `dist` folder in a publicly-accessible location (say something like `http://mycoolserver.com`), 
 you should be able to open `http://mycoolserver.com/index.html` and play your game.
+
+## Credit where credit is due
+
+I snagged some early artwork from these sources - they may not make it in the final build, however:
+
+* [2 Minute Tabletop](https://2minutetabletop.com/product/bandit-camp-assets/)

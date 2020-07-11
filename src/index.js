@@ -1,32 +1,23 @@
 import Phaser from "phaser";
-import logoImg from "./assets/logo.png";
+import TitleScene from './scenes/Title';
+import WorldMapScene from './scenes/WorldMap';
+
+const titleScene = new TitleScene();
+const worldMapScene = new WorldMapScene();
 
 const config = {
   type: Phaser.AUTO,
   parent: "phaser-example",
   width: 800,
   height: 600,
-  scene: {
-    preload: preload,
-    create: create
-  }
 };
 
 const game = new Phaser.Game(config);
 
-function preload() {
-  this.load.image("logo", logoImg);
-}
+// Add both scenes (it does not start them)
+game.scene.add('titleScene', titleScene);
+game.scene.add('worldMapScene', worldMapScene);
 
-function create() {
-  const logo = this.add.image(400, 150, "logo");
+//game.scene.add("game", gameScene);
 
-  this.tweens.add({
-    targets: logo,
-    y: 450,
-    duration: 2000,
-    ease: "Power2",
-    yoyo: true,
-    loop: -1
-  });
-}
+game.scene.start('titleScene');
