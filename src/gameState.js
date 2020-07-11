@@ -28,7 +28,8 @@ export const getInventory = () => {
 };
 
 export const addInventoryItem = (item) => {
-  if (inventory[item] < maxInventory) {
+  let itemCount = Object.values(inventory).reduce((acc, curr) => acc + curr, 0);
+  if (itemCount < maxInventory) {
     inventory[item] = inventory[item] ? inventory[item] + 1 : 1;
   }
 };
