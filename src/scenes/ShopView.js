@@ -4,6 +4,9 @@ import {
   addInventoryItem,
   getInventory, removeInventoryItem,
 } from '../gameState';
+import {
+  addSceneForNotification,
+} from '../lib/Notifications';
 import {SETTING_INVENTORY_LIMIT} from '../constants';
 
 const key = 'shopViewScene';
@@ -20,6 +23,8 @@ export default class extends Phaser.Scene {
 
   create() {
     const backButton = this.add.text(100, 550, 'Back to Map');
+
+    addSceneForNotification(this);
 
     backButton.setInteractive({ useHandCursor: true });
     backButton.on('pointerdown', () => this.backToMap());
