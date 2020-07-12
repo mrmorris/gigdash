@@ -208,9 +208,10 @@ export default class extends Phaser.Scene {
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
 
     renderMenu(this, key);
-    renderStars(this);
 
     travellingMusic = this.sound.add('travellingSFX', { loop: true });
+
+    this.events.on('wake', () => renderStars(this));
   }
 
   viewTaskList() {

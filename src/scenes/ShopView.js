@@ -16,6 +16,8 @@ import { renderStars, updateStars } from '../lib/Stars';
 const key = 'shopViewScene';
 const xAlignment = 50;
 
+const worldMapSceneKey = 'worldMapScene';
+
 let shopRefs = [];
 let inventoryRefs = [];
 

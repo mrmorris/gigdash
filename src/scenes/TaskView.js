@@ -20,6 +20,7 @@ import {
 const xAlignment = 50;
 const key = 'taskViewScene';
 const taskListSceneKey = 'taskListScene';
+const worldMapSceneKey = 'worldMapScene';
 
 let redrawRefs = [];
 
