@@ -6,11 +6,9 @@ import {
   canCompleteTask,
   completeTask,
 } from '../gameState';
-import {
-  addSceneForNotification,
-  addNotification,
-} from '../lib/Notifications';
-import {renderMenu} from '../lib/Menu';
+import { addSceneForNotification, addNotification } from '../lib/Notifications';
+import { renderMenu } from '../lib/Menu';
+import { renderStars, updateStars } from '../lib/Stars';
 import { headerStyle, subHeaderStyle, bodyStyle } from '../lib/TextStyles';
 
 const key = 'taskListScene';
@@ -46,7 +44,12 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     if (location) {
-      let locationName = this.add.text(xAlignment, 100, `You're currently at: ${location.name}`, subHeaderStyle);
+      let locationName = this.add.text(
+        xAlignment,
+        100,
+        `You're currently at: ${location.name}`,
+        subHeaderStyle
+      );
       redrawRefs.push(locationName);
     }
 
@@ -60,10 +63,11 @@ export default class extends Phaser.Scene {
         bodyStyle
       );
 
-      taskRef.setInteractive({ useHandCursor: true })
+      taskRef
+        .setInteractive({ useHandCursor: true })
         .on('pointerdown', () => this.viewTask(task))
-        .on('pointerover', () => taskRef.setStyle({ color: 'cyan'}))
-        .on('pointerout', () =>  taskRef.setStyle({ color: 'white'}));
+        .on('pointerover', () => taskRef.setStyle({ color: 'cyan' }))
+        .on('pointerout', () => taskRef.setStyle({ color: 'white' }));
 
       if (canCompleteTask(task)) {
         let completeRef = this.add.text(
@@ -96,6 +100,7 @@ export default class extends Phaser.Scene {
       redrawRefs.push(divider);
       redrawRefs.push(moreTasksTest);
     }
+    renderStars(this);
   }
 
   completeTask(task) {
@@ -107,5 +112,9 @@ export default class extends Phaser.Scene {
   viewTask(task) {
     setCurrentTask(task);
     this.scene.switch(taskViewSceneKey);
+  }
+
+  update() {
+    updateStars(this);
   }
 }

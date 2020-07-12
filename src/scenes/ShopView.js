@@ -10,6 +10,7 @@ import { SETTING_INVENTORY_LIMIT } from '../constants';
 import Shop from '../entities/Shop';
 import { renderMenu } from '../lib/Menu';
 import {bodyStyle, headerStyle, subHeaderStyle} from "../lib/TextStyles";
+import { renderStars, updateStars } from '../lib/Stars';
 
 const key = 'shopViewScene';
 const xAlignment = 50;
@@ -48,6 +49,7 @@ export default class extends Phaser.Scene {
       this.renderInventory();
     }
     renderMenu(this, key);
+    renderStars(this);
   }
 
   renderInventory(yPosition = 50) {
@@ -125,5 +127,9 @@ export default class extends Phaser.Scene {
         .on('pointerout', () =>  itemRef.setStyle({ color: 'white'}));
       shopRefs.push(itemRef);
     });
+  }
+
+  update() {
+    updateStars(this);
   }
 }

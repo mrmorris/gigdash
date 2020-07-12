@@ -1,10 +1,9 @@
 import Phaser from 'phaser';
 import { getReviews } from '../gameState';
-import {renderMenu} from "../lib/Menu";
-import {bodyStyle, headerStyle} from "../lib/TextStyles";
-import {
-  addSceneForNotification,
-} from '../lib/Notifications';
+import { renderMenu } from '../lib/Menu';
+import { renderStars, updateStars } from '../lib/Stars';
+import { bodyStyle, headerStyle } from '../lib/TextStyles';
+import { addSceneForNotification } from '../lib/Notifications';
 
 const key = 'reviewListScene';
 const xAlignment = 50;
@@ -51,7 +50,7 @@ export default class extends Phaser.Scene {
           }
         );
         refreshRefs.push(ref);
-
+        renderStars(this);
         lastReviewRef = ref;
       });
 
@@ -67,5 +66,9 @@ export default class extends Phaser.Scene {
       refreshRefs.push(divider);
       refreshRefs.push(moreReviewsText);
     }
+  }
+  
+  update() {
+    updateStars(this);
   }
 }
