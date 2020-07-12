@@ -1,6 +1,5 @@
 import Phaser from 'phaser';
 
-import {renderMenu} from "../lib/Menu";
 import {bodyStyle, headerStyle} from "../lib/TextStyles";
 
 const key = 'creditsScene';
@@ -42,7 +41,5 @@ https://github.com/mrmorris/gigdash
         width: 500
       }
     });
-
-    renderMenu(this, key);
   }
 }
