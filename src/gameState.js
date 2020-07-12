@@ -1,4 +1,6 @@
 import {SETTING_INVENTORY_LIMIT} from './constants';
+import Review from "./entities/Review";
+import {addNotification} from "./lib/Notifications";
 
 const tasks = [];
 const inventory = {};
@@ -19,8 +21,19 @@ export const getIncompleteTasks = () => {
 };
 
 export const completeTask = (task) => {
-  // find the task in our tasks array
+  // deplete inventory
+  task.items.forEach(item => {
+    removeInventoryItem(item);
+  });
+
   task.isComplete = true;
+
+  // review
+  addReview(new Review(
+    task.positiveReview,
+    task.customerName,
+    5
+  ));
 };
 
 export const getInventory = () => {
@@ -61,4 +74,22 @@ export const getReviews = () => {
 
 export const addReview = (review) => {
   reviews.push(review);
+};
+
+export const canCompleteTask = (task) => {
+  const location = getCurrentLocation();
+
+  const itemsRequired = {};
+  task.items.forEach(item => {
+    if (!itemsRequired[item]) {
+      itemsRequired[item] = 0;
+    }
+    itemsRequired[item]++;
+  });
+
+  return location &&
+    task.destination === location.name &&
+    Object.entries(itemsRequired).every(([item, count]) => {
+      return inventory[item] >= count;
+    });
 };

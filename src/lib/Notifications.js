@@ -44,15 +44,20 @@ export const setMainScene = (scene) => {
   mainScene = scene;
 };
 
-export const addNotification = (text, color = 'black', scene = mainScene) => {
+export const addNotification = (text, color = 'black', clickHandler = undefined, scene = mainScene) => {
   const alert = scene.add.text(startingPositionX, startingPositionY, text, {
     fontSize: '18px',
     color,
     backgroundColor: '#EAEAEA',
     padding: { left: 5, right: 5, top: 5, bottom: 5 },
-    fixedWidth: 300,
+    fixedWidth: 350,
     borderColor: '#000000',
   });
+  if (typeof clickHandler === 'function') {
+    alert.setInteractive({ useHandCursor: true });
+    alert.on('pointerdown', () => clickHandler());
+  }
+
   const fade = scene.plugins.get('rexFade').fadeOutDestroy(alert, fadeDelay);
 
   notifications.forEach((el, i) => {

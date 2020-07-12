@@ -44,7 +44,7 @@ ${rowsList.map((row) => {
       return constant;
     })
     .join();
-
+  
   return `new Task(
     ${id},
     "${addslashes(description)}",
@@ -82,7 +82,9 @@ const addslashes = (str) => {
 };
 
 const constantMap = Object.entries(C).reduce((acc, [key, val]) => {
-  acc[val.toLowerCase()] = key;
+  if (typeof val === 'string') {
+    acc[val.toLowerCase()] = key;
+  }
   return acc;
 }, {});
 
