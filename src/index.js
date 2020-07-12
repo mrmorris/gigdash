@@ -18,8 +18,8 @@ const reviewListScene = new ReviewListScene();
 const config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
-  width: 800,
-  height: 600,
+  width: 450,
+  height: 800,
   plugins: {
     global: [{
       key: 'rexFade',
