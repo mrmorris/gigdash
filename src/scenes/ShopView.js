@@ -9,6 +9,7 @@ import { addSceneForNotification } from '../lib/Notifications';
 import { SETTING_INVENTORY_LIMIT } from '../constants';
 import Shop from '../entities/Shop';
 import { renderMenu } from '../lib/Menu';
+import { renderStars, updateStars } from '../lib/Stars';
 
 const key = 'shopViewScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -42,6 +43,7 @@ export default class extends Phaser.Scene {
       this.renderInventory();
     }
     renderMenu(this, key);
+    renderStars(this);
   }
 
   renderInventory() {
@@ -91,5 +93,9 @@ export default class extends Phaser.Scene {
       });
       redrawRefs.push(itemRef);
     });
+  }
+
+  update() {
+    updateStars(this);
   }
 }
