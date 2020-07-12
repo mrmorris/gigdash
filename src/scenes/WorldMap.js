@@ -49,6 +49,8 @@ let isTraveling = false;
 let easyTaskCount = 2;
 
 let travellingMusic;
+let negativeReviewSFX;
+let bgMusic;
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -62,11 +64,18 @@ export default class extends Phaser.Scene {
 
     this.load.audio('bgMusic', './src/assets/bg_music.mp3');
     this.load.audio('travellingSFX', './src/assets/travelling.mp3');
+    this.load.audio(
+      'negativeReviewSFX',
+      './src/assets/negative_review_sfx.mp3'
+    );
   }
 
   create() {
-    let bgMusic = this.sound.add('bgMusic');
+    bgMusic = this.sound.add('bgMusic');
     bgMusic.play({ volume: 0.1, loop: true });
+
+    negativeReviewSFX = this.sound.add('negativeReviewSFX');
+
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
@@ -259,6 +268,7 @@ export default class extends Phaser.Scene {
         addNotification('😭 You just got a negative review!', 'red', () => {
           this.scene.switch(reviewListSceneKey);
         });
+        negativeReviewSFX.play();
         addReview(
           new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
         );
