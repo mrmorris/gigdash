@@ -39,7 +39,7 @@ export const SHOP_GROCERY = '🛒 Ultra Mega Foodtown';
 export const SHOP_HARDWARE = '🛒 Do It Best Hardware';
 export const SHOP_LIQUOR = "🛒 Lucius Sunday's\n24-hour\nLiquor Emporium";
 
-export const SETTING_INITIAL_ASSIGNMENT_DELAY = 10000;
+export const SETTING_INITIAL_ASSIGNMENT_DELAY = 30000;
 export const SETTING_INVENTORY_LIMIT = 10;
 export const SETTING_TRAVEL_TIME_MS = 2000;
 export const SETTING_ASSIGNMENT_FAILURE_DELAY = 60000;
