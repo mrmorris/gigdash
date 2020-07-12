@@ -18,7 +18,7 @@ const reviewListScene = new ReviewListScene();
 const config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
-  width: 450,
+  width: 600,
   height: 800,
   plugins: {
     global: [{
