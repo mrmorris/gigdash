@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import {getIncompleteTasks, getReviews, hasFailed} from '../gameState';
+import { getReviews, hasFailed} from '../gameState';
 import { renderMenu } from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 import { bodyStyle, headerStyle } from '../lib/TextStyles';
