@@ -12,7 +12,9 @@ export default class extends Phaser.Scene {
   create() {
     const title = this.add.text(50, 50, 'Created by these Excellent People', headerStyle);
 
-    const content = this.add.text(50, 100, `    
+    const content = this.add.text(50, 100, `
+Thanks so much for playing!
+
 Thomas Robertson
 Liam McCartney
 Ryan Morris
