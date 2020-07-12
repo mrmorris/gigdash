@@ -3,7 +3,9 @@ import {
   getCurrentLocation,
   addInventoryItem,
   getInventory,
+  removeInventoryItem,
 } from '../gameState';
+import { SETTING_INVENTORY_LIMIT } from '../constants';
 
 import getDispatcher from '../dispatcher';
 
@@ -50,11 +52,26 @@ class ShopViewScene extends Phaser.Scene {
     });
 
     const inventory = getInventory();
-    this.add.text(500, 160, 'Your Inventory');
+    this.add.text(500, 160, `Your Inventory (Max ${SETTING_INVENTORY_LIMIT})`);
     let index = 0;
     for (const [item, count] of Object.entries(inventory)) {
-      this.add.text(500, 180 + 20 * index, `${item}: ${count}`);
+      if (count <= 0) {
+        return;
+      }
+
+      let itemRef = this.add.text(
+        500,
+        180 + 20 * index,
+        `${item}: ${count} (drop)`
+      );
       index++;
+
+      itemRef.setInteractive({ useHandCursor: true });
+      itemRef.on('pointerdown', () => {
+        removeInventoryItem(item);
+        // @todo - avoid redrawing the whole thing
+        this.renderShop();
+      });
     }
   }
 

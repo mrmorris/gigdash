@@ -1,10 +1,12 @@
 import Phaser from 'phaser';
 import getDispatcher from '../dispatcher';
+import { getCurrentLocation, getIncompleteTasks } from '../gameState';
+
+let redrawRefs = [];
 
 class TaskListView extends Phaser.Scene {
   constructor(parent) {
     super(TaskListView.key);
-
     this.parent = parent;
     this.width = TaskListView.width;
     this.height = TaskListView.height;
@@ -53,35 +55,45 @@ class TaskListView extends Phaser.Scene {
     }
   }
 
+  // Note: This is not currently in use
   // TODO: Reuse this for full re-renders.
-  // renderTaskList() {
-  //   this.tasks = getIncompleteTasks();
+  renderTaskList() {
+    const tasks = getIncompleteTasks();
+    const location = getCurrentLocation();
 
-  //   this.taskRefs.forEach((taskRef) => {
-  //     taskRef.destroy();
-  //   });
+    redrawRefs.forEach((taskRef) => {
+      taskRef.destroy();
+    });
+    redrawRefs = [];
 
-  //   this.taskRefs = [];
+    if (location) {
+      let locationName = this.add.text(100, 20, `You're at: ${location.name}`);
+      redrawRefs.push(locationName);
+    }
 
-  //   this.tasks.slice(0, 15).forEach((task, index) => {
-  //     let taskRef = this.add.text(
-  //       10,
-  //       140 + 20 * index,
-  //       `${task.destination} - ${task.customerName}`
-  //     );
+    this.taskRefs = [];
 
-  //     taskRef.setInteractive({ useHandCursor: true });
-  //     taskRef.on('pointerdown', () => this.viewTask(task));
+    this.tasks.slice(0, 15).forEach((task, index) => {
+      let taskRef = this.add.text(
+        10,
+        140 + 20 * index,
+        `${task.destination} - ${task.customerName}`
+      );
 
-  //     this.taskRefs.push(taskRef);
-  //   });
-  //   if (this.tasks.length > 15) {
-  //     const divider = this.add.text(10, 440, `----`);
+      redrawRefs.push(taskRef);
+    });
+    if (tasks.length > 15) {
+      const divider = this.add.text(100, 440, `----`);
+      const moreTasksTest = this.add.text(
+        100,
+        460,
+        `...There are ${tasks.length - 15} More Tasks to Complete`
+      );
 
-  //     this.taskRefs.push(divider);
-  //     this.taskRefs.push(moreTasksTest);
-  //   }
-  // }
+      redrawRefs.push(divider);
+      redrawRefs.push(moreTasksTest);
+    }
+  }
 
   viewTask(task) {
     this.dispatcher.emit('view-task', task);
