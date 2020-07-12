@@ -5,6 +5,7 @@ import {
   getInventory,
   completeTask,
   canCompleteTask,
+  hasFailed,
 } from '../gameState';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
 import { renderMenu } from '../lib/Menu';
@@ -46,19 +47,29 @@ export default class extends Phaser.Scene {
 
     // if a user can complete the task...
     if (canCompleteTask(task)) {
-      const completeTaskButton = this.add.text(xAlignment, 500, 'Complete Delivery', {
-        ...bodyStyle,
-        color: 'cyan',
-      });
+      const completeTaskButton = this.add.text(
+        xAlignment,
+        500,
+        'Complete Delivery',
+        {
+          ...bodyStyle,
+          color: 'cyan',
+        }
+      );
       redrawRefs.push(completeTaskButton);
 
       completeTaskButton.setInteractive({ useHandCursor: true });
       completeTaskButton.on('pointerdown', () => this.completeTask(task));
     } else {
-      const completeTaskButton = this.add.text(xAlignment, 500, 'Complete Delivery (Not enough inventory)', {
-        ...bodyStyle,
-        color: 'grey',
-      });
+      const completeTaskButton = this.add.text(
+        xAlignment,
+        500,
+        'Complete Delivery (Not enough inventory)',
+        {
+          ...bodyStyle,
+          color: 'grey',
+        }
+      );
       redrawRefs.push(completeTaskButton);
     }
 
@@ -103,5 +114,8 @@ export default class extends Phaser.Scene {
 
   update() {
     updateStars(this);
+    if (hasFailed()) {
+      this.scene.switch(worldMapSceneKey);
+    }
   }
 }

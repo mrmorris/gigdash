@@ -4,12 +4,13 @@ import {
   addInventoryItem,
   getInventory,
   removeInventoryItem,
+  hasFailed,
 } from '../gameState';
 import { addSceneForNotification } from '../lib/Notifications';
 import { SETTING_INVENTORY_LIMIT } from '../constants';
 import Shop from '../entities/Shop';
 import { renderMenu } from '../lib/Menu';
-import {bodyStyle, headerStyle, subHeaderStyle} from "../lib/TextStyles";
+import { bodyStyle, headerStyle, subHeaderStyle } from '../lib/TextStyles';
 import { renderStars, updateStars } from '../lib/Stars';
 
 const key = 'shopViewScene';
@@ -81,7 +82,8 @@ export default class extends Phaser.Scene {
       );
       index++;
 
-      itemRef.setInteractive({ useHandCursor: true })
+      itemRef
+        .setInteractive({ useHandCursor: true })
         .on('pointerdown', () => {
           removeInventoryItem(item);
           // @todo - avoid redrawing the whole thing
@@ -89,10 +91,12 @@ export default class extends Phaser.Scene {
           this.renderInventory(yPosition);
         })
         .on('pointerover', () => {
-          itemRef.setStyle({ color: 'cyan'}).setText(`${item}: ${count} (drop)`);
+          itemRef
+            .setStyle({ color: 'cyan' })
+            .setText(`${item}: ${count} (drop)`);
         })
-        .on('pointerout', () =>  {
-          itemRef.setStyle({ color: 'white'}).setText(`${item}: ${count}`);
+        .on('pointerout', () => {
+          itemRef.setStyle({ color: 'white' }).setText(`${item}: ${count}`);
         });
 
       inventoryRefs.push(itemRef);
@@ -106,30 +110,45 @@ export default class extends Phaser.Scene {
     shopRefs = [];
 
     const location = getCurrentLocation();
-    const title = this.add.text(xAlignment, 50, `Welcome to ${location.name}!`, headerStyle);
+    const title = this.add.text(
+      xAlignment,
+      50,
+      `Welcome to ${location.name}!`,
+      headerStyle
+    );
     shopRefs.push(title);
 
-    const purchaseTitle = this.add.text(xAlignment, 140, `Available Items:`, subHeaderStyle);
+    const purchaseTitle = this.add.text(
+      xAlignment,
+      140,
+      `Available Items:`,
+      subHeaderStyle
+    );
     shopRefs.push(purchaseTitle);
 
-    location && location.inventory && location.inventory.forEach((item, index) => {
-      let itemRef = this.add.text(xAlignment, 165 + 20 * index, item, {
-        ...bodyStyle
+    location &&
+      location.inventory &&
+      location.inventory.forEach((item, index) => {
+        let itemRef = this.add.text(xAlignment, 165 + 20 * index, item, {
+          ...bodyStyle,
+        });
+        itemRef
+          .setInteractive({ useHandCursor: true })
+          .on('pointerdown', () => {
+            addInventoryItem(item);
+            this.renderInventory(400);
+            this.renderShop();
+          })
+          .on('pointerover', () => itemRef.setStyle({ color: 'cyan' }))
+          .on('pointerout', () => itemRef.setStyle({ color: 'white' }));
+        shopRefs.push(itemRef);
       });
-      itemRef
-        .setInteractive({ useHandCursor: true })
-        .on('pointerdown', () => {
-          addInventoryItem(item);
-          this.renderInventory(400);
-          this.renderShop();
-        })
-        .on('pointerover', () => itemRef.setStyle({ color: 'cyan'}))
-        .on('pointerout', () =>  itemRef.setStyle({ color: 'white'}));
-      shopRefs.push(itemRef);
-    });
   }
 
   update() {
     updateStars(this);
+    if (hasFailed()) {
+      this.scene.switch(worldMapSceneKey);
+    }
   }
 }

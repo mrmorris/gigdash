@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { getReviews } from '../gameState';
+import { getReviews, hasFailed } from '../gameState';
 import { renderMenu } from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 import { bodyStyle, headerStyle } from '../lib/TextStyles';
@@ -35,24 +35,29 @@ export default class extends Phaser.Scene {
     refreshRefs = [];
 
     if (!reviews.length) {
-      const noReviewsText = this.add.text(xAlignment, 140, 'You don\'t have any reviews yet', bodyStyle);
+      const noReviewsText = this.add.text(
+        xAlignment,
+        140,
+        "You don't have any reviews yet",
+        bodyStyle
+      );
       refreshRefs.push(noReviewsText);
     }
     let lastReviewRef;
     reviews.slice(0, reviewLimit).forEach((review, index) => {
-        let ref = this.add.text(
-          xAlignment,
-          (lastReviewRef ? 140 + lastReviewRef.height : 140) + 40 * index,
-          `${review.body} - ${review.customerName} - ${review.rating} stars`,
-          {
-            ...bodyStyle,
-            wordWrap: { width: 500 }
-          }
-        );
-        refreshRefs.push(ref);
-        renderStars(this);
-        lastReviewRef = ref;
-      });
+      let ref = this.add.text(
+        xAlignment,
+        (lastReviewRef ? 140 + lastReviewRef.height : 140) + 40 * index,
+        `${review.body} - ${review.customerName} - ${review.rating} stars`,
+        {
+          ...bodyStyle,
+          wordWrap: { width: 500 },
+        }
+      );
+      refreshRefs.push(ref);
+      renderStars(this);
+      lastReviewRef = ref;
+    });
 
     if (reviews.length > reviewLimit) {
       const divider = this.add.text(xAlignment, 550, `----`, bodyStyle);
@@ -67,8 +72,12 @@ export default class extends Phaser.Scene {
       refreshRefs.push(moreReviewsText);
     }
   }
-  
+
   update() {
     updateStars(this);
+
+    if (hasFailed()) {
+      this.scene.switch(worldMapSceneKey);
+    }
   }
 }

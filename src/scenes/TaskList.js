@@ -5,6 +5,7 @@ import {
   setCurrentTask,
   canCompleteTask,
   completeTask,
+  hasFailed,
 } from '../gameState';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
 import { renderMenu } from '../lib/Menu';
@@ -125,5 +126,8 @@ export default class extends Phaser.Scene {
 
   update() {
     updateStars(this);
+    if (hasFailed()) {
+      this.scene.switch(worldMapSceneKey);
+    }
   }
 }

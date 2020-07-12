@@ -104,3 +104,7 @@ export const canCompleteTask = (task) => {
 export const getStars = () => {
   return Math.ceil(points / 2);
 };
+
+export const hasFailed = () => {
+  return points <= 0;
+};

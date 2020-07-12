@@ -9,6 +9,7 @@ import {
   setCurrentLocation,
   getTasks,
   addReview,
+  hasFailed,
 } from '../gameState';
 import Shop from '../entities/Shop';
 import Review from '../entities/Review';
@@ -24,6 +25,7 @@ const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
 const shopViewSceneKey = 'shopViewScene';
 const reviewListSceneKey = 'reviewListScene';
+const failureSceneKey = 'failureScene';
 
 const locationLabelStyle = {
   fontSize: '18px',
@@ -52,6 +54,10 @@ let travellingMusic;
 let newTaskSFX;
 let negativeReviewSFX;
 let bgMusic;
+
+// Reviews Timeout ID
+let reviewsTimeout;
+let assignmentTimeout;
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -267,7 +273,7 @@ export default class extends Phaser.Scene {
     newTaskSFX.play({ volume: 0.3 });
 
     // tasks will automatically fail if they aren't completed in... 1 minute
-    setTimeout(() => {
+    reviewsTimeout = setTimeout(() => {
       if (!selectedTask.isComplete) {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
@@ -287,12 +293,19 @@ export default class extends Phaser.Scene {
 
     this.assignNewTask();
 
-    setTimeout(() => {
+    assignmentTimeout = setTimeout(() => {
       this.queueNextAssignment(nextAssignmentTimeout);
     }, nextAssignmentTimeout);
   }
 
   update() {
     updateStars(this);
+
+    if (hasFailed()) {
+      bgMusic.stop();
+      clearTimeout(reviewsTimeout);
+      clearTimeout(assignmentTimeout);
+      this.scene.switch(failureSceneKey);
+    }
   }
 }
