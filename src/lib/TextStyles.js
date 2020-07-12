@@ -7,6 +7,13 @@ export const locationLabelStyle = {
   align: 'center',
 };
 
+export const menuButtonStyle = {
+  fontSize: '18px',
+  color: 'black',
+  padding: { left: 5, right: 5, top: 5, bottom: 5 },
+  align: 'center',
+};
+
 export const notificationLabelStyle = {
   fontSize: '18px',
   backgroundColor: '#EAEAEA',
