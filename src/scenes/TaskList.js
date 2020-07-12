@@ -3,7 +3,10 @@ import {
   getCurrentLocation,
   getIncompleteTasks,
   setCurrentTask,
+  canCompleteTask,
+  completeTask,
 } from '../gameState';
+import {addNotification} from "../lib/Notifications";
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -45,14 +48,32 @@ export default class extends Phaser.Scene {
       let taskRef = this.add.text(
         100,
         140 + 20 * index,
-        `${task.destination} - ${task.customerName}`
+        `${task.destination} - ${task.customerName} - ${
+          task.items.length
+        } item${task.items.length > 1 ? 's' : ''}`
       );
 
       taskRef.setInteractive({ useHandCursor: true });
       taskRef.on('pointerdown', () => this.viewTask(task));
 
+      if (canCompleteTask(task)) {
+        let completeRef = this.add.text(
+          100 + taskRef.width + 50,
+          140 + 20 * index,
+          `Complete task!`,
+          {
+            fill: 'cyan'
+          }
+        );
+
+        completeRef.setInteractive({ useHandCursor: true });
+        completeRef.on('pointerdown', () => this.completeTask(task));
+        redrawRefs.push(completeRef);
+      }
+
       redrawRefs.push(taskRef);
     });
+
     if (tasks.length > 15) {
       const divider = this.add.text(100, 440, `----`);
       const moreTasksTest = this.add.text(
@@ -67,6 +88,12 @@ export default class extends Phaser.Scene {
   }
 
   backToMap() {
+    this.scene.switch(worldMapSceneKey);
+  }
+
+  completeTask(task) {
+    completeTask(task);
+    addNotification('You got a good review!', 'green');
     this.scene.switch(worldMapSceneKey);
   }
 

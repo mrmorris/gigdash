@@ -45,6 +45,9 @@ const coordinates = {
 
 let isTraveling = false;
 
+// player gets a guaranteed 2 easy tasks up front - what a deal!
+let easyTaskCount = 2;
+
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
@@ -239,9 +242,13 @@ export default class extends Phaser.Scene {
 
   assignNewTask() {
     const assignedTaskIds = getTasks().map((t) => t.id);
+    const easyOnly = easyTaskCount > 0;
     const unassignedTasks = TASKS.filter(
-      (t) => !assignedTaskIds.includes(t.id)
+      (t) => !assignedTaskIds.includes(t.id) && (!easyOnly || t.difficulty === 'easy')
     );
+    if (easyOnly) {
+      easyTaskCount--;
+    }
     // If there are no more unassigned tasks, do nothing for now
     if (!unassignedTasks.length) {
       return;
@@ -256,7 +263,9 @@ export default class extends Phaser.Scene {
       if (!selectedTask.isComplete) {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
-        addNotification('You just got a negative review!', 'red');
+        addNotification('You just got a negative review!', 'red', () => {
+          this.scene.switch(reviewListSceneKey);
+        });
         addReview(
           new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
         );
@@ -265,8 +274,10 @@ export default class extends Phaser.Scene {
   }
 
   queueNextAssignment(timeout) {
-    this.assignNewTask();
     const nextAssignmentTimeout = timeout * 0.9;
+
+    this.assignNewTask();
+
     this.time.addEvent({
       delay: nextAssignmentTimeout,
       callback: this.queueNextAssignment,

@@ -3,12 +3,9 @@ import Phaser from 'phaser';
 import {
   getCurrentTask,
   getInventory,
-  removeInventoryItem,
-  getCurrentLocation,
   completeTask,
-  addReview,
+  canCompleteTask,
 } from '../gameState';
-import Review from '../entities/Review';
 import { addNotification } from '../lib/Notifications';
 
 const key = 'taskViewScene';
@@ -38,26 +35,10 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     const task = getCurrentTask();
-    const location = getCurrentLocation();
     const inventory = getInventory();
 
-    const itemsRequired = {};
-    task.items.forEach(item => {
-      if (!itemsRequired[item]) {
-        itemsRequired[item] = 0;
-      }
-      itemsRequired[item]++;
-    });
-
-    let canCompleteTask =
-      location &&
-      task.destination === location.name &&
-      Object.entries(itemsRequired).every(([item, count]) => {
-        return inventory[item] >= count;
-      });
-
     // if a user can complete the task...
-    if (canCompleteTask) {
+    if (canCompleteTask(task)) {
       const completeTaskButton = this.add.text(100, 500, 'Complete Task');
       redrawRefs.push(completeTaskButton);
 
@@ -101,21 +82,8 @@ export default class extends Phaser.Scene {
   }
 
   completeTask(task) {
-    // deplete inventory
-    task.items.forEach(item => {
-      removeInventoryItem(item);
-    });
-
-    // remove task
     completeTask(task);
-
-    // review
-    addReview(new Review(
-      task.positiveReview,
-      task.customerName,
-      5
-    ));
-    addNotification('You got a new review!', 'green');
+    addNotification('You got a good review!', 'green');
     this.scene.switch(taskListSceneKey);
   }
 

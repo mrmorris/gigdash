@@ -9,5 +9,12 @@ export default class {
     this.destination = destination;
     this.positiveReview = positiveReview;
     this.negativeReview = negativeReview;
+
+    this.difficulty = 'hard';
+    if (this.items.length === 1) {
+      this.difficulty = 'easy';
+    } else if (this.items.length < 4) {
+      this.difficulty = 'medium';
+    }
   }
 }
