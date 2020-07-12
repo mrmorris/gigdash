@@ -60,10 +60,13 @@ export default class extends Phaser.Scene {
     this.load.image('player', playerImg);
     this.load.image('star', starImg);
 
+    this.load.audio('bgMusic', './src/assets/bg_music.mp3');
     this.load.audio('travellingSFX', './src/assets/travelling.mp3');
   }
 
   create() {
+    let bgMusic = this.sound.add('bgMusic');
+    bgMusic.play({ volume: 0.1, loop: true });
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
