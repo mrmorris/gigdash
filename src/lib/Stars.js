@@ -9,6 +9,7 @@ export const renderStars = (scene) => {
   const startX = 25;
   const starsCount = getStars();
 
+  redrawRefs.forEach((ref) => ref.destroy());
   for (let i = 0; i < starsCount; i++) {
     let starRef = scene.add.image(
       startX + horizontalIncrement * i,
@@ -23,7 +24,6 @@ export const updateStars = (scene) => {
   const starsCount = getStars();
   if (starsCount != currentStarsCount) {
     currentStarsCount = starsCount;
-    redrawRefs.forEach((ref) => ref.destroy());
     renderStars(scene);
   }
 };

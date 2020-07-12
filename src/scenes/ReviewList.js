@@ -9,6 +9,8 @@ const key = 'reviewListScene';
 const xAlignment = 50;
 const reviewLimit = 30;
 
+const worldMapSceneKey = 'worldMapScene';
+
 let refreshRefs = [];
 
 export default class extends Phaser.Scene {
@@ -23,7 +25,9 @@ export default class extends Phaser.Scene {
 
     this.renderReviewList();
     renderMenu(this, key);
+    renderStars(this);
     this.events.on('wake', () => this.renderReviewList());
+    this.events.on('wake', () => renderStars(this));
   }
 
   renderReviewList() {
@@ -55,7 +59,6 @@ export default class extends Phaser.Scene {
         }
       );
       refreshRefs.push(ref);
-      renderStars(this);
       lastReviewRef = ref;
     });
 
