@@ -37,7 +37,8 @@ class TaskViewScene extends Phaser.Scene {
     backButton.on('pointerdown', () => this.backToTaskList());
 
     this.renderTask();
-    this.events.on('wake', () => this.renderTask());
+
+    this.dispatcher.emit('scene-opened');
   }
 
   renderTask() {
@@ -103,6 +104,7 @@ class TaskViewScene extends Phaser.Scene {
   }
 
   backToTaskList() {
+    this.dispatcher.emit('scene-closed');
     this.scene.remove(this.key);
   }
 }

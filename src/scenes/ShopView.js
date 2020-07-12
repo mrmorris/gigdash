@@ -35,6 +35,8 @@ class ShopViewScene extends Phaser.Scene {
 
     this.renderShop();
     this.events.on('wake', () => this.renderShop());
+
+    this.dispatcher.emit('scene-opened');
   }
 
   renderShop() {
@@ -76,6 +78,7 @@ class ShopViewScene extends Phaser.Scene {
   }
 
   backToMap() {
+    this.dispatcher.emit('scene-closed');
     this.scene.remove(this.key);
   }
 }

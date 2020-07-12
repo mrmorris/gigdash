@@ -184,6 +184,30 @@ class WorldMapScene extends Phaser.Scene {
 
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
+
+    this.dispatcher.on('scene-opened', () => {
+      this.disableChildren();
+    });
+
+    this.dispatcher.on('scene-closed', () => {
+      this.enableChildren();
+    });
+  }
+
+  disableChildren() {
+    this.children.getChildren().forEach((ref) => {
+      if (ref.input && ref.input.enabled) {
+        this.input.disable(ref);
+      }
+    });
+  }
+
+  enableChildren() {
+    this.children.getChildren().forEach((ref) => {
+      if (ref.input && !ref.input.enabled) {
+        this.input.enable(ref);
+      }
+    });
   }
 
   travelTo(location) {

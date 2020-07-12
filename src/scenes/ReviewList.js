@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { getReviews } from '../gameState';
+import getDispatcher from '../dispatcher';
 
 class ReviewListScene extends Phaser.Scene {
   constructor(parent) {
@@ -7,6 +8,7 @@ class ReviewListScene extends Phaser.Scene {
     this.parent = parent;
     this.width = ReviewListScene.width;
     this.height = ReviewListScene.height;
+    this.dispatcher = getDispatcher();
   }
 
   create() {
@@ -26,6 +28,8 @@ class ReviewListScene extends Phaser.Scene {
 
     this.renderReviewList();
     this.events.on('wake', () => this.renderReviewList());
+
+    this.dispatcher.emit('scene-opened');
   }
 
   renderReviewList() {
@@ -41,6 +45,7 @@ class ReviewListScene extends Phaser.Scene {
   }
 
   backToMap() {
+    this.dispatcher.emit('scene-closed');
     this.scene.remove(this.key);
   }
 }
