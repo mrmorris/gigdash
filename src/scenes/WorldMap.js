@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import worldMapImg from '../assets/worldMap.jpg';
+import worldMapImg from '../assets/world-map.png';
 import playerImg from '../assets/player.png';
 import {
   addTask,
@@ -25,7 +25,26 @@ const taskListSceneKey = 'taskListScene';
 const shopViewSceneKey = 'shopViewScene';
 const reviewListSceneKey = 'reviewListScene';
 
+const locationLabelStyle = {
+  fontSize: '18px',
+  color: 'black',
+  backgroundColor: '#EAEAEA',
+  padding: { left: 5, right: 5, top: 5, bottom: 5 },
+  borderColor: '#000000',
+  align: 'center'
+};
+
+const coordinates = [
+    {x: 245,y: 150},
+  {x: 50,y: 50},
+  {x: 500,y: 450},
+  {x: 50,y: 450},
+  {x: 260,y: 320},
+  {x: 480,y: 260},// federal hill
+];
+
 let isTraveling = false;
+
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -48,16 +67,21 @@ export default class extends Phaser.Scene {
     let scale = Math.max(scaleX, scaleY);
     map.setScale(scale).setScrollFactor(0);
 
-    // add the player
-    this.player = this.add.image(centerX, centerY, 'player');
-
     // a task list link
-    const taskListLink = this.add.text(550, 100, 'My Tasks');
+    const taskListLink = this.add.text(550, 100, 'My Tasks', {
+      ...locationLabelStyle,
+      backgroundColor: 'blue',
+      fill: 'white'
+    });
     taskListLink.setInteractive({ useHandCursor: true });
     taskListLink.on('pointerdown', () => this.viewTaskList());
 
     // a reviews link
-    const reviewsLink = this.add.text(550, 120, 'My Reviews');
+    const reviewsLink = this.add.text(550, 120, 'My Reviews', {
+      ...locationLabelStyle,
+      backgroundColor: 'blue',
+      fill: 'white'
+    });
     reviewsLink.setInteractive({ useHandCursor: true });
     reviewsLink.on('pointerdown', () => this.viewReviewListLink());
 
@@ -78,7 +102,7 @@ export default class extends Phaser.Scene {
         C.ITEM_GRANOLA,
         C.ITEM_ICE_CREAM,
       ],
-      this.add.text(300, 50, C.SHOP_GROCERY),
+      this.add.text(coordinates[0].x, coordinates[0].y, C.SHOP_GROCERY, locationLabelStyle),
       () => this.travelTo(store1)
     );
     const store2 = new Shop(
@@ -95,7 +119,7 @@ export default class extends Phaser.Scene {
         C.ITEM_CARBONIZED_WOOD,
         C.ITEM_STERILIZED_CLEANING_FLUID,
       ],
-      this.add.text(50, 100, C.SHOP_HARDWARE),
+      this.add.text(coordinates[1].x, coordinates[1].y, C.SHOP_HARDWARE, locationLabelStyle),
       () => this.travelTo(store2)
     );
     const store3 = new Shop(
@@ -112,26 +136,29 @@ export default class extends Phaser.Scene {
         C.ITEM_RED_CUPS,
         C.ITEM_VISION_DROPS,
       ],
-      this.add.text(100, 400, C.SHOP_LIQUOR),
+      this.add.text(coordinates[2].x, coordinates[2].y, C.SHOP_LIQUOR, locationLabelStyle),
       () => this.travelTo(store3)
     );
 
     // add some hoods
     const hood1 = new Neighborhood(
       C.NEIGHBORHOOD_FOX_POINT,
-      this.add.text(400, 20, C.NEIGHBORHOOD_FOX_POINT),
+      this.add.text(coordinates[3].x, coordinates[3].y, C.NEIGHBORHOOD_FOX_POINT, locationLabelStyle),
       () => this.travelTo(hood1)
     );
     const hood2 = new Neighborhood(
       C.NEIGHBORHOOD_OLNEYVILLE,
-      this.add.text(400, 100, C.NEIGHBORHOOD_OLNEYVILLE),
+      this.add.text(coordinates[4].x, coordinates[4].y, C.NEIGHBORHOOD_OLNEYVILLE, locationLabelStyle),
       () => this.travelTo(hood2)
     );
     const hood3 = new Neighborhood(
       C.NEIGHBORHOOD_FEDERAL_HILL,
-      this.add.text(400, 200, C.NEIGHBORHOOD_FEDERAL_HILL),
+      this.add.text(coordinates[5].x, coordinates[5].y, C.NEIGHBORHOOD_FEDERAL_HILL, locationLabelStyle),
       () => this.travelTo(hood3)
     );
+
+    // add the player
+    this.player = this.add.image(centerX, centerY, 'player').setScale(.2);
 
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
@@ -152,10 +179,11 @@ export default class extends Phaser.Scene {
       if (currentLocation && location.name === currentLocation.name) {
         this.switchToLocationScene();
       } else {
+        console.dir(location.ref);
         const tween = this.tweens.add({
           targets: this.player,
-          x: location.ref.x,
-          y: location.ref.y,
+          x: location.ref.x + (location.ref.width / 2),
+          y: location.ref.y + (location.ref.height / 2),
           duration: 2000, // @todo travel time...
           ease: 'Power2',
         });
