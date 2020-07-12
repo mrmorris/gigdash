@@ -44,7 +44,6 @@ export default class extends Phaser.Scene {
 
   renderTaskList() {
     const location = getCurrentLocation();
-
     tasks = getIncompleteTasks();
 
     redrawRefs.forEach((taskRef) => {
@@ -130,7 +129,6 @@ export default class extends Phaser.Scene {
     updateStars(this);
     const newTasks = getIncompleteTasks();
     if (tasks.length !== newTasks.length) {
-      tasks = newTasks;
       this.renderTaskList();
     }
     if (hasFailed()) {
