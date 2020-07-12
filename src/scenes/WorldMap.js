@@ -270,7 +270,7 @@ export default class extends Phaser.Scene {
           new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
         );
       }
-    }, 1000 * 60 * 1); // 1 minutes
+    }, C.SETTING_ASSIGNMENT_FAILURE_DELAY);
   }
 
   queueNextAssignment(timeout) {
@@ -278,11 +278,8 @@ export default class extends Phaser.Scene {
 
     this.assignNewTask();
 
-    this.time.addEvent({
-      delay: nextAssignmentTimeout,
-      callback: this.queueNextAssignment,
-      args: [nextAssignmentTimeout],
-      callbackScope: this,
-    });
+    setTimeout(() => {
+      this.queueNextAssignment(nextAssignmentTimeout)
+    }, nextAssignmentTimeout)
   }
 }
