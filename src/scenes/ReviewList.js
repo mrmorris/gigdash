@@ -48,11 +48,13 @@ export default class extends Phaser.Scene {
       );
       refreshRefs.push(noReviewsText);
     }
-    let lastReviewRef;
-    reviews.slice(0, reviewLimit).forEach((review, index) => {
+    let lastReviewHeight = 0;
+    const reversedReviews = [];
+    reviews.forEach((r) => reversedReviews.unshift(r))
+    reversedReviews.slice(0, reviewLimit).forEach((review, index) => {
       let ref = this.add.text(
         xAlignment,
-        (lastReviewRef ? 140 + lastReviewRef.height : 140) + 40 * index,
+        (140 + lastReviewHeight) + (40 * index),
         `${review.rating ? '👍' : '👎'} ${review.body} - ${review.customerName}`,
         {
           ...bodyStyle,
@@ -61,7 +63,7 @@ export default class extends Phaser.Scene {
         }
       );
       refreshRefs.push(ref);
-      lastReviewRef = ref;
+      lastReviewHeight += ref.height;
     });
 
     if (reviews.length > reviewLimit) {
