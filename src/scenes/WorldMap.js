@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
-
+import negativeReviewSound from '../assets/negative_review_sfx.mp3';
+import newTaskSound from '../assets/new_task.mp3';
+import bgMusicSound from '../assets/bg_music.mp3';
+import travelingSound from '../assets/travelling.mp3';
 import worldMapImg from '../assets/world-map.png';
 import playerImg from '../assets/player.png';
 import starImg from '../assets/star.png';
@@ -71,13 +74,13 @@ export default class extends Phaser.Scene {
 
     preloadMenu(this);
 
-    this.load.audio('bgMusic', './src/assets/bg_music.mp3');
-    this.load.audio('travellingSFX', './src/assets/travelling.mp3');
-    this.load.audio('newTaskSFX', './src/assets/new_task.mp3');
+    this.load.audio('bgMusic', bgMusicSound);
+    this.load.audio('travellingSFX', travelingSound);
+    this.load.audio('newTaskSFX', newTaskSound);
 
     this.load.audio(
       'negativeReviewSFX',
-      './src/assets/negative_review_sfx.mp3'
+      negativeReviewSound
     );
   }
 

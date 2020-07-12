@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import positiveReviewSound from '../assets/positive_review.mp3';
 import {
   getCurrentLocation,
   getIncompleteTasks,
@@ -28,7 +29,7 @@ export default class extends Phaser.Scene {
   }
 
   preload() {
-    this.load.audio('positiveReviewSFX', './src/assets/positive_review.mp3');
+    this.load.audio('positiveReviewSFX', positiveReviewSound);
   }
 
   create() {
