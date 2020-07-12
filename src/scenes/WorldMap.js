@@ -271,7 +271,7 @@ export default class extends Phaser.Scene {
     const selectedTask =
       unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)];
     addTask(selectedTask);
-    addNotification('😄 You got a new task');
+    addNotification('😄 You have a new order!');
     newTaskSFX.play({ volume: 0.3 });
 
     // tasks will automatically fail if they aren't completed in... 1 minute

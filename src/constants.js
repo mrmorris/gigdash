@@ -31,13 +31,13 @@ export const ITEM_DRINK_MIX = "Mighty Mike's Marvelous Drink Mix";
 export const ITEM_RED_CUPS = 'Red Cups';
 export const ITEM_VISION_DROPS = 'Speed Vision Drops';
 
-export const NEIGHBORHOOD_FOX_POINT = '🏠Fox Point';
-export const NEIGHBORHOOD_FEDERAL_HILL = '🏠Federal Hill';
-export const NEIGHBORHOOD_OLNEYVILLE = '🏠Olneyville';
+export const NEIGHBORHOOD_FOX_POINT = '🏠 Fox Point';
+export const NEIGHBORHOOD_FEDERAL_HILL = '🏠 Federal Hill';
+export const NEIGHBORHOOD_OLNEYVILLE = '🏠 Olneyville';
 
-export const SHOP_GROCERY = '🛒Ultra Mega Foodtown';
-export const SHOP_HARDWARE = '🛒Do It Best Hardware';
-export const SHOP_LIQUOR = "🛒Lucius Sunday's\n24-hour\nLiquor Emporium";
+export const SHOP_GROCERY = '🛒 Ultra Mega Foodtown';
+export const SHOP_HARDWARE = '🛒 Do It Best Hardware';
+export const SHOP_LIQUOR = "🛒 Lucius Sunday's\n24-hour\nLiquor Emporium";
 
 export const SETTING_INITIAL_ASSIGNMENT_DELAY = 10000;
 export const SETTING_INVENTORY_LIMIT = 10;
