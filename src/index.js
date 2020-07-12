@@ -46,4 +46,4 @@ game.scene.add('reviewListScene', reviewListScene);
 game.scene.add('failureScene', failureScene);
 game.scene.add('creditsScene', creditsScene);
 
-game.scene.start('worldMapScene');
+game.scene.start('titleScene');
