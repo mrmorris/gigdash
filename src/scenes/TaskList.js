@@ -115,7 +115,7 @@ export default class extends Phaser.Scene {
   completeTask(task) {
     completeTask(task);
     this.renderTaskList();
-    addNotification('You got a good review!', 'green');
+    addNotification('👍 You got a good review!', 'green');
     positiveReviewSFX.play({ volume: 0.5 });
   }
 
