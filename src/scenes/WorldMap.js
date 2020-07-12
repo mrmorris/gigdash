@@ -36,12 +36,12 @@ const locationLabelStyle = {
 };
 
 const coordinates = {
-  [C.SHOP_GROCERY]: { x: 245, y: 150 },
-  [C.SHOP_HARDWARE]: { x: 50, y: 50 },
-  [C.SHOP_LIQUOR]: { x: 500, y: 450 },
-  [C.NEIGHBORHOOD_FEDERAL_HILL]: { x: 50, y: 450 },
-  [C.NEIGHBORHOOD_FOX_POINT]: { x: 260, y: 320 },
-  [C.NEIGHBORHOOD_OLNEYVILLE]: { x: 480, y: 260 },
+  [C.SHOP_GROCERY]: { x: 140, y: 200 },
+  [C.SHOP_HARDWARE]: { x: 75, y: 390 },
+  [C.SHOP_LIQUOR]: { x: 400, y: 375 },
+  [C.NEIGHBORHOOD_FEDERAL_HILL]: { x: 85, y: 575 },
+  [C.NEIGHBORHOOD_FOX_POINT]: { x: 425, y: 150 },
+  [C.NEIGHBORHOOD_OLNEYVILLE]: { x: 425, y: 600 },
 };
 
 let isTraveling = false;
