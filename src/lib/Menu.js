@@ -11,8 +11,20 @@ const reviewListSceneKey = 'reviewListScene';
 const activeTint = [0xffffff, 0xffffff, 0x999999, 0x999999];
 
 function viewScene(scene, key) {
-  scene.scene.switch(key);
+  if (!isLocked) {
+    scene.scene.switch(key);
+  }
 }
+
+let isLocked = false;
+
+export const lockMenu = () => {
+  isLocked = true;
+};
+
+export const unlockMenu = () => {
+  isLocked = false;
+};
 
 export const preloadMenu = (scene) => {
   scene.load.image('buttonActive', buttonActiveImg);

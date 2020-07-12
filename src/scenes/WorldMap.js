@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
-
+import negativeReviewSound from '../assets/negative_review_sfx.mp3';
+import newTaskSound from '../assets/new_task.mp3';
+import bgMusicSound from '../assets/bg_music.mp3';
+import travelingSound from '../assets/travelling.mp3';
 import worldMapImg from '../assets/world-map.png';
 import playerImg from '../assets/player.png';
 import starImg from '../assets/star.png';
@@ -15,7 +18,7 @@ import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
-import { renderMenu, preloadMenu } from '../lib/Menu';
+import { renderMenu, preloadMenu, lockMenu, unlockMenu} from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 
 import * as C from '../constants';
@@ -71,13 +74,13 @@ export default class extends Phaser.Scene {
 
     preloadMenu(this);
 
-    this.load.audio('bgMusic', './src/assets/bg_music.mp3');
-    this.load.audio('travellingSFX', './src/assets/travelling.mp3');
-    this.load.audio('newTaskSFX', './src/assets/new_task.mp3');
+    this.load.audio('bgMusic', bgMusicSound);
+    this.load.audio('travellingSFX', travelingSound);
+    this.load.audio('newTaskSFX', newTaskSound);
 
     this.load.audio(
       'negativeReviewSFX',
-      './src/assets/negative_review_sfx.mp3'
+      negativeReviewSound
     );
   }
 
@@ -226,6 +229,8 @@ export default class extends Phaser.Scene {
     if (!isTraveling) {
       isTraveling = true;
 
+      lockMenu();
+
       if (!currentLocation || location.name !== currentLocation.name) {
         this.player.flipX = this.player.x > location.ref.x;
 
@@ -245,6 +250,8 @@ export default class extends Phaser.Scene {
 
   switchToLocation(location) {
     isTraveling = false;
+    unlockMenu();
+
     travellingMusic.stop();
     addNotification(`🎉 You have arrived at ${location.name}!`, 'blue');
     setCurrentLocation(location);
