@@ -2,12 +2,13 @@ import Phaser from 'phaser';
 import {
   getCurrentLocation,
   addInventoryItem,
-  getInventory, removeInventoryItem,
+  getInventory,
+  removeInventoryItem,
 } from '../gameState';
-import {
-  addSceneForNotification,
-} from '../lib/Notifications';
-import {SETTING_INVENTORY_LIMIT} from '../constants';
+import { addSceneForNotification } from '../lib/Notifications';
+import { SETTING_INVENTORY_LIMIT } from '../constants';
+import Shop from '../entities/Shop';
+import { renderMenu } from '../lib/Menu';
 
 const key = 'shopViewScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -22,23 +23,59 @@ export default class extends Phaser.Scene {
   preload() {}
 
   create() {
-    const backButton = this.add.text(100, 550, 'Back to Map');
-
     addSceneForNotification(this);
-
-    backButton.setInteractive({ useHandCursor: true });
-    backButton.on('pointerdown', () => this.backToMap());
-
-    this.renderShop();
-    this.events.on('wake', () => this.renderShop());
+    this.render();
+    this.events.on('wake', () => this.render());
   }
 
-  renderShop() {
+  render() {
     redrawRefs.forEach((ref) => {
       ref.destroy();
     });
     redrawRefs = [];
 
+    const location = getCurrentLocation();
+    if (location instanceof Shop) {
+      this.renderShop();
+    } else {
+      this.renderInventory();
+    }
+    renderMenu(this, key);
+  }
+
+  renderInventory() {
+    const inventory = getInventory();
+    let myInventoryTitle = this.add.text(
+      100,
+      100,
+      `You're not at a shop.\nYour Inventory (Max ${SETTING_INVENTORY_LIMIT})`
+    );
+    redrawRefs.push(myInventoryTitle);
+    let index = 0;
+    for (const [item, count] of Object.entries(inventory)) {
+      if (count <= 0) {
+        return;
+      }
+
+      let itemRef = this.add.text(
+        500,
+        180 + 20 * index,
+        `${item}: ${count} (drop)`
+      );
+      index++;
+
+      itemRef.setInteractive({ useHandCursor: true });
+      itemRef.on('pointerdown', () => {
+        removeInventoryItem(item);
+        // @todo - avoid redrawing the whole thing
+        this.renderShop();
+      });
+
+      redrawRefs.push(itemRef);
+    }
+  }
+
+  renderShop() {
     const location = getCurrentLocation();
     const title = this.add.text(100, 100, `Welcome to ${location.name}!`);
     redrawRefs.push(title);
@@ -53,31 +90,5 @@ export default class extends Phaser.Scene {
       });
       redrawRefs.push(itemRef);
     });
-
-    const inventory = getInventory();
-    let myInventoryTitle = this.add.text(500, 160, `Your Inventory (Max ${SETTING_INVENTORY_LIMIT})`);
-    redrawRefs.push(myInventoryTitle);
-    let index = 0;
-    for (const [item, count] of Object.entries(inventory)) {
-      if (count <= 0) {
-        return;
-      }
-
-      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count} (drop)`);
-      index++;
-
-      itemRef.setInteractive({ useHandCursor: true });
-      itemRef.on('pointerdown', () => {
-        removeInventoryItem(item);
-        // @todo - avoid redrawing the whole thing
-        this.renderShop();
-      });
-
-      redrawRefs.push(itemRef);
-    }
-  }
-
-  backToMap() {
-    this.scene.switch(worldMapSceneKey);
   }
 }
