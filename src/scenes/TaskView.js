@@ -23,13 +23,20 @@ const taskListSceneKey = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
 
 let redrawRefs = [];
+let positiveReviewSFX;
 
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
   }
 
+  preload() {
+    this.load.audio('positiveReviewSFX', './src/assets/positive_review.mp3');
+  }
+
   create() {
+    positiveReviewSFX = this.sound.add('positiveReviewSFX');
+
     this.renderTask();
     addSceneForNotification(this);
     renderMenu(this, key);
@@ -109,6 +116,7 @@ export default class extends Phaser.Scene {
 
   completeTask(task) {
     completeTask(task);
+    positiveReviewSFX.play({ volume: 0.5 });
     addNotification('👍 You got a good review!', 'green');
     this.scene.switch(taskListSceneKey);
   }

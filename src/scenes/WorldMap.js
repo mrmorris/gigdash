@@ -248,6 +248,9 @@ export default class extends Phaser.Scene {
     travellingMusic.stop();
     addNotification(`🎉 You have arrived at ${location.name}!`, 'blue');
     setCurrentLocation(location);
+    if (location instanceof Shop) {
+      this.scene.switch(shopViewSceneKey);
+    }
   }
 
   viewReviewListLink() {

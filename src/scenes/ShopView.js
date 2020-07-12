@@ -79,7 +79,7 @@ export default class extends Phaser.Scene {
       let itemRef = this.add.text(
         xAlignment,
         yPosition + 50 + 20 * index,
-        `${item}: ${count}`,
+        `${item}: ${count} (drop)`,
         bodyStyle
       );
       index++;
@@ -95,10 +95,9 @@ export default class extends Phaser.Scene {
         .on('pointerover', () => {
           itemRef
             .setStyle({ color: 'cyan' })
-            .setText(`${item}: ${count} (drop)`);
         })
         .on('pointerout', () => {
-          itemRef.setStyle({ color: 'white' }).setText(`${item}: ${count}`);
+          itemRef.setStyle({ color: 'white' });
         });
 
       inventoryRefs.push(itemRef);
