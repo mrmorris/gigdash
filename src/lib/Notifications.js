@@ -2,7 +2,7 @@
  * notifications start to the far left
  * @type {number}
  */
-const startingPositionX = 0;
+const startingPositionX = 200;
 
 /**
  * notifications start at the bottom of our scene

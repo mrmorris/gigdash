@@ -1,68 +1,98 @@
 import Phaser from 'phaser';
-import { getIncompleteTasks, setCurrentTask } from '../gameState';
+import getDispatcher from '../dispatcher';
 
-const key = 'taskListScene';
-const worldMapSceneKey = 'worldMapScene';
-const taskViewSceneKey = 'taskViewScene';
+class TaskListView extends Phaser.Scene {
+  constructor(parent) {
+    super(TaskListView.key);
 
-let taskRefs = [];
-
-export default class extends Phaser.Scene {
-  constructor() {
-    super({ key });
+    this.parent = parent;
+    this.width = TaskListView.width;
+    this.height = TaskListView.height;
+    this.dispatcher = getDispatcher();
+    this.tasks = [];
+    this.taskRefs = [];
   }
 
   create() {
-    const title = this.add.text(100, 100, 'Your Tasks');
-    const backButton = this.add.text(100, 540, 'Back to Map');
+    const title = this.add.text(10, 100, 'Your Tasks');
 
-    backButton.setInteractive({ useHandCursor: true });
-    backButton.on('pointerdown', () => this.backToMap());
+    this.cameras.main.setViewport(
+      this.parent.x,
+      this.parent.y,
+      this.width,
+      this.height
+    );
+    this.cameras.main.setBackgroundColor(0x0055aa);
 
-    this.renderTaskList();
-    this.events.on('wake', () => this.renderTaskList());
+    this.dispatcher.on('task-added', (task) => {
+      this.appendTask(task);
+    });
+
+    this.dispatcher.on('task-completed', (task) => {
+      // Handle Completion
+      console.log('Completed:', task);
+    });
   }
 
-  renderTaskList() {
-    const tasks = getIncompleteTasks();
-
-    taskRefs.forEach((taskRef) => {
-      taskRef.destroy();
-    });
-
-    taskRefs = [];
-
-    tasks.slice(0, 15).forEach((task, index) => {
-      let taskRef = this.add.text(
-        100,
-        140 + 20 * index,
-        `${task.destination} - ${task.customerName}`
-      );
-
-      taskRef.setInteractive({ useHandCursor: true });
-      taskRef.on('pointerdown', () => this.viewTask(task));
-
-      taskRefs.push(taskRef);
-    });
-    if (tasks.length > 15) {
-      const divider = this.add.text(100, 440, `----`);
-      const moreTasksTest = this.add.text(
-        100,
-        460,
-        `...There are ${tasks.length - 15} More Tasks to Complete`
-      );
-
-      taskRefs.push(divider);
-      taskRefs.push(moreTasksTest);
+  appendTask(task) {
+    if (this.tasks.length >= 15) {
+      // TODO: update more text
+    } else {
+      this.tasks.push(task);
+      let taskRef = this.add
+        .text(
+          10,
+          140 + 20 * this.tasks.length,
+          `${task.destination} - ${task.customerName}`
+        )
+        .setInteractive({ useHandCursor: true });
+      taskRef.on('pointerdown', () => {
+        this.viewTask(task);
+      });
+      this.taskRefs.push(taskRef);
     }
   }
 
-  backToMap() {
-    this.scene.switch(worldMapSceneKey);
-  }
+  // TODO: Reuse this for full re-renders.
+  // renderTaskList() {
+  //   this.tasks = getIncompleteTasks();
+
+  //   this.taskRefs.forEach((taskRef) => {
+  //     taskRef.destroy();
+  //   });
+
+  //   this.taskRefs = [];
+
+  //   this.tasks.slice(0, 15).forEach((task, index) => {
+  //     let taskRef = this.add.text(
+  //       10,
+  //       140 + 20 * index,
+  //       `${task.destination} - ${task.customerName}`
+  //     );
+
+  //     taskRef.setInteractive({ useHandCursor: true });
+  //     taskRef.on('pointerdown', () => this.viewTask(task));
+
+  //     this.taskRefs.push(taskRef);
+  //   });
+  //   if (this.tasks.length > 15) {
+  //     const divider = this.add.text(10, 440, `----`);
+
+  //     this.taskRefs.push(divider);
+  //     this.taskRefs.push(moreTasksTest);
+  //   }
+  // }
 
   viewTask(task) {
-    setCurrentTask(task);
-    this.scene.switch(taskViewSceneKey);
+    this.dispatcher.emit('view-task', task);
   }
 }
+
+// Rendering Details
+TaskListView.key = 'task-lists';
+TaskListView.x = 0;
+TaskListView.y = 0;
+TaskListView.width = 200;
+TaskListView.height = 600;
+
+export default TaskListView;

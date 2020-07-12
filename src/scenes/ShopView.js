@@ -5,19 +5,27 @@ import {
   getInventory,
 } from '../gameState';
 
-const key = 'shopViewScene';
-const worldMapSceneKey = 'worldMapScene';
+import getDispatcher from '../dispatcher';
 
-let redrawRefs = [];
-
-export default class extends Phaser.Scene {
-  constructor() {
-    super({ key });
+class ShopViewScene extends Phaser.Scene {
+  constructor(parent) {
+    super(ShopViewScene.key);
+    this.parent = parent;
+    this.width = ShopViewScene.width;
+    this.height = ShopViewScene.height;
+    this.dispatcher = getDispatcher();
   }
 
   preload() {}
 
   create() {
+    this.cameras.main.setViewport(
+      this.parent.x,
+      this.parent.y,
+      this.width,
+      this.height
+    );
+    this.cameras.main.setBackgroundColor(0x0055aa);
     const backButton = this.add.text(100, 550, 'Back to Map');
 
     backButton.setInteractive({ useHandCursor: true });
@@ -28,14 +36,8 @@ export default class extends Phaser.Scene {
   }
 
   renderShop() {
-    redrawRefs.forEach((ref) => {
-      ref.destroy();
-    });
-    redrawRefs = [];
-
     const location = getCurrentLocation();
     const title = this.add.text(100, 100, `Welcome to ${location.name}!`);
-    redrawRefs.push(title);
 
     location.inventory.forEach((item, index) => {
       let itemRef = this.add.text(100, 160 + 20 * index, item);
@@ -45,21 +47,26 @@ export default class extends Phaser.Scene {
         // @todo - avoid redrawing the whole thing
         this.renderShop();
       });
-      redrawRefs.push(itemRef);
     });
 
     const inventory = getInventory();
-    let myInventoryTitle = this.add.text(500, 160, 'Your Inventory');
-    redrawRefs.push(myInventoryTitle);
+    this.add.text(500, 160, 'Your Inventory');
     let index = 0;
     for (const [item, count] of Object.entries(inventory)) {
-      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count}`);
+      this.add.text(500, 180 + 20 * index, `${item}: ${count}`);
       index++;
-      redrawRefs.push(itemRef);
     }
   }
 
   backToMap() {
-    this.scene.switch(worldMapSceneKey);
+    this.scene.remove(this.key);
   }
 }
+
+ShopViewScene.key = 'shop-view';
+ShopViewScene.x = 400;
+ShopViewScene.y = 0;
+ShopViewScene.width = 600;
+ShopViewScene.height = 600;
+
+export default ShopViewScene;

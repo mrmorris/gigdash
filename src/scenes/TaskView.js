@@ -8,21 +8,30 @@ import {
   completeTask,
   addReview,
 } from '../gameState';
+import getDispatcher from '../dispatcher';
 import Review from '../entities/Review';
 import { addNotification } from '../lib/Notifications';
 
-const key = 'taskViewScene';
-const taskListSceneKey = 'taskListScene';
-
-let redrawRefs = [];
-
-export default class extends Phaser.Scene {
-  constructor() {
-    super({ key });
+class TaskViewScene extends Phaser.Scene {
+  constructor(parent) {
+    super(TaskViewScene.key);
+    this.parent = parent;
+    this.width = TaskViewScene.width;
+    this.height = TaskViewScene.height;
+    this.dispatcher = getDispatcher();
   }
 
   create() {
-    const backButton = this.add.text(100, 540, 'Back to List');
+    const backButton = this.add.text(100, 540, '<< Close');
+
+    this.cameras.main.setViewport(
+      this.parent.x,
+      this.parent.y,
+      this.width,
+      this.height
+    );
+
+    this.cameras.main.setBackgroundColor(0x0055aa);
 
     backButton.setInteractive({ useHandCursor: true });
     backButton.on('pointerdown', () => this.backToTaskList());
@@ -32,11 +41,6 @@ export default class extends Phaser.Scene {
   }
 
   renderTask() {
-    redrawRefs.forEach((ref) => {
-      ref.destroy();
-    });
-    redrawRefs = [];
-
     const task = getCurrentTask();
     const location = getCurrentLocation();
     const inventory = getInventory();
@@ -51,44 +55,24 @@ export default class extends Phaser.Scene {
     // if a user can complete the task...
     if (canCompleteTask) {
       const completeTaskButton = this.add.text(100, 500, 'Complete Task');
-      redrawRefs.push(completeTaskButton);
-
       completeTaskButton.setInteractive({ useHandCursor: true });
       completeTaskButton.on('pointerdown', () => this.completeTask(task));
     }
 
-    const customerName = this.add.text(
-      100,
-      140,
-      `Deliver to: ${task.customerName}`
-    );
-    redrawRefs.push(customerName);
+    this.add.text(100, 140, `Deliver to: ${task.customerName}`);
+    this.add.text(100, 120, `Located at: ${task.destination}`);
 
-    const destinationName = this.add.text(
-      100,
-      120,
-      `Located at: ${task.destination}`
-    );
-    redrawRefs.push(destinationName);
-
-    const description = this.add.text(
-      100,
-      180,
-      task.name,
-      {
-        fill: '#FFFF00',
-        wordWrap: { width: 600 }
-      }
-    );
-    redrawRefs.push(description);
+    const description = this.add.text(100, 180, task.name, {
+      fill: '#FFFF00',
+      wordWrap: { width: 600 },
+    });
 
     task.items.forEach((taskName, index) => {
-      let taskItemRef = this.add.text(
+      this.add.text(
         100,
         200 + description.height + 20 * index,
-        `* ${taskName} ${inventory[taskName] > 0 ? 'x️' : ''}️`
+        '* ' + taskName + ' ' + (inventory[taskName] > 0 ? 'x️' : '')
       );
-      redrawRefs.push(taskItemRef);
     });
   }
 
@@ -99,19 +83,27 @@ export default class extends Phaser.Scene {
     });
 
     // remove task
+    this.dispatcher.emit('task-completed', task);
     completeTask(task);
 
     // review
-    addReview(new Review(
-      task.positiveReview,
-      task.customerName,
-      5
-    ));
+    addReview(new Review(task.positiveReview, task.customerName, 5));
     addNotification('You got a new review!', 'green');
-    this.scene.switch(taskListSceneKey);
+
+    // Close out this view
+    this.backToTaskList();
   }
 
   backToTaskList() {
-    this.scene.switch(taskListSceneKey);
+    this.scene.remove(this.key);
   }
 }
+
+// Rendering Details
+TaskViewScene.key = 'task-view';
+TaskViewScene.x = 200;
+TaskViewScene.y = 0;
+TaskViewScene.width = 400;
+TaskViewScene.height = 600;
+
+export default TaskViewScene;

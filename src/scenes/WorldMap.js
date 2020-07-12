@@ -2,13 +2,8 @@ import Phaser from 'phaser';
 
 import worldMapImg from '../assets/worldMap.jpg';
 import playerImg from '../assets/player.png';
-import {
-  addTask,
-  getCurrentLocation,
-  setCurrentLocation,
-  getTasks,
-  addReview,
-} from '../gameState';
+import { addTask, getCurrentLocation, getTasks, addReview } from '../gameState';
+import getDispatcher from '../dispatcher';
 import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
@@ -20,16 +15,16 @@ import {
 import * as C from '../constants';
 import TASKS from '../tasks';
 
-const key = 'worldMapScene';
-const taskListSceneKey = 'taskListScene';
-const shopViewSceneKey = 'shopViewScene';
-const reviewListSceneKey = 'reviewListScene';
-
 let isTraveling = false;
 
-export default class extends Phaser.Scene {
-  constructor() {
-    super({ key });
+class WorldMapScene extends Phaser.Scene {
+  constructor(parent) {
+    super(WorldMapScene.key);
+
+    this.parent = parent;
+    this.width = WorldMapScene.width;
+    this.height = WorldMapScene.height;
+    this.dispatcher = getDispatcher();
   }
 
   preload() {
@@ -41,7 +36,7 @@ export default class extends Phaser.Scene {
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
-    const map = this.add.image(centerX, centerY, 'worldMap');
+    const map = this.add.image(centerX + 200, centerY, 'worldMap');
     // center and scale the map
     let scaleX = this.cameras.main.width / map.width;
     let scaleY = this.cameras.main.height / map.height;
@@ -49,15 +44,10 @@ export default class extends Phaser.Scene {
     map.setScale(scale).setScrollFactor(0);
 
     // add the player
-    this.player = this.add.image(centerX, centerY, 'player');
-
-    // a task list link
-    const taskListLink = this.add.text(550, 100, 'My Tasks');
-    taskListLink.setInteractive({ useHandCursor: true });
-    taskListLink.on('pointerdown', () => this.viewTaskList());
+    this.player = this.add.image(centerX + 200, centerY, 'player');
 
     // a reviews link
-    const reviewsLink = this.add.text(550, 120, 'My Reviews');
+    const reviewsLink = this.add.text(200 + 550, 120, 'My Reviews');
     reviewsLink.setInteractive({ useHandCursor: true });
     reviewsLink.on('pointerdown', () => this.viewReviewListLink());
 
@@ -78,7 +68,7 @@ export default class extends Phaser.Scene {
         C.ITEM_GRANOLA,
         C.ITEM_ICE_CREAM,
       ],
-      this.add.text(300, 50, C.SHOP_GROCERY),
+      this.add.text(200 + 300, 50, C.SHOP_GROCERY),
       () => this.travelTo(store1)
     );
     const store2 = new Shop(
@@ -95,7 +85,7 @@ export default class extends Phaser.Scene {
         C.ITEM_CARBONIZED_WOOD,
         C.ITEM_STERILIZED_CLEANING_FLUID,
       ],
-      this.add.text(50, 100, C.SHOP_HARDWARE),
+      this.add.text(200 + 50, 100, C.SHOP_HARDWARE),
       () => this.travelTo(store2)
     );
     const store3 = new Shop(
@@ -112,35 +102,29 @@ export default class extends Phaser.Scene {
         C.ITEM_RED_CUPS,
         C.ITEM_VISION_DROPS,
       ],
-      this.add.text(100, 400, C.SHOP_LIQUOR),
+      this.add.text(200 + 100, 400, C.SHOP_LIQUOR),
       () => this.travelTo(store3)
     );
 
     // add some hoods
     const hood1 = new Neighborhood(
       C.NEIGHBORHOOD_FOX_POINT,
-      this.add.text(400, 20, C.NEIGHBORHOOD_FOX_POINT),
+      this.add.text(200 + 400, 20, C.NEIGHBORHOOD_FOX_POINT),
       () => this.travelTo(hood1)
     );
     const hood2 = new Neighborhood(
       C.NEIGHBORHOOD_OLNEYVILLE,
-      this.add.text(400, 100, C.NEIGHBORHOOD_OLNEYVILLE),
+      this.add.text(200 + 400, 100, C.NEIGHBORHOOD_OLNEYVILLE),
       () => this.travelTo(hood2)
     );
     const hood3 = new Neighborhood(
       C.NEIGHBORHOOD_FEDERAL_HILL,
-      this.add.text(400, 200, C.NEIGHBORHOOD_FEDERAL_HILL),
+      this.add.text(200 + 400, 200, C.NEIGHBORHOOD_FEDERAL_HILL),
       () => this.travelTo(hood3)
     );
 
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
-  }
-
-  viewTaskList() {
-    if (!isTraveling) {
-      this.scene.switch(taskListSceneKey);
-    }
   }
 
   travelTo(location) {
@@ -150,7 +134,7 @@ export default class extends Phaser.Scene {
       isTraveling = true;
 
       if (currentLocation && location.name === currentLocation.name) {
-        this.switchToLocationScene();
+        this.finishTraveling(location);
       } else {
         const tween = this.tweens.add({
           targets: this.player,
@@ -160,23 +144,18 @@ export default class extends Phaser.Scene {
           ease: 'Power2',
         });
 
-        tween.on('complete', () => this.switchToLocationScene(location));
+        tween.on('complete', () => this.finishTraveling(location));
       }
     }
   }
 
-  switchToLocationScene(location) {
+  finishTraveling(location) {
     isTraveling = false;
-    setCurrentLocation(location);
-    if (location instanceof Shop) {
-      this.scene.switch(shopViewSceneKey);
-    } else {
-      this.scene.switch(taskListSceneKey);
-    }
+    this.dispatcher.emit('arrived', location);
   }
 
   viewReviewListLink() {
-    this.scene.switch(reviewListSceneKey);
+    this.dispatcher.emit('show-reviews');
   }
 
   assignNewTask() {
@@ -192,18 +171,20 @@ export default class extends Phaser.Scene {
       unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)];
     addTask(selectedTask);
     addNotification('You got a new task');
+    this.dispatcher.emit('task-added', selectedTask);
 
     // tasks will automatically fail if they aren't completed in... 1 minute
     setTimeout(() => {
       if (!selectedTask.isComplete) {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
+        this.dispatcher.emit('task-completed', selectedTask);
         addNotification('You just got a negative review!', 'red');
         addReview(
           new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
         );
       }
-    }, 1000 * 60 * 1); // 1 minutes
+    }, 1000 * 60); // 1 minutes
   }
 
   queueNextAssignment(timeout) {
@@ -217,3 +198,12 @@ export default class extends Phaser.Scene {
     });
   }
 }
+
+// Rendering Details
+WorldMapScene.key = 'world-map';
+WorldMapScene.x = 200;
+WorldMapScene.y = 0;
+WorldMapScene.width = 800;
+WorldMapScene.height = 600;
+
+export default WorldMapScene;
