@@ -178,7 +178,7 @@ export default class extends Phaser.Scene {
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
 
-    renderMenu(this);
+    renderMenu(this, key);
   }
 
   viewTaskList() {
@@ -223,7 +223,9 @@ export default class extends Phaser.Scene {
     const assignedTaskIds = getTasks().map((t) => t.id);
     const easyOnly = easyTaskCount > 0;
     const unassignedTasks = TASKS.filter(
-      (t) => !assignedTaskIds.includes(t.id) && (!easyOnly || t.difficulty === 'easy')
+      (t) =>
+        !assignedTaskIds.includes(t.id) &&
+        (!easyOnly || t.difficulty === 'easy')
     );
     if (easyOnly) {
       easyTaskCount--;
@@ -258,7 +260,7 @@ export default class extends Phaser.Scene {
     this.assignNewTask();
 
     setTimeout(() => {
-      this.queueNextAssignment(nextAssignmentTimeout)
-    }, nextAssignmentTimeout)
+      this.queueNextAssignment(nextAssignmentTimeout);
+    }, nextAssignmentTimeout);
   }
 }
