@@ -52,10 +52,11 @@ export default class extends Phaser.Scene {
       let ref = this.add.text(
         xAlignment,
         (lastReviewRef ? 140 + lastReviewRef.height : 140) + 40 * index,
-        `${review.body} - ${review.customerName} - ${review.rating} stars`,
+        `${review.rating ? '👍' : '👎'} ${review.body} - ${review.customerName}`,
         {
           ...bodyStyle,
           wordWrap: { width: 500 },
+          color: review.rating ? 'green' : 'red'
         }
       );
       refreshRefs.push(ref);
