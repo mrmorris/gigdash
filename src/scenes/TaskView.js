@@ -6,7 +6,10 @@ import {
   completeTask,
   canCompleteTask,
 } from '../gameState';
-import { addNotification } from '../lib/Notifications';
+import {
+  addSceneForNotification,
+  addNotification,
+} from '../lib/Notifications';
 import {renderMenu} from "../lib/Menu";
 import {headerStyle, subHeaderStyle, taskBodyStyle, bodyStyle} from "../lib/TextStyles";
 
@@ -23,6 +26,7 @@ export default class extends Phaser.Scene {
 
   create() {
     this.renderTask();
+    addSceneForNotification(this);
     renderMenu(this, key);
     this.events.on('wake', () => this.renderTask());
   }
