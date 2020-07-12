@@ -34,9 +34,14 @@ export const addInventoryItem = (item) => {
   }
 };
 
-// @todo - prevent going below 0?
 export const removeInventoryItem = (item) => {
+  if (!inventory[item]) {
+    return;
+  }
   inventory[item]--;
+  if (!inventory[item]) {
+    delete inventory[item];
+  }
 };
 
 export const getCurrentLocation = () => {
