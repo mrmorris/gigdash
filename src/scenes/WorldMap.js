@@ -66,7 +66,7 @@ export default class extends Phaser.Scene {
 
   create() {
     let bgMusic = this.sound.add('bgMusic');
-    bgMusic.play({ volume: 0.5 });
+    bgMusic.play({ volume: 0.1, loop: true });
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
