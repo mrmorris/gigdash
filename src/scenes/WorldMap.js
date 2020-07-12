@@ -18,7 +18,7 @@ import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
-import { renderMenu, preloadMenu } from '../lib/Menu';
+import { renderMenu, preloadMenu, lockMenu, unlockMenu} from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 
 import * as C from '../constants';
@@ -229,6 +229,8 @@ export default class extends Phaser.Scene {
     if (!isTraveling) {
       isTraveling = true;
 
+      lockMenu();
+
       if (!currentLocation || location.name !== currentLocation.name) {
         this.player.flipX = this.player.x > location.ref.x;
 
@@ -248,6 +250,8 @@ export default class extends Phaser.Scene {
 
   switchToLocation(location) {
     isTraveling = false;
+    unlockMenu();
+
     travellingMusic.stop();
     addNotification(`🎉 You have arrived at ${location.name}!`, 'blue');
     setCurrentLocation(location);
