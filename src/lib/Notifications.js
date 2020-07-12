@@ -33,53 +33,57 @@ let currentPositionY = startingPositionY;
 /**
  * keep track of our main Scene to render notifications into
  */
-let mainScene;
+const notificationScenes = [];
 
 /**
  * ability to set the "main" scene
  * doing this because we needed a central place for all notifications to show - as they aren't rendered across *all* scenes
  * @param scene
  */
-export const setMainScene = (scene) => {
-  mainScene = scene;
+export const addSceneForNotification = (scene) => {
+  if (!notificationScenes.includes(scene)) {
+    notificationScenes.push(scene)
+  }
 };
 
-export const addNotification = (text, color = 'black', clickHandler = undefined, scene = mainScene) => {
-  const alert = scene.add.text(startingPositionX, startingPositionY, text, {
-    fontSize: '18px',
-    color,
-    backgroundColor: '#EAEAEA',
-    padding: { left: 5, right: 5, top: 10, bottom: 10 },
-    fixedWidth: scene.sys.game.canvas.width,
-    borderColor: '#000000',
-  });
-  if (typeof clickHandler === 'function') {
-    alert.setInteractive({ useHandCursor: true });
-    alert.on('pointerdown', () => clickHandler());
-  }
-
-  const fade = scene.plugins.get('rexFade').fadeOutDestroy(alert, fadeDelay);
-
-  notifications.forEach((el, i) => {
-    scene.tweens.add({
-      targets: el,
-      x: el.x,
-      y: currentPositionY + notificationHeight * i,
-      duration: 100,
-      ease: 'Power2',
+export const addNotification = (text, color = 'black', clickHandler = undefined, scenes = notificationScenes) => {
+  notificationScenes.forEach((scene) => {
+    const alert = scene.add.text(startingPositionX, startingPositionY, text, {
+      fontSize: '18px',
+      color,
+      backgroundColor: '#EAEAEA',
+      padding: { left: 5, right: 5, top: 10, bottom: 10 },
+      fixedWidth: scene.sys.game.canvas.width,
+      borderColor: '#000000',
     });
-  });
+    if (typeof clickHandler === 'function') {
+      alert.setInteractive({ useHandCursor: true });
+      alert.on('pointerdown', () => clickHandler());
+    }
 
-  notifications.push(alert);
+    const fade = scene.plugins.get('rexFade').fadeOutDestroy(alert, fadeDelay);
 
-  fade.on('complete', () => {
-    // as fades complete, we'll remove the oldest alert from our list and animate the rest "back down"
-    notifications.shift();
+    notifications.forEach((el, i) => {
+      scene.tweens.add({
+        targets: el,
+        x: el.x,
+        y: currentPositionY + notificationHeight * i,
+        duration: 100,
+        ease: 'Power2',
+      });
+    });
 
-    // move us "down" in the scene
-    currentPositionY += notificationHeight;
-  });
+    notifications.push(alert);
 
-  // move is "up" in the scene
-  currentPositionY -= notificationHeight;
+    fade.on('complete', () => {
+      // as fades complete, we'll remove the oldest alert from our list and animate the rest "back down"
+      notifications.shift();
+
+      // move us "down" in the scene
+      currentPositionY += notificationHeight;
+    });
+
+    // move is "up" in the scene
+    currentPositionY -= notificationHeight;
+  })
 };

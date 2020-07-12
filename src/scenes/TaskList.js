@@ -6,7 +6,10 @@ import {
   canCompleteTask,
   completeTask,
 } from '../gameState';
-import {addNotification} from "../lib/Notifications";
+import {
+  addSceneForNotification,
+  addNotification,
+} from '../lib/Notifications';
 import {renderMenu} from '../lib/Menu';
 
 const key = 'taskListScene';
@@ -22,6 +25,8 @@ export default class extends Phaser.Scene {
 
   create() {
     const title = this.add.text(100, 100, 'Your Tasks');
+
+    addSceneForNotification(this);
 
     renderMenu(this, key);
     this.renderTaskList();
