@@ -49,6 +49,7 @@ let isTraveling = false;
 let easyTaskCount = 2;
 
 let travellingMusic;
+let newTaskSFX;
 let negativeReviewSFX;
 let bgMusic;
 
@@ -64,6 +65,8 @@ export default class extends Phaser.Scene {
 
     this.load.audio('bgMusic', './src/assets/bg_music.mp3');
     this.load.audio('travellingSFX', './src/assets/travelling.mp3');
+    this.load.audio('newTaskSFX', './src/assets/new_task.mp3');
+
     this.load.audio(
       'negativeReviewSFX',
       './src/assets/negative_review_sfx.mp3'
@@ -73,6 +76,8 @@ export default class extends Phaser.Scene {
   create() {
     bgMusic = this.sound.add('bgMusic');
     bgMusic.play({ volume: 0.1, loop: true });
+
+    newTaskSFX = this.sound.add('newTaskSFX');
 
     negativeReviewSFX = this.sound.add('negativeReviewSFX');
 
@@ -259,6 +264,7 @@ export default class extends Phaser.Scene {
       unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)];
     addTask(selectedTask);
     addNotification('😄 You got a new task');
+    newTaskSFX.play({ volume: 0.3 });
 
     // tasks will automatically fail if they aren't completed in... 1 minute
     setTimeout(() => {
