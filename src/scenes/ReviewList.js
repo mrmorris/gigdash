@@ -8,7 +8,7 @@ import {
 
 const key = 'reviewListScene';
 const xAlignment = 50;
-const taskViewLimit = 30;
+const reviewLimit = 30;
 
 let refreshRefs = [];
 
@@ -39,15 +39,33 @@ export default class extends Phaser.Scene {
       const noReviewsText = this.add.text(xAlignment, 140, 'You don\'t have any reviews yet', bodyStyle);
       refreshRefs.push(noReviewsText);
     }
-    reviews
-      .forEach((review, index) => {
+    let lastReviewRef;
+    reviews.slice(0, reviewLimit).forEach((review, index) => {
         let ref = this.add.text(
           xAlignment,
-          140 + 40 * index,
+          (lastReviewRef ? 140 + lastReviewRef.height : 140) + 40 * index,
           `${review.body} - ${review.customerName} - ${review.rating} stars`,
-          bodyStyle
+          {
+            ...bodyStyle,
+            wordWrap: { width: 500 }
+          }
         );
         refreshRefs.push(ref);
+
+        lastReviewRef = ref;
       });
+
+    if (reviews.length > reviewLimit) {
+      const divider = this.add.text(xAlignment, 550, `----`, bodyStyle);
+      const moreReviewsText = this.add.text(
+        xAlignment,
+        560,
+        `...you have ${reviews.length - reviewLimit} more reviews...`,
+        bodyStyle
+      );
+
+      refreshRefs.push(divider);
+      refreshRefs.push(moreReviewsText);
+    }
   }
 }

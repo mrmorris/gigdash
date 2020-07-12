@@ -15,7 +15,7 @@ export const renderMenu = (scene, currentSceneKey) => {
   const startX = 25;
 
   // a task list link
-  const taskListLink = scene.add.text(startX, menuY, '[Tasks]', {
+  const taskListLink = scene.add.text(startX, menuY, '[Orders]', {
     ...locationLabelStyle,
     backgroundColor: 'blue',
     fill: 'white',

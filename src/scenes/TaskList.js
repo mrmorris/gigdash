@@ -27,7 +27,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(xAlignment, 50, 'Your Tasks', headerStyle);
+    const title = this.add.text(xAlignment, 50, 'Orders', headerStyle);
 
     addSceneForNotification(this);
 
@@ -50,7 +50,7 @@ export default class extends Phaser.Scene {
       redrawRefs.push(locationName);
     }
 
-    tasks.slice(0, 30).forEach((task, index) => {
+    tasks.slice(0, taskViewLimit).forEach((task, index) => {
       let taskRef = this.add.text(
         xAlignment,
         160 + 20 * index,
@@ -89,7 +89,7 @@ export default class extends Phaser.Scene {
       const moreTasksTest = this.add.text(
         xAlignment,
         560,
-        `...There are ${tasks.length - taskViewLimit} More Tasks to Complete`,
+        `...There are ${tasks.length - taskViewLimit} more orders to deliver...`,
         bodyStyle
       );
 
@@ -100,8 +100,8 @@ export default class extends Phaser.Scene {
 
   completeTask(task) {
     completeTask(task);
+    this.renderTaskList();
     addNotification('You got a good review!', 'green');
-    this.scene.switch(worldMapSceneKey);
   }
 
   viewTask(task) {

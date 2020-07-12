@@ -31,6 +31,16 @@ export default class extends Phaser.Scene {
   render() {
     const location = getCurrentLocation();
 
+    inventoryRefs.forEach((ref) => {
+      ref.destroy();
+    });
+    inventoryRefs = [];
+
+    shopRefs.forEach((ref) => {
+      ref.destroy();
+    });
+    shopRefs = [];
+
     if (location instanceof Shop) {
       this.renderShop();
       this.renderInventory(400);
@@ -100,7 +110,7 @@ export default class extends Phaser.Scene {
     const purchaseTitle = this.add.text(xAlignment, 140, `Available Items:`, subHeaderStyle);
     shopRefs.push(purchaseTitle);
 
-    location.inventory.forEach((item, index) => {
+    location && location.inventory && location.inventory.forEach((item, index) => {
       let itemRef = this.add.text(xAlignment, 165 + 20 * index, item, {
         ...bodyStyle
       });
