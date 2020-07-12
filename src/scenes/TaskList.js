@@ -5,6 +5,7 @@ import {
   setCurrentTask,
   canCompleteTask,
   completeTask,
+  hasFailed,
 } from '../gameState';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
 import { renderMenu } from '../lib/Menu';
@@ -18,14 +19,20 @@ const xAlignment = 50;
 const taskViewLimit = 30;
 
 let redrawRefs = [];
+let positiveReviewSFX;
 
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
   }
 
+  preload() {
+    this.load.audio('positiveReviewSFX', './src/assets/positive_review.mp3');
+  }
+
   create() {
     const title = this.add.text(xAlignment, 50, 'Orders', headerStyle);
+    positiveReviewSFX = this.sound.add('positiveReviewSFX');
 
     addSceneForNotification(this);
 
@@ -76,7 +83,7 @@ export default class extends Phaser.Scene {
           `Deliver!`,
           {
             fontSize: '12px',
-            fill: 'cyan'
+            fill: 'cyan',
           }
         );
 
@@ -93,7 +100,9 @@ export default class extends Phaser.Scene {
       const moreTasksTest = this.add.text(
         xAlignment,
         560,
-        `...There are ${tasks.length - taskViewLimit} more orders to deliver...`,
+        `...There are ${
+          tasks.length - taskViewLimit
+        } more orders to deliver...`,
         bodyStyle
       );
 
@@ -107,6 +116,7 @@ export default class extends Phaser.Scene {
     completeTask(task);
     this.renderTaskList();
     addNotification('You got a good review!', 'green');
+    positiveReviewSFX.play({ volume: 0.5 });
   }
 
   viewTask(task) {
@@ -116,5 +126,8 @@ export default class extends Phaser.Scene {
 
   update() {
     updateStars(this);
+    if (hasFailed()) {
+      this.scene.switch(worldMapSceneKey);
+    }
   }
 }

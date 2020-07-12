@@ -9,6 +9,7 @@ import {
   setCurrentLocation,
   getTasks,
   addReview,
+  hasFailed,
 } from '../gameState';
 import Shop from '../entities/Shop';
 import Review from '../entities/Review';
@@ -24,6 +25,7 @@ const key = 'worldMapScene';
 const taskListSceneKey = 'taskListScene';
 const shopViewSceneKey = 'shopViewScene';
 const reviewListSceneKey = 'reviewListScene';
+const failureSceneKey = 'failureScene';
 
 const locationLabelStyle = {
   fontSize: '18px',
@@ -48,6 +50,15 @@ let isTraveling = false;
 // player gets a guaranteed 2 easy tasks up front - what a deal!
 let easyTaskCount = 2;
 
+let travellingMusic;
+let newTaskSFX;
+let negativeReviewSFX;
+let bgMusic;
+
+// Reviews Timeout ID
+let reviewsTimeout;
+let assignmentTimeout;
+
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
@@ -59,9 +70,25 @@ export default class extends Phaser.Scene {
     this.load.image('star', starImg);
 
     preloadMenu(this);
+
+    this.load.audio('bgMusic', './src/assets/bg_music.mp3');
+    this.load.audio('travellingSFX', './src/assets/travelling.mp3');
+    this.load.audio('newTaskSFX', './src/assets/new_task.mp3');
+
+    this.load.audio(
+      'negativeReviewSFX',
+      './src/assets/negative_review_sfx.mp3'
+    );
   }
 
   create() {
+    bgMusic = this.sound.add('bgMusic');
+    bgMusic.play({ volume: 0.1, loop: true });
+
+    newTaskSFX = this.sound.add('newTaskSFX');
+
+    negativeReviewSFX = this.sound.add('negativeReviewSFX');
+
     const centerX = this.cameras.main.width / 2;
     const centerY = this.cameras.main.height / 2;
 
@@ -175,13 +202,15 @@ export default class extends Phaser.Scene {
     );
 
     // add the player
-    this.player = this.add.image(centerX, centerY, 'player').setScale(0.2);
+    this.player = this.add.image(485, 700, 'player').setScale(0.2);
 
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
 
     renderMenu(this, key);
     renderStars(this);
+
+    travellingMusic = this.sound.add('travellingSFX', { loop: true });
   }
 
   viewTaskList() {
@@ -199,6 +228,7 @@ export default class extends Phaser.Scene {
       if (!currentLocation || location.name !== currentLocation.name) {
         this.player.flipX = this.player.x > location.ref.x;
 
+        travellingMusic.play();
         const tween = this.tweens.add({
           targets: this.player,
           x: location.ref.x + location.ref.width / 2,
@@ -214,6 +244,7 @@ export default class extends Phaser.Scene {
 
   switchToLocation(location) {
     isTraveling = false;
+    travellingMusic.stop();
     addNotification(`🎉 You have arrived at ${location.name}!`, 'blue');
     setCurrentLocation(location);
   }
@@ -241,15 +272,17 @@ export default class extends Phaser.Scene {
       unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)];
     addTask(selectedTask);
     addNotification('😄 You got a new task');
+    newTaskSFX.play({ volume: 0.3 });
 
     // tasks will automatically fail if they aren't completed in... 1 minute
-    setTimeout(() => {
+    reviewsTimeout = setTimeout(() => {
       if (!selectedTask.isComplete) {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
         addNotification('😭 You just got a negative review!', 'red', () => {
           this.scene.switch(reviewListSceneKey);
         });
+        negativeReviewSFX.play();
         addReview(
           new Review(selectedTask.negativeReview, selectedTask.customerName, 0)
         );
@@ -262,12 +295,19 @@ export default class extends Phaser.Scene {
 
     this.assignNewTask();
 
-    setTimeout(() => {
+    assignmentTimeout = setTimeout(() => {
       this.queueNextAssignment(nextAssignmentTimeout);
     }, nextAssignmentTimeout);
   }
 
   update() {
     updateStars(this);
+
+    if (hasFailed()) {
+      bgMusic.stop();
+      clearTimeout(reviewsTimeout);
+      clearTimeout(assignmentTimeout);
+      this.scene.switch(failureSceneKey);
+    }
   }
 }
