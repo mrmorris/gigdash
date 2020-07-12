@@ -51,7 +51,7 @@ export const renderMenu = (scene, currentSceneKey) => {
   const mapLink = scene.add.text(startX + 120 + 30, menuY + 8, 'Map', menuButtonStyle);
 
   if (currentSceneKey !== reviewListSceneKey) {
-    const reviewButton = scene.add.image(startX + 240, menuY, 'buttonActive').setOrigin(0, 0).setScale(.5);
+    const reviewButton = scene.add.image(startX + 250, menuY, 'buttonActive').setOrigin(0, 0).setScale(.5);
     reviewButton.setInteractive({ useHandCursor: true });
 
     reviewButton.setInteractive({useHandCursor: true})
@@ -59,12 +59,12 @@ export const renderMenu = (scene, currentSceneKey) => {
       .on('pointerover', () => reviewButton.setTint(...activeTint))
       .on('pointerout', () => reviewButton.setTint());
   } else {
-    const reviewButton = scene.add.image(startX + 240, menuY, 'buttonInactive').setOrigin(0, 0).setScale(.5);
+    const reviewButton = scene.add.image(startX + 250, menuY, 'buttonInactive').setOrigin(0, 0).setScale(.5);
   }
-  const reviewsLink = scene.add.text(startX + 240 + 10, menuY + 8, 'Reviews', menuButtonStyle);
+  const reviewsLink = scene.add.text(startX + 250 + 10, menuY + 8, 'Reviews', menuButtonStyle);
 
   if (currentSceneKey !== shopSceneKey) {
-    const shopButton = scene.add.image(startX + 380, menuY, 'buttonActive').setOrigin(0, 0).setScale(.8, .5);
+    const shopButton = scene.add.image(startX + 380, menuY, 'buttonActive').setOrigin(0, 0).setScale(.85, .5);
     shopButton.setInteractive({ useHandCursor: true });
 
     shopButton.setInteractive({useHandCursor: true})
@@ -72,7 +72,7 @@ export const renderMenu = (scene, currentSceneKey) => {
       .on('pointerover', () => shopButton.setTint(...activeTint))
       .on('pointerout', () => shopButton.setTint());
   } else {
-    const shopButton = scene.add.image(startX + 380, menuY, 'buttonInactive').setOrigin(0, 0).setScale(.8, .5);
+    const shopButton = scene.add.image(startX + 380, menuY, 'buttonInactive').setOrigin(0, 0).setScale(.85, .5);
   }
-  const shopLink = scene.add.text(startX + 380 + 5, menuY + 8, 'Shop/Inventory', menuButtonStyle);
+  const shopLink = scene.add.text(startX + 380 + 10, menuY + 8, 'Shop/Inventory', menuButtonStyle);
 };
