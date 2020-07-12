@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 
-import {bodyStyle, headerStyle} from "../lib/TextStyles";
+import { bodyStyle, headerStyle } from '../lib/TextStyles';
 
 const key = 'creditsScene';
+const titleSceneKey = 'titleScene';
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -10,11 +11,18 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(50, 50, 'Created by these Excellent People', headerStyle);
+    const title = this.add.text(
+      50,
+      50,
+      'Created by these Excellent People',
+      headerStyle
+    );
 
-    const content = this.add.text(50, 100, `
+    const content = this.add.text(
+      50,
+      100,
+      `
 Thanks so much for playing!
-
 Thomas Robertson
 Liam McCartney
 Ryan Morris
@@ -36,12 +44,23 @@ Death Sound LittleRobotSoundFactory
 
 Check out the project:
 https://github.com/mrmorris/gigdash
-`, {
-      ...bodyStyle,
-      fontSize: '14px',
-      wordWrap: {
-        width: 500
+`,
+      {
+        ...bodyStyle,
+        fontSize: '14px',
+        wordWrap: {
+          width: 500,
+        },
       }
-    });
+    );
+
+    const returnToTitle = this.add.text(
+      50,
+      600,
+      'Return to Title',
+      headerStyle
+    );
+    returnToTitle.setInteractive({ useHandCursor: true });
+    returnToTitle.on('pointerdown', () => this.scene.switch(titleSceneKey));
   }
 }

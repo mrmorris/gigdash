@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 
-import logoImg from '../assets/logo.png';
-import {preloadMenu} from "../lib/Menu";
+import { preloadMenu } from '../lib/Menu';
+import { headerStyle } from '../lib/TextStyles';
+
+import introVideo from '../assets/intro_video_portrait.mp4';
 
 const key = 'titleScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -13,30 +15,34 @@ export default class extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('logo', logoImg);
+    this.load.video('introVideo', introVideo);
     preloadMenu(this);
   }
 
   create() {
-    const logo = this.add.image(400, 150, 'logo');
-    const title = this.add.text(100, 100, 'Door Dash... but worse');
-    const startButton = this.add.text(100, 200, 'Start Game');
-    const creditsButton = this.add.text(100, 300, 'Credits');
+    const vid = this.add.video(0, 0, 'introVideo').setOrigin(0);
+    vid.setDisplaySize(600, 800);
 
-    startButton.setInteractive({ useHandCursor: true });
-    startButton.on('pointerdown', () => this.startGame());
+    vid.on('complete', () => {
+      vid.stop();
+      this.startGame();
+    });
 
+    vid.play();
+
+    const startGame = this.add
+      .text(225, 650, 'Start Game', headerStyle)
+      .setOrigin(0);
+
+    startGame.setInteractive({ useHandCursor: true }).on('pointerdown', () => {
+      this.startGame();
+    });
+
+    const creditsButton = this.add
+      .text(230, 700, 'Credits', headerStyle)
+      .setOrigin(0);
     creditsButton.setInteractive({ useHandCursor: true });
     creditsButton.on('pointerdown', () => this.scene.switch(creditsSceneKey));
-
-    this.tweens.add({
-      targets: logo,
-      y: 450,
-      duration: 2000,
-      ease: 'Power2',
-      yoyo: true,
-      loop: -1,
-    });
   }
 
   startGame() {
