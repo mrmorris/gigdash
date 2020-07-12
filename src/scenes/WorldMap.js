@@ -34,14 +34,14 @@ const locationLabelStyle = {
   align: 'center',
 };
 
-const coordinates = [
-  { x: 245, y: 150 },
-  { x: 50, y: 50 },
-  { x: 500, y: 450 },
-  { x: 50, y: 450 },
-  { x: 260, y: 320 },
-  { x: 480, y: 260 }, // federal hill
-];
+const coordinates = {
+  [C.SHOP_GROCERY]: { x: 245, y: 150 },
+  [C.SHOP_HARDWARE]: { x: 50, y: 50 },
+  [C.SHOP_LIQUOR]: { x: 500, y: 450 },
+  [C.NEIGHBORHOOD_FEDERAL_HILL]: { x: 50, y: 450 },
+  [C.NEIGHBORHOOD_FOX_POINT]: { x: 260, y: 320 },
+  [C.NEIGHBORHOOD_OLNEYVILLE]: { x: 480, y: 260 },
+};
 
 let isTraveling = false;
 
@@ -102,8 +102,8 @@ export default class extends Phaser.Scene {
         C.ITEM_ICE_CREAM,
       ],
       this.add.text(
-        coordinates[0].x,
-        coordinates[0].y,
+        coordinates[C.SHOP_GROCERY].x,
+        coordinates[C.SHOP_GROCERY].y,
         C.SHOP_GROCERY,
         locationLabelStyle
       ),
@@ -124,8 +124,8 @@ export default class extends Phaser.Scene {
         C.ITEM_STERILIZED_CLEANING_FLUID,
       ],
       this.add.text(
-        coordinates[1].x,
-        coordinates[1].y,
+        coordinates[C.SHOP_HARDWARE].x,
+        coordinates[C.SHOP_HARDWARE].y,
         C.SHOP_HARDWARE,
         locationLabelStyle
       ),
@@ -146,8 +146,8 @@ export default class extends Phaser.Scene {
         C.ITEM_VISION_DROPS,
       ],
       this.add.text(
-        coordinates[2].x,
-        coordinates[2].y,
+        coordinates[C.SHOP_LIQUOR].x,
+        coordinates[C.SHOP_LIQUOR].y,
         C.SHOP_LIQUOR,
         locationLabelStyle
       ),
@@ -158,8 +158,8 @@ export default class extends Phaser.Scene {
     const hood1 = new Neighborhood(
       C.NEIGHBORHOOD_FOX_POINT,
       this.add.text(
-        coordinates[3].x,
-        coordinates[3].y,
+        coordinates[C.NEIGHBORHOOD_FOX_POINT].x,
+        coordinates[C.NEIGHBORHOOD_FOX_POINT].y,
         C.NEIGHBORHOOD_FOX_POINT,
         locationLabelStyle
       ),
@@ -168,8 +168,8 @@ export default class extends Phaser.Scene {
     const hood2 = new Neighborhood(
       C.NEIGHBORHOOD_OLNEYVILLE,
       this.add.text(
-        coordinates[4].x,
-        coordinates[4].y,
+        coordinates[C.NEIGHBORHOOD_OLNEYVILLE].x,
+        coordinates[C.NEIGHBORHOOD_OLNEYVILLE].y,
         C.NEIGHBORHOOD_OLNEYVILLE,
         locationLabelStyle
       ),
@@ -178,8 +178,8 @@ export default class extends Phaser.Scene {
     const hood3 = new Neighborhood(
       C.NEIGHBORHOOD_FEDERAL_HILL,
       this.add.text(
-        coordinates[5].x,
-        coordinates[5].y,
+        coordinates[C.NEIGHBORHOOD_FEDERAL_HILL].x,
+        coordinates[C.NEIGHBORHOOD_FEDERAL_HILL].y,
         C.NEIGHBORHOOD_FEDERAL_HILL,
         locationLabelStyle
       ),
