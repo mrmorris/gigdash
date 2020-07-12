@@ -35,11 +35,8 @@ export const addInventoryItem = (item) => {
 };
 
 export const removeInventoryItem = (item) => {
-  if (!inventory[item]) {
-    return;
-  }
   inventory[item]--;
-  if (!inventory[item]) {
+  if (inventory[item] <= 0) {
     delete inventory[item];
   }
 };
