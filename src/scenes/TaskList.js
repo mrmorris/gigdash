@@ -16,7 +16,7 @@ class TaskListView extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(10, 100, 'Your Tasks');
+    const title = this.add.text(10, 40, 'Your Tasks');
 
     this.cameras.main.setViewport(
       this.parent.x,
@@ -44,7 +44,7 @@ class TaskListView extends Phaser.Scene {
       let taskRef = this.add
         .text(
           10,
-          140 + 20 * this.tasks.length,
+          40 + 20 * this.tasks.length,
           `${task.destination} - ${task.customerName}`
         )
         .setInteractive({ useHandCursor: true });
