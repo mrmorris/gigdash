@@ -1,11 +1,12 @@
 import {SETTING_INVENTORY_LIMIT} from './constants';
 import Review from "./entities/Review";
 import {addNotification} from "./lib/Notifications";
+import * as C from './constants';
 
 const tasks = [];
 const inventory = {};
 const reviews = [];
-let currentLocation = { name: 'nowhere' };
+let currentLocation = { name: C.NEIGHBORHOOD_OLNEYVILLE };
 let currentTask;
 
 export const addTask = (task) => {

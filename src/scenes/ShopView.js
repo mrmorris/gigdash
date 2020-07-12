@@ -35,6 +35,7 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     const location = getCurrentLocation();
+
     if (location instanceof Shop) {
       this.renderShop();
     } else {
