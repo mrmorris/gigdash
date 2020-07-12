@@ -217,7 +217,7 @@ export default class extends Phaser.Scene {
           targets: this.player,
           x: location.ref.x + location.ref.width / 2,
           y: location.ref.y + location.ref.height / 2,
-          duration: 2000, // @todo travel time...
+          duration: C.SETTING_TRAVEL_TIME_MS,
           ease: 'Power2',
         });
 

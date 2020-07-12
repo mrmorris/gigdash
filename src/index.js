@@ -8,11 +8,6 @@ import ShopViewScene from './scenes/ShopView';
 import TaskViewScene from './scenes/TaskView';
 import ReviewListScene from './scenes/ReviewList';
 
-import * as C from './constants';
-import TASKS from './tasks';
-
-import Task from './entities/Task';
-
 const titleScene = new TitleScene();
 const worldMapScene = new WorldMapScene();
 const taskListScene = new TaskListScene();
