@@ -22,6 +22,7 @@ export default class extends Phaser.Scene {
       50,
       100,
       `
+Thanks so much for playing!
 Thomas Robertson
 Liam McCartney
 Ryan Morris
