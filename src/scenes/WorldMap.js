@@ -48,6 +48,8 @@ let isTraveling = false;
 // player gets a guaranteed 2 easy tasks up front - what a deal!
 let easyTaskCount = 2;
 
+let travellingMusic;
+
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
@@ -59,6 +61,7 @@ export default class extends Phaser.Scene {
     this.load.image('star', starImg);
 
     this.load.audio('bgMusic', './src/assets/bg_music.mp3');
+    this.load.audio('travellingSFX', './src/assets/travelling.mp3');
   }
 
   create() {
@@ -184,6 +187,8 @@ export default class extends Phaser.Scene {
 
     renderMenu(this, key);
     renderStars(this);
+
+    travellingMusic = this.sound.add('travellingSFX', { loop: true });
   }
 
   viewTaskList() {
@@ -201,6 +206,7 @@ export default class extends Phaser.Scene {
       if (!currentLocation || location.name !== currentLocation.name) {
         this.player.flipX = this.player.x > location.ref.x;
 
+        travellingMusic.play();
         const tween = this.tweens.add({
           targets: this.player,
           x: location.ref.x + location.ref.width / 2,
@@ -216,6 +222,7 @@ export default class extends Phaser.Scene {
 
   switchToLocation(location) {
     isTraveling = false;
+    travellingMusic.stop();
     addNotification(`🎉 You have arrived at ${location.name}!`, 'blue');
     setCurrentLocation(location);
   }
