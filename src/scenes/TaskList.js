@@ -1,5 +1,9 @@
 import Phaser from 'phaser';
-import {getCurrentLocation, getIncompleteTasks, setCurrentTask} from '../gameState';
+import {
+  getCurrentLocation,
+  getIncompleteTasks,
+  setCurrentTask,
+} from '../gameState';
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -33,11 +37,7 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     if (location) {
-      let locationName = this.add.text(
-        100,
-        20,
-        `You're at: ${location.name}`
-      );
+      let locationName = this.add.text(100, 20, `You're at: ${location.name}`);
       redrawRefs.push(locationName);
     }
 
