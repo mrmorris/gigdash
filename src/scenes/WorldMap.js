@@ -208,7 +208,8 @@ export default class extends Phaser.Scene {
       if (currentLocation && location.name === currentLocation.name) {
         this.switchToLocationScene();
       } else {
-        console.dir(location.ref);
+        this.player.flipX = this.player.x > location.ref.x;
+
         const tween = this.tweens.add({
           targets: this.player,
           x: location.ref.x + location.ref.width / 2,
