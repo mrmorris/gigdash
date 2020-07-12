@@ -180,7 +180,7 @@ export default class extends Phaser.Scene {
     );
 
     // add the player
-    this.player = this.add.image(centerX, centerY, 'player').setScale(0.2);
+    this.player = this.add.image(485, 700, 'player').setScale(0.2);
 
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
