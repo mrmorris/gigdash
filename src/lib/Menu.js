@@ -3,14 +3,7 @@ const taskListSceneKey = 'taskListScene';
 const shopSceneKey = 'shopViewScene';
 const reviewListSceneKey = 'reviewListScene';
 
-const locationLabelStyle = {
-  fontSize: '18px',
-  color: 'black',
-  backgroundColor: '#EAEAEA',
-  padding: { left: 5, right: 5, top: 5, bottom: 5 },
-  borderColor: '#000000',
-  align: 'center',
-};
+import {locationLabelStyle} from './TextStyles'
 
 function viewScene(scene, key) {
   scene.scene.switch(key);
