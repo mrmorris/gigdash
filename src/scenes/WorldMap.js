@@ -15,7 +15,7 @@ import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
-import { renderMenu } from '../lib/Menu';
+import { renderMenu, preloadMenu } from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 
 import * as C from '../constants';
@@ -68,6 +68,8 @@ export default class extends Phaser.Scene {
     this.load.image('worldMap', worldMapImg);
     this.load.image('player', playerImg);
     this.load.image('star', starImg);
+
+    preloadMenu(this);
 
     this.load.audio('bgMusic', './src/assets/bg_music.mp3');
     this.load.audio('travellingSFX', './src/assets/travelling.mp3');
