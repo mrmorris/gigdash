@@ -20,6 +20,7 @@ const taskViewLimit = 30;
 
 let redrawRefs = [];
 let positiveReviewSFX;
+let tasks = [];
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -42,8 +43,9 @@ export default class extends Phaser.Scene {
   }
 
   renderTaskList() {
-    const tasks = getIncompleteTasks();
     const location = getCurrentLocation();
+
+    tasks = getIncompleteTasks();
 
     redrawRefs.forEach((taskRef) => {
       taskRef.destroy();
@@ -63,7 +65,7 @@ export default class extends Phaser.Scene {
     tasks.slice(0, taskViewLimit).forEach((task, index) => {
       let taskRef = this.add.text(
         xAlignment,
-        160 + 20 * index,
+        160 + 25 * index,
         `${task.destination} - ${task.customerName} - ${
           task.items.length
         } item${task.items.length > 1 ? 's' : ''}`,
@@ -79,7 +81,7 @@ export default class extends Phaser.Scene {
       if (canCompleteTask(task)) {
         let completeRef = this.add.text(
           xAlignment + taskRef.width + 50,
-          160 + 20 * index,
+          160 + 25 * index,
           `Deliver!`,
           {
             fontSize: '12px',
@@ -126,6 +128,11 @@ export default class extends Phaser.Scene {
 
   update() {
     updateStars(this);
+    const newTasks = getIncompleteTasks();
+    if (tasks.length !== newTasks.length) {
+      tasks = newTasks;
+      this.renderTaskList();
+    }
     if (hasFailed()) {
       this.scene.switch(worldMapSceneKey);
     }
