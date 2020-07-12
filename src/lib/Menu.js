@@ -15,7 +15,7 @@ export const renderMenu = (scene, currentSceneKey) => {
   const startX = 25;
 
   // a task list link
-  const taskListLink = scene.add.text(startX, menuY, '[Tasks]', {
+  const taskListLink = scene.add.text(startX, menuY, '[Orders]', {
     ...locationLabelStyle,
     backgroundColor: 'blue',
     fill: 'white',
@@ -26,7 +26,7 @@ export const renderMenu = (scene, currentSceneKey) => {
     taskListLink.on('pointerdown', () => viewScene(scene, taskListSceneKey));
   }
 
-  const mapLink = scene.add.text(startX + horizontalIncrement, menuY, '[Map]', {
+  const mapLink = scene.add.text(startX + 120, menuY, '[Map]', {
     ...locationLabelStyle,
     backgroundColor: 'blue',
     fill: 'white',
@@ -36,7 +36,7 @@ export const renderMenu = (scene, currentSceneKey) => {
     mapLink.on('pointerdown', () => viewScene(scene, worldMapSceneKey));
   }
 
-  const reviewsLink = scene.add.text(startX + horizontalIncrement * 2, menuY, '[Reviews]', {
+  const reviewsLink = scene.add.text(startX + 240, menuY, '[Reviews]', {
     ...locationLabelStyle,
     backgroundColor: 'blue',
     fill: 'white',
@@ -46,7 +46,7 @@ export const renderMenu = (scene, currentSceneKey) => {
     reviewsLink.on('pointerdown', () => viewScene(scene, reviewListSceneKey));
   }
 
-  const shopLink = scene.add.text(startX + horizontalIncrement * 3, menuY, '[Shop]', {
+  const shopLink = scene.add.text(startX + 380, menuY, '[Shop/Inventory]', {
     ...locationLabelStyle,
     backgroundColor: 'blue',
     fill: 'white',

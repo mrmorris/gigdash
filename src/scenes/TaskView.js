@@ -46,16 +46,20 @@ export default class extends Phaser.Scene {
 
     // if a user can complete the task...
     if (canCompleteTask(task)) {
-      const completeTaskButton = this.add.text(
-        xAlignment,
-        500,
-        'Complete Task',
-        bodyStyle
-      );
+      const completeTaskButton = this.add.text(xAlignment, 500, 'Complete Delivery', {
+        ...bodyStyle,
+        color: 'cyan',
+      });
       redrawRefs.push(completeTaskButton);
 
       completeTaskButton.setInteractive({ useHandCursor: true });
       completeTaskButton.on('pointerdown', () => this.completeTask(task));
+    } else {
+      const completeTaskButton = this.add.text(xAlignment, 500, 'Complete Delivery (Not enough inventory)', {
+        ...bodyStyle,
+        color: 'grey',
+      });
+      redrawRefs.push(completeTaskButton);
     }
 
     const destinationName = this.add.text(

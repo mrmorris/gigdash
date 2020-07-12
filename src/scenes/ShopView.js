@@ -9,19 +9,19 @@ import { addSceneForNotification } from '../lib/Notifications';
 import { SETTING_INVENTORY_LIMIT } from '../constants';
 import Shop from '../entities/Shop';
 import { renderMenu } from '../lib/Menu';
+import {bodyStyle, headerStyle, subHeaderStyle} from "../lib/TextStyles";
 import { renderStars, updateStars } from '../lib/Stars';
 
 const key = 'shopViewScene';
-const worldMapSceneKey = 'worldMapScene';
+const xAlignment = 50;
 
-let redrawRefs = [];
+let shopRefs = [];
+let inventoryRefs = [];
 
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
   }
-
-  preload() {}
 
   create() {
     addSceneForNotification(this);
@@ -30,15 +30,21 @@ export default class extends Phaser.Scene {
   }
 
   render() {
-    redrawRefs.forEach((ref) => {
+    const location = getCurrentLocation();
+
+    inventoryRefs.forEach((ref) => {
       ref.destroy();
     });
-    redrawRefs = [];
+    inventoryRefs = [];
 
-    const location = getCurrentLocation();
+    shopRefs.forEach((ref) => {
+      ref.destroy();
+    });
+    shopRefs = [];
 
     if (location instanceof Shop) {
       this.renderShop();
+      this.renderInventory(400);
     } else {
       this.renderInventory();
     }
@@ -46,14 +52,21 @@ export default class extends Phaser.Scene {
     renderStars(this);
   }
 
-  renderInventory() {
+  renderInventory(yPosition = 50) {
+    inventoryRefs.forEach((ref) => {
+      ref.destroy();
+    });
+    inventoryRefs = [];
+
     const inventory = getInventory();
     let myInventoryTitle = this.add.text(
-      100,
-      100,
-      `You're not at a shop.\nYour Inventory (Max ${SETTING_INVENTORY_LIMIT})`
+      xAlignment,
+      yPosition,
+      `Your Inventory (Max ${SETTING_INVENTORY_LIMIT})`,
+      headerStyle
     );
-    redrawRefs.push(myInventoryTitle);
+    inventoryRefs.push(myInventoryTitle);
+
     let index = 0;
     for (const [item, count] of Object.entries(inventory)) {
       if (count <= 0) {
@@ -61,37 +74,58 @@ export default class extends Phaser.Scene {
       }
 
       let itemRef = this.add.text(
-        500,
-        180 + 20 * index,
-        `${item}: ${count} (drop)`
+        xAlignment,
+        yPosition + 50 + 20 * index,
+        `${item}: ${count}`,
+        bodyStyle
       );
       index++;
 
-      itemRef.setInteractive({ useHandCursor: true });
-      itemRef.on('pointerdown', () => {
-        removeInventoryItem(item);
-        // @todo - avoid redrawing the whole thing
-        this.renderShop();
-      });
+      itemRef.setInteractive({ useHandCursor: true })
+        .on('pointerdown', () => {
+          removeInventoryItem(item);
+          // @todo - avoid redrawing the whole thing
+          this.renderShop();
+          this.renderInventory(yPosition);
+        })
+        .on('pointerover', () => {
+          itemRef.setStyle({ color: 'cyan'}).setText(`${item}: ${count} (drop)`);
+        })
+        .on('pointerout', () =>  {
+          itemRef.setStyle({ color: 'white'}).setText(`${item}: ${count}`);
+        });
 
-      redrawRefs.push(itemRef);
+      inventoryRefs.push(itemRef);
     }
   }
 
   renderShop() {
-    const location = getCurrentLocation();
-    const title = this.add.text(100, 100, `Welcome to ${location.name}!`);
-    redrawRefs.push(title);
+    shopRefs.forEach((ref) => {
+      ref.destroy();
+    });
+    shopRefs = [];
 
-    location.inventory.forEach((item, index) => {
-      let itemRef = this.add.text(100, 160 + 20 * index, item);
-      itemRef.setInteractive({ useHandCursor: true });
-      itemRef.on('pointerdown', () => {
-        addInventoryItem(item);
-        // @todo - avoid redrawing the whole thing
-        this.renderShop();
+    const location = getCurrentLocation();
+    const title = this.add.text(xAlignment, 50, `Welcome to ${location.name}!`, headerStyle);
+    shopRefs.push(title);
+
+    const purchaseTitle = this.add.text(xAlignment, 140, `Available Items:`, subHeaderStyle);
+    shopRefs.push(purchaseTitle);
+
+    location && location.inventory && location.inventory.forEach((item, index) => {
+      let itemRef = this.add.text(xAlignment, 165 + 20 * index, item, {
+        ...bodyStyle
       });
-      redrawRefs.push(itemRef);
+      itemRef
+        .setInteractive({ useHandCursor: true })
+        .on('pointerdown', () => {
+          addInventoryItem(item);
+          this.renderInventory(400);
+          this.renderShop();
+        })
+        .on('pointerover', () => itemRef.setStyle({ color: 'cyan'}))
+        .on('pointerout', () =>  itemRef.setStyle({ color: 'white'}));
+      shopRefs.push(itemRef);
     });
   }
 

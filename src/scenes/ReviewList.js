@@ -7,7 +7,7 @@ import { addSceneForNotification } from '../lib/Notifications';
 
 const key = 'reviewListScene';
 const xAlignment = 50;
-const taskViewLimit = 30;
+const reviewLimit = 30;
 
 let refreshRefs = [];
 
@@ -17,7 +17,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(xAlignment, 100, 'Your Reviews', headerStyle);
+    const title = this.add.text(xAlignment, 50, 'Your Reviews', headerStyle);
 
     addSceneForNotification(this);
 
@@ -34,18 +34,40 @@ export default class extends Phaser.Scene {
     });
     refreshRefs = [];
 
-    reviews.forEach((review, index) => {
-      let ref = this.add.text(
+    if (!reviews.length) {
+      const noReviewsText = this.add.text(xAlignment, 140, 'You don\'t have any reviews yet', bodyStyle);
+      refreshRefs.push(noReviewsText);
+    }
+    let lastReviewRef;
+    reviews.slice(0, reviewLimit).forEach((review, index) => {
+        let ref = this.add.text(
+          xAlignment,
+          (lastReviewRef ? 140 + lastReviewRef.height : 140) + 40 * index,
+          `${review.body} - ${review.customerName} - ${review.rating} stars`,
+          {
+            ...bodyStyle,
+            wordWrap: { width: 500 }
+          }
+        );
+        refreshRefs.push(ref);
+        renderStars(this);
+        lastReviewRef = ref;
+      });
+
+    if (reviews.length > reviewLimit) {
+      const divider = this.add.text(xAlignment, 550, `----`, bodyStyle);
+      const moreReviewsText = this.add.text(
         xAlignment,
-        140 + 20 * index,
-        `${review.body} - ${review.customerName} - ${review.rating} stars`,
+        560,
+        `...you have ${reviews.length - reviewLimit} more reviews...`,
         bodyStyle
       );
-      refreshRefs.push(ref);
-    });
-    renderStars(this);
-  }
 
+      refreshRefs.push(divider);
+      refreshRefs.push(moreReviewsText);
+    }
+  }
+  
   update() {
     updateStars(this);
   }
