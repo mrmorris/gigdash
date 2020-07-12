@@ -280,7 +280,7 @@ export default class extends Phaser.Scene {
       if (!selectedTask.isComplete) {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
-        addNotification('😭 You just got a negative review!', 'red', () => {
+        addNotification('👎 You just got a negative review!', 'red', () => {
           this.scene.switch(reviewListSceneKey);
         });
         negativeReviewSFX.play();

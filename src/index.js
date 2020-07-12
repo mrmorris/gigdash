@@ -8,6 +8,7 @@ import ShopViewScene from './scenes/ShopView';
 import TaskViewScene from './scenes/TaskView';
 import ReviewListScene from './scenes/ReviewList';
 import FailureScene from './scenes/Failure';
+import CreditsScene from './scenes/Credits';
 
 const titleScene = new TitleScene();
 const worldMapScene = new WorldMapScene();
@@ -16,6 +17,7 @@ const shopViewScene = new ShopViewScene();
 const taskViewScene = new TaskViewScene();
 const reviewListScene = new ReviewListScene();
 const failureScene = new FailureScene();
+const creditsScene = new CreditsScene();
 
 const config = {
   type: Phaser.AUTO,
@@ -42,5 +44,6 @@ game.scene.add('shopViewScene', shopViewScene);
 game.scene.add('taskViewScene', taskViewScene);
 game.scene.add('reviewListScene', reviewListScene);
 game.scene.add('failureScene', failureScene);
+game.scene.add('creditsScene', creditsScene);
 
 game.scene.start('worldMapScene');
