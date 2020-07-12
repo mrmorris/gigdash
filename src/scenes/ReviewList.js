@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { getReviews, hasFailed } from '../gameState';
+import { getReviews, hasFailed} from '../gameState';
 import { renderMenu } from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 import { bodyStyle, headerStyle } from '../lib/TextStyles';
@@ -12,6 +12,7 @@ const reviewLimit = 30;
 const worldMapSceneKey = 'worldMapScene';
 
 let refreshRefs = [];
+let reviews = [];
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -31,7 +32,7 @@ export default class extends Phaser.Scene {
   }
 
   renderReviewList() {
-    const reviews = getReviews();
+    reviews = getReviews();
 
     refreshRefs.forEach((refreshRefs) => {
       refreshRefs.destroy();
@@ -79,7 +80,10 @@ export default class extends Phaser.Scene {
 
   update() {
     updateStars(this);
-
+    const newReviews = getReviews();
+    if (reviews.length !== newReviews.length) {
+      this.renderReviewList();
+    }
     if (hasFailed()) {
       this.scene.switch(worldMapSceneKey);
     }
