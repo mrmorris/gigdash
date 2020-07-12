@@ -25,12 +25,12 @@ const locationLabelStyle = {
 };
 
 const coordinates = {
-  [C.SHOP_GROCERY]: { x: 245, y: 150 },
-  [C.SHOP_HARDWARE]: { x: 50, y: 50 },
-  [C.SHOP_LIQUOR]: { x: 500, y: 450 },
-  [C.NEIGHBORHOOD_FEDERAL_HILL]: { x: 50, y: 450 },
-  [C.NEIGHBORHOOD_FOX_POINT]: { x: 260, y: 320 },
-  [C.NEIGHBORHOOD_OLNEYVILLE]: { x: 480, y: 260 },
+  [C.SHOP_GROCERY]: { x: 445, y: 150 },
+  [C.SHOP_HARDWARE]: { x: 250, y: 50 },
+  [C.SHOP_LIQUOR]: { x: 600, y: 450 },
+  [C.NEIGHBORHOOD_FEDERAL_HILL]: { x: 250, y: 450 },
+  [C.NEIGHBORHOOD_FOX_POINT]: { x: 460, y: 320 },
+  [C.NEIGHBORHOOD_OLNEYVILLE]: { x: 680, y: 260 },
 };
 
 let isTraveling = false;
@@ -62,7 +62,7 @@ class WorldMapScene extends Phaser.Scene {
     map.setScale(scale).setScrollFactor(0);
 
     // a reviews link
-    const reviewsLink = this.add.text(550, 120, 'My Reviews', {
+    const reviewsLink = this.add.text(750, 20, 'My Reviews', {
       ...locationLabelStyle,
       backgroundColor: 'blue',
       fill: 'white',
