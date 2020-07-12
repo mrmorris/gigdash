@@ -58,7 +58,7 @@ export default class extends Phaser.Scene {
         return;
       }
 
-      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count} ${count > 0 ? 'x' : ''}`);
+      let itemRef = this.add.text(500, 180 + 20 * index, `${item}: ${count} (drop)`);
       index++;
 
       itemRef.setInteractive({ useHandCursor: true });
