@@ -8,10 +8,13 @@ import {
 } from '../gameState';
 import {addNotification} from "../lib/Notifications";
 import {renderMenu} from '../lib/Menu';
+import { headerStyle, subHeaderStyle, bodyStyle } from '../lib/TextStyles';
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
 const taskViewSceneKey = 'taskViewScene';
+const xAlignment = 50;
+const taskViewLimit = 30;
 
 let redrawRefs = [];
 
@@ -21,7 +24,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(100, 100, 'Your Tasks');
+    const title = this.add.text(xAlignment, 50, 'Your Tasks', headerStyle);
 
     renderMenu(this, key);
     this.renderTaskList();
@@ -38,26 +41,29 @@ export default class extends Phaser.Scene {
     redrawRefs = [];
 
     if (location) {
-      let locationName = this.add.text(100, 20, `You're at: ${location.name}`);
+      let locationName = this.add.text(xAlignment, 100, `You're currently at: ${location.name}`, subHeaderStyle);
       redrawRefs.push(locationName);
     }
 
-    tasks.slice(0, 15).forEach((task, index) => {
+    tasks.slice(0, 30).forEach((task, index) => {
       let taskRef = this.add.text(
-        100,
-        140 + 20 * index,
+        xAlignment,
+        160 + 20 * index,
         `${task.destination} - ${task.customerName} - ${
           task.items.length
-        } item${task.items.length > 1 ? 's' : ''}`
+        } item${task.items.length > 1 ? 's' : ''}`,
+        bodyStyle
       );
 
-      taskRef.setInteractive({ useHandCursor: true });
-      taskRef.on('pointerdown', () => this.viewTask(task));
+      taskRef.setInteractive({ useHandCursor: true })
+        .on('pointerdown', () => this.viewTask(task))
+        .on('pointerover', () => taskRef.setStyle({ color: 'cyan'}))
+        .on('pointerout', () =>  taskRef.setStyle({ color: 'white'}));
 
       if (canCompleteTask(task)) {
         let completeRef = this.add.text(
-          100 + taskRef.width + 50,
-          140 + 20 * index,
+          xAlignment + taskRef.width + 50,
+          160 + 20 * index,
           `Complete task!`,
           {
             fill: 'cyan'
@@ -72,12 +78,13 @@ export default class extends Phaser.Scene {
       redrawRefs.push(taskRef);
     });
 
-    if (tasks.length > 15) {
-      const divider = this.add.text(100, 440, `----`);
+    if (tasks.length > taskViewLimit) {
+      const divider = this.add.text(xAlignment, 550, `----`, bodyStyle);
       const moreTasksTest = this.add.text(
-        100,
-        460,
-        `...There are ${tasks.length - 15} More Tasks to Complete`
+        xAlignment,
+        560,
+        `...There are ${tasks.length - taskViewLimit} More Tasks to Complete`,
+        bodyStyle
       );
 
       redrawRefs.push(divider);

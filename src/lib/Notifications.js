@@ -1,3 +1,5 @@
+import {notificationLabelStyle} from './TextStyles';
+
 /**
  * notifications start to the far left
  * @type {number}
@@ -46,12 +48,9 @@ export const setMainScene = (scene) => {
 
 export const addNotification = (text, color = 'black', clickHandler = undefined, scene = mainScene) => {
   const alert = scene.add.text(startingPositionX, startingPositionY, text, {
-    fontSize: '18px',
+    ...notificationLabelStyle,
     color,
-    backgroundColor: '#EAEAEA',
-    padding: { left: 5, right: 5, top: 10, bottom: 10 },
     fixedWidth: scene.sys.game.canvas.width,
-    borderColor: '#000000',
   });
   if (typeof clickHandler === 'function') {
     alert.setInteractive({ useHandCursor: true });
