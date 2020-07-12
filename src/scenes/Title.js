@@ -8,6 +8,7 @@ import introVideo from '../assets/intro_video_portrait.mp4';
 const key = 'titleScene';
 const worldMapSceneKey = 'worldMapScene';
 const creditsSceneKey = 'creditsScene';
+let vid;
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -20,7 +21,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const vid = this.add.video(0, 0, 'introVideo').setOrigin(0);
+    vid = this.add.video(0, 0, 'introVideo').setOrigin(0);
     vid.setDisplaySize(600, 800);
 
     vid.on('complete', () => {
@@ -46,6 +47,7 @@ export default class extends Phaser.Scene {
   }
 
   startGame() {
+    vid.stop();
     this.scene.switch(worldMapSceneKey);
   }
 }
