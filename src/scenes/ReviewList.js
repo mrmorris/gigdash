@@ -1,11 +1,14 @@
 import Phaser from 'phaser';
 import { getReviews } from '../gameState';
 import {renderMenu} from "../lib/Menu";
+import {bodyStyle, headerStyle} from "../lib/TextStyles";
 import {
   addSceneForNotification,
 } from '../lib/Notifications';
 
 const key = 'reviewListScene';
+const xAlignment = 50;
+const taskViewLimit = 30;
 
 let refreshRefs = [];
 
@@ -15,7 +18,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(100, 100, 'Your Reviews');
+    const title = this.add.text(xAlignment, 100, 'Your Reviews', headerStyle);
 
     addSceneForNotification(this);
 
@@ -35,9 +38,10 @@ export default class extends Phaser.Scene {
     reviews
       .forEach((review, index) => {
         let ref = this.add.text(
-          100,
+          xAlignment,
           140 + 20 * index,
-          `${review.body} - ${review.customerName} - ${review.rating} stars`
+          `${review.body} - ${review.customerName} - ${review.rating} stars`,
+          bodyStyle
         );
         refreshRefs.push(ref);
       });
