@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import worldMapImg from '../assets/world-map.png';
 import playerImg from '../assets/player.png';
+import starImg from '../assets/star.png';
 import {
   addTask,
   getCurrentLocation,
@@ -12,11 +13,9 @@ import {
 import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
-import {
-  addSceneForNotification,
-  addNotification,
-} from '../lib/Notifications';
+import { addSceneForNotification, addNotification } from '../lib/Notifications';
 import { renderMenu } from '../lib/Menu';
+import { renderStars, updateStars } from '../lib/Stars';
 
 import * as C from '../constants';
 import TASKS from '../tasks';
@@ -57,6 +56,7 @@ export default class extends Phaser.Scene {
   preload() {
     this.load.image('worldMap', worldMapImg);
     this.load.image('player', playerImg);
+    this.load.image('star', starImg);
   }
 
   create() {
@@ -179,6 +179,7 @@ export default class extends Phaser.Scene {
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
 
     renderMenu(this, key);
+    renderStars(this);
   }
 
   viewTaskList() {
@@ -262,5 +263,9 @@ export default class extends Phaser.Scene {
     setTimeout(() => {
       this.queueNextAssignment(nextAssignmentTimeout);
     }, nextAssignmentTimeout);
+  }
+
+  update() {
+    updateStars(this);
   }
 }

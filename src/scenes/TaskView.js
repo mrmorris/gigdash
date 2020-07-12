@@ -6,12 +6,15 @@ import {
   completeTask,
   canCompleteTask,
 } from '../gameState';
+import { addSceneForNotification, addNotification } from '../lib/Notifications';
+import { renderMenu } from '../lib/Menu';
+import { renderStars, updateStars } from '../lib/Stars';
 import {
-  addSceneForNotification,
-  addNotification,
-} from '../lib/Notifications';
-import {renderMenu} from "../lib/Menu";
-import {headerStyle, subHeaderStyle, taskBodyStyle, bodyStyle} from "../lib/TextStyles";
+  headerStyle,
+  subHeaderStyle,
+  taskBodyStyle,
+  bodyStyle,
+} from '../lib/TextStyles';
 
 const xAlignment = 50;
 const key = 'taskViewScene';
@@ -28,6 +31,7 @@ export default class extends Phaser.Scene {
     this.renderTask();
     addSceneForNotification(this);
     renderMenu(this, key);
+    renderStars(this);
     this.events.on('wake', () => this.renderTask());
   }
 
@@ -42,7 +46,12 @@ export default class extends Phaser.Scene {
 
     // if a user can complete the task...
     if (canCompleteTask(task)) {
-      const completeTaskButton = this.add.text(xAlignment, 500, 'Complete Task', bodyStyle);
+      const completeTaskButton = this.add.text(
+        xAlignment,
+        500,
+        'Complete Task',
+        bodyStyle
+      );
       redrawRefs.push(completeTaskButton);
 
       completeTaskButton.setInteractive({ useHandCursor: true });
@@ -65,15 +74,10 @@ export default class extends Phaser.Scene {
     );
     redrawRefs.push(customerName);
 
-    const description = this.add.text(
-      xAlignment,
-      180,
-      task.name,
-      {
-        ...taskBodyStyle,
-        wordWrap: { width: 500 }
-      }
-    );
+    const description = this.add.text(xAlignment, 180, task.name, {
+      ...taskBodyStyle,
+      wordWrap: { width: 500 },
+    });
     redrawRefs.push(description);
 
     task.items.forEach((taskName, index) => {
@@ -91,5 +95,9 @@ export default class extends Phaser.Scene {
     completeTask(task);
     addNotification('👍 You got a good review!', 'green');
     this.scene.switch(taskListSceneKey);
+  }
+
+  update() {
+    updateStars(this);
   }
 }
