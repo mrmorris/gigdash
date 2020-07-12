@@ -1,11 +1,15 @@
 import Phaser from 'phaser';
-import { getIncompleteTasks, setCurrentTask } from '../gameState';
+import {
+  getCurrentLocation,
+  getIncompleteTasks,
+  setCurrentTask,
+} from '../gameState';
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
 const taskViewSceneKey = 'taskViewScene';
 
-let taskRefs = [];
+let redrawRefs = [];
 
 export default class extends Phaser.Scene {
   constructor() {
@@ -25,12 +29,17 @@ export default class extends Phaser.Scene {
 
   renderTaskList() {
     const tasks = getIncompleteTasks();
+    const location = getCurrentLocation();
 
-    taskRefs.forEach((taskRef) => {
+    redrawRefs.forEach((taskRef) => {
       taskRef.destroy();
     });
+    redrawRefs = [];
 
-    taskRefs = [];
+    if (location) {
+      let locationName = this.add.text(100, 20, `You're at: ${location.name}`);
+      redrawRefs.push(locationName);
+    }
 
     tasks.slice(0, 15).forEach((task, index) => {
       let taskRef = this.add.text(
@@ -42,7 +51,7 @@ export default class extends Phaser.Scene {
       taskRef.setInteractive({ useHandCursor: true });
       taskRef.on('pointerdown', () => this.viewTask(task));
 
-      taskRefs.push(taskRef);
+      redrawRefs.push(taskRef);
     });
     if (tasks.length > 15) {
       const divider = this.add.text(100, 440, `----`);
@@ -52,8 +61,8 @@ export default class extends Phaser.Scene {
         `...There are ${tasks.length - 15} More Tasks to Complete`
       );
 
-      taskRefs.push(divider);
-      taskRefs.push(moreTasksTest);
+      redrawRefs.push(divider);
+      redrawRefs.push(moreTasksTest);
     }
   }
 
