@@ -9,7 +9,7 @@ const startingPositionX = 0;
  * could improve this by using the scene's height
  * @type {number}
  */
-const startingPositionY = 570;
+const startingPositionY = 0;
 
 /**
  * height increment with which to position new notifications
@@ -49,8 +49,8 @@ export const addNotification = (text, color = 'black', clickHandler = undefined,
     fontSize: '18px',
     color,
     backgroundColor: '#EAEAEA',
-    padding: { left: 5, right: 5, top: 5, bottom: 5 },
-    fixedWidth: 350,
+    padding: { left: 5, right: 5, top: 10, bottom: 10 },
+    fixedWidth: scene.sys.game.canvas.width,
     borderColor: '#000000',
   });
   if (typeof clickHandler === 'function') {

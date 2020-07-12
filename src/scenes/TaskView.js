@@ -7,6 +7,7 @@ import {
   canCompleteTask,
 } from '../gameState';
 import { addNotification } from '../lib/Notifications';
+import {renderMenu} from "../lib/Menu";
 
 const key = 'taskViewScene';
 const taskListSceneKey = 'taskListScene';
@@ -19,12 +20,8 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const backButton = this.add.text(100, 540, 'Back to List');
-
-    backButton.setInteractive({ useHandCursor: true });
-    backButton.on('pointerdown', () => this.backToTaskList());
-
     this.renderTask();
+    renderMenu(this, key);
     this.events.on('wake', () => this.renderTask());
   }
 
@@ -83,11 +80,7 @@ export default class extends Phaser.Scene {
 
   completeTask(task) {
     completeTask(task);
-    addNotification('You got a good review!', 'green');
-    this.scene.switch(taskListSceneKey);
-  }
-
-  backToTaskList() {
+    addNotification('👍 You got a good review!', 'green');
     this.scene.switch(taskListSceneKey);
   }
 }

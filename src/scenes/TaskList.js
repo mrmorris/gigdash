@@ -7,6 +7,7 @@ import {
   completeTask,
 } from '../gameState';
 import {addNotification} from "../lib/Notifications";
+import {renderMenu} from '../lib/Menu';
 
 const key = 'taskListScene';
 const worldMapSceneKey = 'worldMapScene';
@@ -21,11 +22,8 @@ export default class extends Phaser.Scene {
 
   create() {
     const title = this.add.text(100, 100, 'Your Tasks');
-    const backButton = this.add.text(100, 540, 'Back to Map');
 
-    backButton.setInteractive({ useHandCursor: true });
-    backButton.on('pointerdown', () => this.backToMap());
-
+    renderMenu(this, key);
     this.renderTaskList();
     this.events.on('wake', () => this.renderTaskList());
   }
@@ -85,10 +83,6 @@ export default class extends Phaser.Scene {
       redrawRefs.push(divider);
       redrawRefs.push(moreTasksTest);
     }
-  }
-
-  backToMap() {
-    this.scene.switch(worldMapSceneKey);
   }
 
   completeTask(task) {

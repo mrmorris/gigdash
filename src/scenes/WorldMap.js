@@ -16,6 +16,7 @@ import {
   setMainScene as setMainSceneForNotifications,
   addNotification,
 } from '../lib/Notifications';
+import { renderMenu } from '../lib/Menu';
 
 import * as C from '../constants';
 import TASKS from '../tasks';
@@ -68,24 +69,6 @@ export default class extends Phaser.Scene {
     let scaleY = this.cameras.main.height / map.height;
     let scale = Math.max(scaleX, scaleY);
     map.setScale(scale).setScrollFactor(0);
-
-    // a task list link
-    const taskListLink = this.add.text(550, 100, 'My Tasks', {
-      ...locationLabelStyle,
-      backgroundColor: 'blue',
-      fill: 'white',
-    });
-    taskListLink.setInteractive({ useHandCursor: true });
-    taskListLink.on('pointerdown', () => this.viewTaskList());
-
-    // a reviews link
-    const reviewsLink = this.add.text(550, 120, 'My Reviews', {
-      ...locationLabelStyle,
-      backgroundColor: 'blue',
-      fill: 'white',
-    });
-    reviewsLink.setInteractive({ useHandCursor: true });
-    reviewsLink.on('pointerdown', () => this.viewReviewListLink());
 
     setMainSceneForNotifications(this);
 
@@ -194,6 +177,8 @@ export default class extends Phaser.Scene {
 
     // Kick off the task queuer
     this.queueNextAssignment(C.SETTING_INITIAL_ASSIGNMENT_DELAY);
+
+    renderMenu(this);
   }
 
   viewTaskList() {
@@ -208,9 +193,7 @@ export default class extends Phaser.Scene {
     if (!isTraveling) {
       isTraveling = true;
 
-      if (currentLocation && location.name === currentLocation.name) {
-        this.switchToLocationScene();
-      } else {
+      if (!currentLocation || location.name !== currentLocation.name) {
         this.player.flipX = this.player.x > location.ref.x;
 
         const tween = this.tweens.add({
@@ -221,19 +204,15 @@ export default class extends Phaser.Scene {
           ease: 'Power2',
         });
 
-        tween.on('complete', () => this.switchToLocationScene(location));
+        tween.on('complete', () => this.switchToLocation(location));
       }
     }
   }
 
-  switchToLocationScene(location) {
+  switchToLocation(location) {
     isTraveling = false;
+    addNotification(`🎉 You have arrived at ${location.name}!`, 'blue');
     setCurrentLocation(location);
-    if (location instanceof Shop) {
-      this.scene.switch(shopViewSceneKey);
-    } else {
-      this.scene.switch(taskListSceneKey);
-    }
   }
 
   viewReviewListLink() {
@@ -256,14 +235,14 @@ export default class extends Phaser.Scene {
     const selectedTask =
       unassignedTasks[Math.floor(Math.random() * unassignedTasks.length)];
     addTask(selectedTask);
-    addNotification('You got a new task');
+    addNotification('😄 You got a new task');
 
     // tasks will automatically fail if they aren't completed in... 1 minute
     setTimeout(() => {
       if (!selectedTask.isComplete) {
         selectedTask.isFailed = true;
         selectedTask.isComplete = true;
-        addNotification('You just got a negative review!', 'red', () => {
+        addNotification('😭 You just got a negative review!', 'red', () => {
           this.scene.switch(reviewListSceneKey);
         });
         addReview(

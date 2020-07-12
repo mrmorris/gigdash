@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 import { getReviews } from '../gameState';
+import {renderMenu} from "../lib/Menu";
 
 const key = 'reviewListScene';
-const worldMapSceneKey = 'worldMapScene';
 
 let refreshRefs = [];
 
@@ -13,12 +13,9 @@ export default class extends Phaser.Scene {
 
   create() {
     const title = this.add.text(100, 100, 'Your Reviews');
-    const backButton = this.add.text(100, 540, 'Back to Map');
-
-    backButton.setInteractive({ useHandCursor: true });
-    backButton.on('pointerdown', () => this.backToMap());
 
     this.renderReviewList();
+    renderMenu(this, key);
     this.events.on('wake', () => this.renderReviewList());
   }
 
@@ -39,9 +36,5 @@ export default class extends Phaser.Scene {
         );
         refreshRefs.push(ref);
       });
-  }
-
-  backToMap() {
-    this.scene.switch(worldMapSceneKey);
   }
 }
