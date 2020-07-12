@@ -17,16 +17,18 @@ const reviewListScene = new ReviewListScene();
 
 const config = {
   type: Phaser.AUTO,
-  parent: 'phaser-example',
   width: 600,
   height: 800,
   plugins: {
-    global: [{
-      key: 'rexFade',
-      plugin: FadePlugin,
-      start: true
-    }]
-  }
+    global: [
+      {
+        key: 'rexFade',
+        plugin: FadePlugin,
+        start: true,
+      },
+    ],
+  },
+  parent: document.getElementById('game'),
 };
 
 const game = new Phaser.Game(config);
