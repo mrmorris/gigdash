@@ -18,7 +18,7 @@ export default class extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(xAlignment, 100, 'Your Reviews', headerStyle);
+    const title = this.add.text(xAlignment, 50, 'Your Reviews', headerStyle);
 
     addSceneForNotification(this);
 
@@ -35,11 +35,15 @@ export default class extends Phaser.Scene {
     });
     refreshRefs = [];
 
+    if (!reviews.length) {
+      const noReviewsText = this.add.text(xAlignment, 140, 'You don\'t have any reviews yet', bodyStyle);
+      refreshRefs.push(noReviewsText);
+    }
     reviews
       .forEach((review, index) => {
         let ref = this.add.text(
           xAlignment,
-          140 + 20 * index,
+          140 + 40 * index,
           `${review.body} - ${review.customerName} - ${review.rating} stars`,
           bodyStyle
         );

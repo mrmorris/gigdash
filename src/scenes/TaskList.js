@@ -69,8 +69,9 @@ export default class extends Phaser.Scene {
         let completeRef = this.add.text(
           xAlignment + taskRef.width + 50,
           160 + 20 * index,
-          `Complete task!`,
+          `Deliver!`,
           {
+            fontSize: '12px',
             fill: 'cyan'
           }
         );
