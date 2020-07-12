@@ -5,6 +5,7 @@ import {
   getInventory,
   removeInventoryItem,
 } from '../gameState';
+import { addSceneForNotification } from '../lib/Notifications';
 import { SETTING_INVENTORY_LIMIT } from '../constants';
 import Shop from '../entities/Shop';
 import { renderMenu } from '../lib/Menu';
@@ -22,6 +23,7 @@ export default class extends Phaser.Scene {
   preload() {}
 
   create() {
+    addSceneForNotification(this);
     this.render();
     this.events.on('wake', () => this.render());
   }

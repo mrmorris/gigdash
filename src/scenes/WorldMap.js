@@ -13,7 +13,7 @@ import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
 import {
-  setMainScene as setMainSceneForNotifications,
+  addSceneForNotification,
   addNotification,
 } from '../lib/Notifications';
 import { renderMenu } from '../lib/Menu';
@@ -70,7 +70,7 @@ export default class extends Phaser.Scene {
     let scale = Math.max(scaleX, scaleY);
     map.setScale(scale).setScrollFactor(0);
 
-    setMainSceneForNotifications(this);
+    addSceneForNotification(this);
 
     // add some "stores"
     const store1 = new Shop(

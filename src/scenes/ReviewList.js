@@ -1,6 +1,9 @@
 import Phaser from 'phaser';
 import { getReviews } from '../gameState';
 import {renderMenu} from "../lib/Menu";
+import {
+  addSceneForNotification,
+} from '../lib/Notifications';
 
 const key = 'reviewListScene';
 
@@ -13,6 +16,8 @@ export default class extends Phaser.Scene {
 
   create() {
     const title = this.add.text(100, 100, 'Your Reviews');
+
+    addSceneForNotification(this);
 
     this.renderReviewList();
     renderMenu(this, key);
