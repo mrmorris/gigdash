@@ -39,8 +39,7 @@ export const renderMenu = (scene, currentSceneKey) => {
   // a task list link
   if (currentSceneKey !== taskListSceneKey) {
     const taskListButton = scene.add.image(startX, menuY, 'buttonActive').setOrigin(0, 0).setScale(.5);
-    taskListButton.setInteractive({ useHandCursor: true });
-    taskListButton
+    taskListButton.setInteractive({ useHandCursor: true })
       .on('pointerdown', () => viewScene(scene, taskListSceneKey))
       .on('pointerover', () => taskListButton.setTint(...activeTint))
       .on('pointerout', () => taskListButton.setTint());
@@ -49,11 +48,9 @@ export const renderMenu = (scene, currentSceneKey) => {
   }
   const taskListLink = scene.add.text(startX + 15, menuY + 8, 'Orders', menuButtonStyle);
 
-
   if (currentSceneKey !== worldMapSceneKey) {
     const mapLinkButton = scene.add.image(startX + 120, menuY, 'buttonActive').setOrigin(0, 0).setScale(.5);
-    mapLinkButton.setInteractive({ useHandCursor: true });
-    mapLinkButton
+    mapLinkButton.setInteractive({ useHandCursor: true })
       .on('pointerdown', () => viewScene(scene, worldMapSceneKey))
       .on('pointerover', () => mapLinkButton.setTint(...activeTint))
       .on('pointerout', () => mapLinkButton.setTint());
@@ -64,8 +61,6 @@ export const renderMenu = (scene, currentSceneKey) => {
 
   if (currentSceneKey !== reviewListSceneKey) {
     const reviewButton = scene.add.image(startX + 250, menuY, 'buttonActive').setOrigin(0, 0).setScale(.5);
-    reviewButton.setInteractive({ useHandCursor: true });
-
     reviewButton.setInteractive({useHandCursor: true})
       .on('pointerdown', () => viewScene(scene, reviewListSceneKey))
       .on('pointerover', () => reviewButton.setTint(...activeTint))
@@ -77,8 +72,6 @@ export const renderMenu = (scene, currentSceneKey) => {
 
   if (currentSceneKey !== shopSceneKey) {
     const shopButton = scene.add.image(startX + 380, menuY, 'buttonActive').setOrigin(0, 0).setScale(.85, .5);
-    shopButton.setInteractive({ useHandCursor: true });
-
     shopButton.setInteractive({useHandCursor: true})
       .on('pointerdown', () => viewScene(scene, shopSceneKey))
       .on('pointerover', () => shopButton.setTint(...activeTint))
