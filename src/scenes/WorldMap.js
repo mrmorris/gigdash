@@ -226,25 +226,28 @@ export default class extends Phaser.Scene {
   travelTo(location) {
     const currentLocation = getCurrentLocation();
 
-    if (!isTraveling) {
+    if (
+      !isTraveling &&
+      (
+        !currentLocation ||
+        location.name !== currentLocation.name
+      )
+    ) {
       isTraveling = true;
-
       lockMenu();
 
-      if (!currentLocation || location.name !== currentLocation.name) {
-        this.player.flipX = this.player.x > location.ref.x;
+      this.player.flipX = this.player.x > location.ref.x;
 
-        travellingMusic.play();
-        const tween = this.tweens.add({
-          targets: this.player,
-          x: location.ref.x + location.ref.width / 2,
-          y: location.ref.y + location.ref.height / 2,
-          duration: C.SETTING_TRAVEL_TIME_MS,
-          ease: 'Power2',
-        });
+      travellingMusic.play();
+      const tween = this.tweens.add({
+        targets: this.player,
+        x: location.ref.x + location.ref.width / 2,
+        y: location.ref.y + location.ref.height / 2,
+        duration: C.SETTING_TRAVEL_TIME_MS,
+        ease: 'Power2',
+      });
 
-        tween.on('complete', () => this.switchToLocation(location));
-      }
+      tween.on('complete', () => this.switchToLocation(location));
     }
   }
 
