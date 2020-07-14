@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import positiveReviewSound from '../assets/positive_review.mp3';
 import {
   getCurrentTask,
   getInventory,
@@ -28,10 +27,6 @@ let positiveReviewSFX;
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
-  }
-
-  preload() {
-    this.load.audio('positiveReviewSFX', positiveReviewSound);
   }
 
   create() {

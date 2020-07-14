@@ -28,10 +28,6 @@ export default class extends Phaser.Scene {
     super({ key });
   }
 
-  preload() {
-    this.load.audio('positiveReviewSFX', positiveReviewSound);
-  }
-
   create() {
     const title = this.add.text(xAlignment, 50, 'Orders', headerStyle);
     positiveReviewSFX = this.sound.add('positiveReviewSFX');

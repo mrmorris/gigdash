@@ -1,11 +1,4 @@
 import Phaser from 'phaser';
-import negativeReviewSound from '../assets/negative_review_sfx.mp3';
-import newTaskSound from '../assets/new_task.mp3';
-import bgMusicSound from '../assets/bg_music.mp3';
-import travelingSound from '../assets/travelling.mp3';
-import worldMapImg from '../assets/world-map.png';
-import playerImg from '../assets/player.png';
-import starImg from '../assets/star.png';
 import {
   addTask,
   getCurrentLocation,
@@ -18,7 +11,7 @@ import Shop from '../entities/Shop';
 import Review from '../entities/Review';
 import Neighborhood from '../entities/Neighborhood';
 import { addSceneForNotification, addNotification } from '../lib/Notifications';
-import { renderMenu, preloadMenu, lockMenu, unlockMenu} from '../lib/Menu';
+import { renderMenu, lockMenu, unlockMenu } from '../lib/Menu';
 import { renderStars, updateStars } from '../lib/Stars';
 
 import * as C from '../constants';
@@ -65,23 +58,6 @@ let assignmentTimeout;
 export default class extends Phaser.Scene {
   constructor() {
     super({ key });
-  }
-
-  preload() {
-    this.load.image('worldMap', worldMapImg);
-    this.load.image('player', playerImg);
-    this.load.image('star', starImg);
-
-    preloadMenu(this);
-
-    this.load.audio('bgMusic', bgMusicSound);
-    this.load.audio('travellingSFX', travelingSound);
-    this.load.audio('newTaskSFX', newTaskSound);
-
-    this.load.audio(
-      'negativeReviewSFX',
-      negativeReviewSound
-    );
   }
 
   create() {
