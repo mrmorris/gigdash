@@ -58,15 +58,23 @@ export default class extends Phaser.Scene {
       redrawRefs.push(locationName);
     }
 
+    let lastTaskHeight = 0;
     tasks.slice(0, taskViewLimit).forEach((task, index) => {
       let taskRef = this.add.text(
         xAlignment,
-        160 + 25 * index,
+        (160 + lastTaskHeight) + (25 * index),
         `${task.destination} - ${task.customerName} - ${
           task.items.length
         } item${task.items.length > 1 ? 's' : ''}`,
-        bodyStyle
+        {
+          ...bodyStyle,
+          wordWrap: {
+            width: 500
+          }
+        }
       );
+
+      lastTaskHeight += taskRef.height;
 
       taskRef
         .setInteractive({ useHandCursor: true })
@@ -76,7 +84,7 @@ export default class extends Phaser.Scene {
 
       if (canCompleteTask(task)) {
         let completeRef = this.add.text(
-          xAlignment + taskRef.width + 50,
+          this.cameras.main.width - 75,
           160 + 25 * index,
           `Deliver!`,
           {
