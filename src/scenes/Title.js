@@ -67,7 +67,12 @@ export default class extends Phaser.Scene {
       progressBar.fillRect(160, 280, 300 * value, 30);
     });
 
-    this.load.on('complete', function () {});
+    this.load.on('complete', function () {
+      progressBar.destroy();
+      progressBox.destroy();
+      loadingText.destroy();
+      percentText.destroy();
+    });
 
     this.load.video('introVideo', introVideo);
     this.load.image('logo', logoImg);
@@ -91,10 +96,6 @@ export default class extends Phaser.Scene {
     clickToPlay
       .setInteractive({ useHandCursor: true })
       .on('pointerdown', () => {
-        progressBar.destroy();
-        progressBox.destroy();
-        loadingText.destroy();
-        percentText.destroy();
         this.renderTitleScreen();
       });
   }
