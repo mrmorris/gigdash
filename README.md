@@ -1,5 +1,7 @@
 # Extra Miles - The game!
 
+Game built in 48 hours for the [GMTK 2020 Game Jame](https://itch.io/jam/gmtk-2020)
+
 This game was designed and developed by:
 
 * Thomas Robertson
