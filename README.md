@@ -2,6 +2,25 @@
 
 This game was designed and developed by:
 
+Thomas Robertson
+Liam McCartney
+Ryan Morris
+Nikki Love
+Corey Plante
+
+We grabbed and patched assets together from:
+
+Overworld Map — LadyLuck
+Character Icon(s) — derGriza (Shutterstock)
+Cityscape — ansimuz
+Buttons — Vecteezy
+Music — “Miami Sky” by White Bat Audio
+New Task Notification — “Insight”
+Negative Review Notification — “Glitch in the Matrix”
+Positive Review Notification — “Success 01”
+Scooter Travel Music — originaljun
+Death Sound LittleRobotSoundFactory
+
 # Framework
 
 We used Phaser 3 and the Phaser 3 project template, with ES6 support via [Babel 7](https://babeljs.io/) and [Webpack 4](https://webpack.js.org/)
